@@ -1,0 +1,54 @@
+<div class="row">
+    <h5>Ajouter un utilisateur</h5>
+<form (ngSubmit)="addUser()" class="formulaire" [formGroup]="ajouterUtilisateurFormulaire">
+    <table>
+        <tbody>
+            <tr>
+                <th>
+                    Nom
+                </th>
+                <td>
+                    <input type="text" name="nom" formControlName="nom">
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Prenom
+                </th>
+                <td>
+                    <input type="text" name="prenom" formControlName="prenom">
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Email
+                </th>
+                <td>
+                    <input type="email" name="email" formControlName="email">
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Mot de passe
+                </th>
+                <td>
+                    <input type="password" name="motDePasse" formControlName="password">
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Role
+                </th>
+                <td>
+                    <select formControlName="role">
+                        <option  *ngFor="let s of roles" [value]="s">{{s}}</option>
+                    </select>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <button [disabled]="!ajouterUtilisateurFormulaire.valid">Sauvegarder</button>
+    <button type="button"  (click)="annulerCreation()">Annuler</button>
+</form>
+
+</div>

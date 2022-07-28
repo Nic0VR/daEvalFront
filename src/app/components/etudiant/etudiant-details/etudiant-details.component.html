@@ -1,0 +1,65 @@
+<div class="my-card" *ngIf="currentEtudiant ">
+    <h2> {{currentEtudiant.nom}} {{currentEtudiant.prenom}}</h2>
+    <span>Nom: {{currentEtudiant.nom}}</span><br>
+    <span>Prénom: {{currentEtudiant.prenom}}</span><br>
+    <span>Email: {{currentEtudiant.email}}</span><br>
+    <button (click)="debug()">debug</button>
+
+    <table class="table table-striped" *ngIf="promos && promos.length; else no_promos">
+        <thead>
+            <tr>
+                <th>Promotion Id</th>
+                <th>Titre Pro</th>
+                <th>Ville</th>
+                <th>Date de début</th>
+                <th>Date de fin</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let promo of promos">
+                <td>{{promo.id}}</td>
+                <td>{{promo.titreProfessionnelId | titrePro}}</td>
+                <td>{{promo.villeId | ville}}</td>
+                <td>{{promo.dateDebut}}</td>
+                <td>{{promo.dateFin}}</td>
+                <td>
+                    <a><span class="material-icons">visibility</span></a>
+                    <!-- <a *ngIf="u.role!='ETUDIANT'" [routerLink]="'/main/users/modify/'+u.id"><span class="material-icons">edit</span></a> -->
+                    <a><span class="material-icons">edit</span></a>
+
+                    <a><span class="material-icons">delete</span></a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h4>Évaluations</h4>
+    <table class="table table-striped" *ngIf="evaluations">
+        <thead>
+            <tr>
+                <th>Epreuve:</th>
+                <th>Note</th>
+                <!-- <th>Moyenne de la promo</th> -->
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr *ngFor="let evaluation of evaluations">
+                <td>{{evaluation.epreuveTitre}}</td>
+                <td>{{evaluation.note}}</td>
+                <!-- <td></td> -->
+                <td>
+                    <a><span class="material-icons">visibility</span></a>
+                    <!-- <a *ngIf="u.role!='ETUDIANT'" [routerLink]="'/main/users/modify/'+u.id"><span class="material-icons">edit</span></a> -->
+                    <a><span class="material-icons">edit</span></a>
+
+                    <a><span class="material-icons">delete</span></a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+    <ng-template #no_promos>
+        <div class="text-danger">Cet étudiant n'est dans aucune promotion<b></b></div>
+    </ng-template>

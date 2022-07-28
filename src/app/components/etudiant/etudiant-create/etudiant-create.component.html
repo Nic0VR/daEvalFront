@@ -1,0 +1,45 @@
+<div >
+    <h5>Ajouter un Étudiant</h5>
+    <form (ngSubmit)="addEtudiant()" class="formulaire" [formGroup]="ajouterEtudiantFormulaire">
+        <table>
+            <tbody>
+                <tr>
+                    <th>
+                        Nom 
+                    </th>
+                    <td>
+                        <input type="text" name="nom" formControlName="nom">
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Prenom
+                    </th>
+                    <td>
+                        <input type="text" name="prenom" formControlName="prenom">
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Email
+                    </th>
+                    <td>
+                        <input type="email" name="email" formControlName="email">
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Mot de passe
+                    </th>
+                    <td>
+                        <input type="text" name="motDePasse" formControlName="password">
+                    </td>
+                </tr>
+                
+            </tbody>
+        </table>
+        <button [disabled]="!ajouterEtudiantFormulaire.valid">Sauvegarder</button>
+        <button type="button" (click)="annulerCreation()">Annuler</button>
+    </form>
+    
+    </div>

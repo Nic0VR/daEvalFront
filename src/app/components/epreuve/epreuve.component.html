@@ -1,0 +1,26 @@
+<h2>Épreuves</h2>
+<div *ngIf="currentEpreuve">
+    <h4>{{currentEpreuve.titre}}</h4>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Etudiant</th>
+                <th>Note</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td></td>
+
+                <td>
+                    <a><span class="material-icons">visibility</span></a>
+
+                    <a><span class="material-icons">edit</span></a>
+
+                    <a><span class="material-icons">delete</span></a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

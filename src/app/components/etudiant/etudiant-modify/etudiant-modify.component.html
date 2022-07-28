@@ -1,0 +1,64 @@
+<div >
+    <h2>Modifier un Étudiant</h2>
+    <div class="form-ctn">
+        <form (ngSubmit)="modifyUser()" class="formulaire" [formGroup]="modifierEtudiantFormulaire">
+            <table>
+                <tbody>
+                    <tr>
+                        <th>
+                            Nom
+                        </th>
+                        <td>
+                            <input type="text" name="nom" formControlName="nom">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Prenom
+                        </th>
+                        <td>
+                            <input type="text" name="prenom" formControlName="prenom">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Email
+                        </th>
+                        <td>
+                            <input type="email" name="email" formControlName="email">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Mot de passe
+                        </th>
+                        <td>
+                            <input type="text" name="motDePasse" formControlName="password">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <button [disabled]="!modifierEtudiantFormulaire.valid">Sauvegarder</button>
+        </form>
+        <!-- <div class="promos" *ngIf="etudiantToModify && etudiantToModify.promotionsId ">
+            <span>Cet étudiant est dans les promotions:</span>
+            <div class="promo" *ngFor=" let id of etudiantToModify.promotionsId">
+                {{id}}
+            </div>     
+        </div>
+        <div *ngIf="tp">
+            <h4>Ajouter cet étudiant dans une promotion:</h4>
+            <select>
+                <option *ngFor="let promo of promos" [value]="promo.id">
+                    <div>
+                        <span>Titre pro: {{promo.titreProfessionnelId | titrePro }}</span>
+                         <span>Date début:{{promo.dateDebut}}</span>
+                    </div>
+                   
+                </option>
+            </select>
+        </div> -->
+    </div>
+    
+    <button type="button" class="my-btn" routerLink="/main/etudiant">Retour à la liste des étudiants</button>
+    </div>

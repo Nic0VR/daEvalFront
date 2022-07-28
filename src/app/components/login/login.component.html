@@ -1,0 +1,14 @@
+<h1>Authentification</h1>
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <label for="email">Email : </label>
+  <input type="email" formControlName="email" id="email"/>
+  <br />
+  <label for="password">Password : </label>
+  <input type="password" formControlName="password" id="password" />
+  <br />
+  <button>
+    Se connecter
+  </button>
+  <div *ngIf="error">{{error}}</div>
+</form>
+

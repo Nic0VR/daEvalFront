@@ -1,0 +1,36 @@
+<div class="my-ctn">
+
+    <h5 mat-dialog-title>Ajouter une compétence</h5>
+<div mat-dialog-content>
+    <form (ngSubmit)="onYesClick()" class="formulaire" [formGroup]="modifierCompetenceFormulaire">
+        <table>
+            <tbody>
+                <tr>
+                    <th>
+                        Titre
+                    </th>
+                    <td>
+                        <input type="text" name="titre" formControlName="titre">
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Description
+                    </th>
+                    <td>
+                        <textarea type="text" name="description" formControlName="description"></textarea>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- <button >Sauvegarder</button> -->
+        <!-- <button type="button" (click)="annulerAjout()">Annuler</button> -->
+        <mat-dialog-actions>
+            <button type="button" class="btn" (click)="onNoClick()">Annuler</button>
+            <button type="button" class="btn" [disabled]="!modifierCompetenceFormulaire.valid" (click)="onYesClick()">Confirmer</button>
+        </mat-dialog-actions>
+    </form>
+</div>
+    
+
+</div>

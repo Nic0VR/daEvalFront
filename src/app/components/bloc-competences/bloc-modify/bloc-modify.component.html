@@ -1,0 +1,43 @@
+<div *ngIf=" titrePros">
+    <div class="my-ctn">
+  
+      <h5>Modifier un bloc de compétence</h5>
+      <label for="search">Recherche (titre pro) : </label>
+      <input id="search" type="text" [(ngModel)]="searchExpression" />
+      <button type="button" (click)="rechercher()">Rechercher</button>
+      <button type="button" (click)="annulerRechercher()">Annuler</button>
+      <form (ngSubmit)="submit()" class="formulaire" [formGroup]="modifierBlocCompetenceFormulaire">
+        <table>
+          <tbody>
+            <tr>
+              <th>
+                Titre
+              </th>
+              <td>
+                <input type="text" name="titre" formControlName="titre">
+              </td>
+            </tr>
+            <tr>
+              <th>
+                Description
+              </th>
+              <td>
+                <textarea type="text" name="description" formControlName="description"></textarea>
+              
+              </td>
+            </tr>
+            <tr>
+              <th>Titre Pro</th>
+              <td>
+                <select formControlName="titreProId">
+                  <option *ngFor="let tp of titrePros" [value]="tp.id">{{tp.titre | formatTitrePro}}</option>
+                </select>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <button [disabled]="!modifierBlocCompetenceFormulaire.valid">Sauvegarder</button>
+        <button type="button" routerLink="/main/blocComp">Annuler</button>
+      </form>
+  
+    </div>

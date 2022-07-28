@@ -1,0 +1,25 @@
+.main-container {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  width: 100vw;
+  border: solid green 1px;
+}
+
+.sidebar {
+  border: solid red 1px;
+  width: 150px;
+  word-wrap: break-word;
+  font-size: 0.8em;
+  /* height: 100%; */
+  /* position: fixed; */
+}
+
+.main-content {
+  border: solid red 1px;
+  /* margin: 5px 3px; */
+  margin-left: 20px;
+  margin-right: 20px;
+  width: 100%;
+  /* height: 100%; */
+}

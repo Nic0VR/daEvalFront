@@ -1,0 +1,135 @@
+<ng-container *ngIf="currentBloc && competences && epreuves">
+    <h3>Détails du bloc de compétences {{currentBloc?.titre}}</h3>
+
+
+
+    <div>
+        <p>Description: {{currentBloc.description}}</p>
+        <span>Titre Professionnel: {{currentBloc.titreProfessionnelId | titrePro}}</span>
+        <br>
+        <button (click)="afficherFormulaireAjout()">Ajouter une compétence</button>
+        <div *ngIf="formulaireAjoutVisible">
+            <div class="my-ctn">
+
+                <h5>Ajouter une compétence</h5>
+
+                <form (ngSubmit)="addCompetence()" class="formulaire" [formGroup]="ajouterCompetenceFormulaire">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <th>
+                                    Titre
+                                </th>
+                                <td>
+                                    <input type="text" name="titre" formControlName="titre">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    Description
+                                </th>
+                                <td>
+                                    <textarea type="text" name="description" formControlName="description"></textarea>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button [disabled]="!ajouterCompetenceFormulaire.valid">Sauvegarder</button>
+                    <button type="button" (click)="annulerAjout()">Annuler</button>
+                </form>
+
+            </div>
+        </div>
+        <!-- <span>{{currentBloc.}}</span> -->
+        <table class="table table-striped" *ngIf="competences">
+            <thead>
+                <th>Compétence</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let comp of competences">
+                    <td>{{comp.titre}}</td>
+                    <td>{{comp.description}}</td>
+
+                    <td>
+                        <!-- <a ><span class="material-icons">visibility</span></a> -->
+                        <!-- <a *ngIf="u.role!='ETUDIANT'" [routerLink]="'/main/users/modify/'+u.id"><span class="material-icons">edit</span></a> -->
+                        <a href="javascript:;" (click)="modifComp(comp)" ><span class="material-icons">edit</span></a>
+              
+                        <a href="javascript:;" (click)="removeComp(comp)"><span class="material-icons">delete</span></a>
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
+
+        <h4>Épreuves:</h4>
+        <button (click)="afficherFormEpreuve()">Ajouter une épreuve</button>
+        <div class="my-ctn" *ngIf="formulaireAjoutEpreuveVisible">
+
+            <h5>Ajouter une Épreuve</h5>
+
+            <form (ngSubmit)="addEpreuve()" class="formulaire" [formGroup]="ajouterEpreuveFormulaire">
+                <table>
+                    <tbody>
+                        <tr>
+                            <th>
+                                Titre
+                            </th>
+                            <td>
+                                <input type="text" name="titre" formControlName="titre">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Description
+                            </th>
+                            <td>
+                                <textarea type="text" name="description" formControlName="description"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Type
+                            </th>
+                            <td>
+                    
+                                <select name="type" formControlName="type">
+                                    <option value="MES">Mise en situation</option>
+                                    <option value="QCM">Questionnaire à choix multiples</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button [disabled]="!ajouterEpreuveFormulaire.valid">Sauvegarder</button>
+                <button type="button" (click)="annulerAjoutEpreuve()">Annuler</button>
+            </form>
+
+        </div>
+        <table class="table table-striped" >
+            <thead>
+                <th>Titre</th>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let ep of epreuves">
+                    <td>{{ep.titre}}</td>
+                    <td>{{ep.type}}</td>
+                    <td>{{ep.description}}</td>
+                    <td>
+                        <a href="javascript:;"  ><span class="material-icons">visibility</span></a>
+
+                        <a href="javascript:;"  ><span class="material-icons">edit</span></a>
+              
+                        <a href="javascript:;" (click)="removeEpreuve(ep)" ><span class="material-icons">delete</span></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</ng-container>

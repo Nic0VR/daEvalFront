@@ -1,0 +1,81 @@
+<div *ngIf="currentTitre && blocCompetences">
+    <h2>Détails du Titre Professionnel {{currentTitre.titre}}</h2>
+    <button (click)="afficherFormulaireAjout()">Ajouter un bloc</button>
+
+    <div *ngIf="formulaireAjoutVisible">
+        <div class="my-ctn">
+
+            <h5>Ajouter un bloc de compétence</h5>
+
+            <form (ngSubmit)="addBlocComp()" class="formulaire" [formGroup]="ajouterBlocCompetenceFormulaire">
+                <table>
+                    <tbody>
+                        <tr>
+                            <th>
+                                Titre
+                            </th>
+                            <td>
+                                <input type="text" name="titre" formControlName="titre">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                Description
+                            </th>
+                            <td>
+                                <textarea type="text" name="description" formControlName="description"></textarea>
+
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                <button [disabled]="!ajouterBlocCompetenceFormulaire.valid">Sauvegarder</button>
+                <button type="button" (click)="annulerAjout()">Annuler</button>
+            </form>
+
+        </div>
+    </div>
+
+    <table class="table table-striped" *ngIf="blocCompetences">
+        <thead>
+            <tr>
+                <th>Titre</th>
+                <th>Description</th>
+                <th>Titre Professionnel</th>
+                <th>Compétences</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody *ngIf="blocCompetences; else noData">
+            <tr *ngFor="let bloc of blocCompetences ">
+                <td>{{bloc.titre}}</td>
+                <td>{{bloc.description}}</td>
+                <td>{{bloc.titreProfessionnelId | titrePro}}</td>
+                <td>
+                    <ul *ngIf="bloc.competences && bloc.competences.length; else noComp">
+                        <li *ngFor="let comp of bloc.competences">
+                            {{comp.titre}}
+                        </li>
+                    </ul>
+                </td>
+                <td>
+                    <a [routerLink]="'/main/blocComp/details/'+bloc.id"><span
+                            class="material-icons">visibility</span></a>
+                    <!-- <a *ngIf="u.role!='ETUDIANT'" [routerLink]="'/main/users/modify/'+u.id"><span class="material-icons">edit</span></a> -->
+                    <a [routerLink]="'/main/blocComp/modify/'+bloc.id"><span class="material-icons">edit</span></a>
+
+                    <a href="javascript:;" (click)="removeBlocComp(bloc)"><span class="material-icons">delete</span></a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+
+<ng-template #noData>
+    <span class="text-danger">Aucune donnée trouvée !</span>
+</ng-template>
+<ng-template #noComp>
+    <span class="text-danger">Aucune compétence dans ce bloc</span>
+</ng-template>

@@ -1,0 +1,35 @@
+<h1>Gestion des Titres</h1>
+
+<form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
+  <label for="search">Recherche : </label>
+  <input id="search" type="text" formControlName="searchExpression" />
+  <button>Rechercher</button>
+</form>
+
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>titre</th>
+      <th>slug</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody *ngIf="titresPro; else noData">
+    <tr
+      *ngFor="let t of titresPro | paginate: {itemsPerPage:itemsPerPage, currentPage: currentPage, totalItems:totalItems}">
+      <td>{{t.titre}}</td>
+      <td>{{t.slug}}</td>
+      <td>
+        <a [routerLink]="['/main/titrePro/details',t.id ]"> <span class="material-icons">visibility</span></a>
+        <a [routerLink]="['/main/titrePro/modify',t.id]"> <span class="material-icons">edit</span></a>
+        <a routerLink=""></a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<ng-template #noData>
+  <span class="text-danger">No data found !</span>
+</ng-template>
+<pagination-controls *ngIf="titresPro" (pageChange)="pageChanged($event)" previousLabel="Précédent" nextLabel="Suivant">
+</pagination-controls>

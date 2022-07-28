@@ -1,0 +1,10 @@
+
+<h1 mat-dialog-title>Suppression</h1>
+<div mat-dialog-content>
+    <span>Voulez-vous vraiment supprimer</span>
+    <span><b>{{elementName}}</b> ?</span>
+</div>
+<mat-dialog-actions>
+    <button class="btn" (click)="onNoClick()">Annuler</button>
+    <button class="btn" (click)="onYesClick()">Confirmer</button>
+</mat-dialog-actions>

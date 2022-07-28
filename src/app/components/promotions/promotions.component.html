@@ -1,0 +1,56 @@
+<h1>Gestion des Promotions</h1>
+
+  <!-- <span>{{searchExpression}}</span> -->
+  <label for="search">Recherche : </label>
+  <input id="search" type="text" [(ngModel)]="searchExpression" />
+  <button (click)="rechercher()">Rechercher</button>
+  <button (click)="annulerRechercher()">Annuler</button>
+  <button *ngIf="!formulaireAjoutVisible" (click)="ajouterNouvellePromo()">Créer une nouvelle promotion:</button>
+  <!-- <button  *ngIf="!formulaireAjoutVisible" (click)="ajouterUtilisateur()">Ajouter un utilisateur</button> -->
+
+  <!-- <div *ngIf="formulaireAjoutVisible">
+    <app-user-create (cancelCreationEvent)="annulerCreation()"></app-user-create>
+  </div> -->
+
+<!-- <table class="table table-striped" *ngIf="villes"> -->
+  <div *ngIf="formulaireAjoutVisible">
+<app-promotion-create (annulerCreationEvent)="cacherFormulaireAjout()"></app-promotion-create>
+  </div>
+<table class="table table-striped">
+
+  <thead>
+    <tr>
+    <th>Identifiant</th>
+    <th>Titre Pro</th>
+    <th>Ville</th>
+    <th>Étudiants</th>
+    <th>Date debut</th>
+    <th>Date fin</th>
+    <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody *ngIf="promos; else noData">
+    <tr
+      *ngFor="let p of promos | paginate: {itemsPerPage:itemsPerPage, currentPage: currentPage, totalItems:totalItems}">
+      <td>{{p.id}}</td>
+      <!-- <td>{{p.titreProfessionnelId | titrePro }}</td> -->
+      <td>{{p.titreProfessionnelId | titrePro}}</td>
+
+      <!-- <td>{{p.villeId | ville | titlecase}}</td> -->
+      <td>{{p.villeId | ville}}</td>
+      <td>{{p.etudiantsId.length}}</td>
+      <td>{{p.dateDebut}}</td>
+      <td>{{p.dateFin}}</td>
+      <td>
+        <a [routerLink]="'/main/promotions/details/'+p.id" ><span class="material-icons">visibility</span></a>
+        <a [routerLink]="'/main/promotions/modify/'+p.id"><span class="material-icons">edit</span></a>
+        <a href="javascript:" (click)="supprimerPromotion(p)"><span class="material-icons">delete</span></a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<ng-template #noData>
+  <span class="text-danger">Aucune donnée trouvée !</span>
+</ng-template>
+<pagination-controls *ngIf="promos" (pageChange)="pageChanged($event)" previousLabel="Précédent" nextLabel="Suivant">
+</pagination-controls>

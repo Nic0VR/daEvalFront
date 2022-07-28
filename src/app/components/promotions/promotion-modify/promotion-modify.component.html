@@ -1,0 +1,50 @@
+
+<div *ngIf="titrePros && villes" >
+    <h5>Modifier une promotion</h5>
+    <form (ngSubmit)="submit()" class="formulaire" [formGroup]="modifierPromoFormulaire">
+        <table>
+            <tbody>
+                <tr>
+                    <th>
+                        Titre Professionnel:
+                    </th>
+                    <td >
+                        <select formControlName="titrePro">
+                            <option *ngFor="let titre of titrePros" [value]="titre.id">{{titre.titre}}</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Date de début:
+                    </th>
+                    <td>
+                        <input type="date" name="date de début" formControlName="dateDebut">
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Date de fin:
+                    </th>
+                    <td>
+                        <input type="date" name="date de fin" formControlName="dateFin">
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Ville:
+                    </th>
+                    <td>
+                        <select formControlName="ville">
+                            <option *ngFor="let ville of villes" [value]="ville.id">{{ville.nom}}</option>
+                        </select>
+                    </td>
+                </tr>
+                
+            </tbody>
+        </table>
+        <button [disabled]="!modifierPromoFormulaire.valid">Sauvegarder</button>
+        <button type="button" routerLink="/main/promotions">Annuler</button>
+    </form>
+    
+    </div>

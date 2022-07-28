@@ -1,0 +1,54 @@
+
+<div *ngIf="titrePros && villes" >
+    <h5>Créer une promotion</h5>
+    <label for="search">Recherche (titre pro) : </label>
+    <input id="search" type="text" [(ngModel)]="searchExpression" />
+    <button type="button" (click)="rechercher()">Rechercher</button>
+    <button type="button" (click)="annulerRechercher()">Annuler</button>
+    <form (ngSubmit)="creerPromo()" class="formulaire" [formGroup]="ajouterPromoFormulaire">
+        <table>
+            <tbody>
+                <tr>
+                    <th>
+                        Titre Professionnel:
+                    </th>
+                    <td >
+                        <select formControlName="titrePro">
+                            <option *ngFor="let titre of titrePros" [value]="titre.id">{{titre.titre | formatTitrePro}}</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Date de début:
+                    </th>
+                    <td>
+                        <input type="date" name="date de début" formControlName="dateDebut">
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Date de fin:
+                    </th>
+                    <td>
+                        <input type="date" name="date de fin" formControlName="dateFin">
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Ville:
+                    </th>
+                    <td>
+                        <select formControlName="ville">
+                            <option *ngFor="let ville of villes" [value]="ville.id">{{ville.nom}}</option>
+                        </select>
+                    </td>
+                </tr>
+                
+            </tbody>
+        </table>
+        <button [disabled]="!ajouterPromoFormulaire.valid">Sauvegarder</button>
+        <button type="button" (click)="annulerCreation()">Annuler</button>
+    </form>
+    
+    </div>

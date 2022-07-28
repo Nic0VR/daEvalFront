@@ -1,0 +1,47 @@
+<h1>Gestion des utilisateurs</h1>
+
+  <!-- <span>{{searchExpression}}</span> -->
+  <label for="search">Recherche : </label>
+  <input id="search" type="text" [(ngModel)]="searchExpression" />
+  <button (click)="rechercher()">Rechercher</button>
+  <button (click)="annulerRechercher()">Annuler</button>
+  <button  *ngIf="!formulaireAjoutVisible" (click)="ajouterUtilisateur()">Ajouter un utilisateur</button>
+
+  <div *ngIf="formulaireAjoutVisible">
+    <app-user-create (cancelCreationEvent)="annulerCreation()"></app-user-create>
+  </div>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Nom complet</th>
+      <th>Email</th>
+      <th>Role</th>
+      <th>Actif</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody *ngIf="users; else noUsers">
+    <tr
+      *ngFor="let u of users | paginate: {itemsPerPage:itemsPerPage, currentPage: currentPage, totalItems:totalItems}">
+      <td>{{u.nom}} {{u.prenom}}</td>
+      <td>{{u.email}}</td>
+      <td>{{u.role}}</td>
+      <td>{{u.active?"Oui":"Non"}}</td>
+      <td>
+        <a><span class="material-icons">visibility</span></a>
+        <ng-container > </ng-container>
+        <a *ngIf="u.role!='ETUDIANT'" [routerLink]="'/main/users/modify/'+u.id"><span class="material-icons">edit</span></a>
+        <a *ngIf="u.role=='ETUDIANT'" [routerLink]="'/main/etudiant/modify/'+u.id"><span class="material-icons">edit</span></a>
+        <a  *ngIf="u.role!='ETUDIANT'" (click)="supprimerUtilisateur(u)" href="javascript:void;"><span class="material-icons">delete</span></a>
+        <a  *ngIf="u.role=='ETUDIANT'" href="javascript:void;" (click)="supprimerEtudiant(u)" ><span class="material-icons">delete</span></a>
+
+      </td>
+    </tr>
+  </tbody>
+</table>
+<ng-template #noUsers>
+  <span class="text-danger">Aucun utilisateur trouvé !</span>
+</ng-template>
+<pagination-controls *ngIf="users" (pageChange)="pageChanged($event)" previousLabel="Précédent" nextLabel="Suivant">
+</pagination-controls>

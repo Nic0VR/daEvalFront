@@ -1,0 +1,10 @@
+
+.nav{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.test{
+    width: 100%;
+}

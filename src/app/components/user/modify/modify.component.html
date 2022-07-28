@@ -1,0 +1,53 @@
+<div >
+   <h2>Modifier un utilisateur</h2> 
+    <form (ngSubmit)="modifyUser()" class="formulaire" [formGroup]="modifierUtilisateurFormulaire">
+        <table>
+            <tbody>
+                <tr>
+                    <th>
+                        Nom
+                    </th>
+                    <td>
+                        <input type="text" name="nom" formControlName="nom">
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Prenom
+                    </th>
+                    <td>
+                        <input type="text" name="prenom" formControlName="prenom">
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Email
+                    </th>
+                    <td>
+                        <input type="email" name="email" formControlName="email">
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Mot de passe
+                    </th>
+                    <td>
+                        <input type="text" name="motDePasse" formControlName="password">
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Role
+                    </th>
+                    <td>
+                        <select formControlName="role">
+                            <option  *ngFor="let s of roles" [value]="s">{{s}}</option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <button [disabled]="!modifierUtilisateurFormulaire.valid">Sauvegarder</button>
+    </form>
+    <button type="button" class="my-btn" routerLink="/main/users">Retour à la liste des utilisateurs</button>
+    </div>
