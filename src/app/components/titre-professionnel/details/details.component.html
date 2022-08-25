@@ -37,12 +37,11 @@
         </div>
     </div>
 
-    <table class="table table-striped" *ngIf="blocCompetences">
+    <table class="table table-striped" *ngIf="blocCompetences && blocCompetences.length else no_bloc">
         <thead>
             <tr>
                 <th>Titre</th>
                 <th>Description</th>
-                <th>Titre Professionnel</th>
                 <th>Compétences</th>
                 <th>Actions</th>
             </tr>
@@ -51,7 +50,7 @@
             <tr *ngFor="let bloc of blocCompetences ">
                 <td>{{bloc.titre}}</td>
                 <td>{{bloc.description}}</td>
-                <td>{{bloc.titreProfessionnelId | titrePro}}</td>
+                <!-- <td>{{bloc.titreProfessionnelId | titrePro}}</td> -->
                 <td>
                     <ul *ngIf="bloc.competences && bloc.competences.length; else noComp">
                         <li *ngFor="let comp of bloc.competences">
@@ -78,4 +77,9 @@
 </ng-template>
 <ng-template #noComp>
     <span class="text-danger">Aucune compétence dans ce bloc</span>
+</ng-template>
+
+<ng-template #no_bloc>
+    <br>
+    <span class="text-danger">Aucun bloc de compétence dans ce titre</span>
 </ng-template>

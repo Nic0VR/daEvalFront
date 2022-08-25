@@ -9,47 +9,50 @@ import { User } from '../_models/user';
   providedIn: 'root'
 })
 export class EtudiantService {
- 
+
 
   private httpHeaders = {
-    headers : new HttpHeaders({
-         'Access-Control-Allow-Origin':'*'
+    headers: new HttpHeaders({
+      'Access-Control-Allow-Origin': '*'
     })
   }
-  constructor(private httpClient:HttpClient){
+  constructor(private httpClient: HttpClient) {
 
   }
 
 
-  getAllPage(page:number, size:number, search:string){
+  getAllPage(page: number, size: number, search: string) {
 
     return this.httpClient.get<Etudiant[]>(`${environment.apiUrl}/api/etudiant/page/${page}/${size}/${search}`);
   }
   getAll() {
     return this.httpClient.get<Etudiant[]>(`${environment.apiUrl}/api/etudiant/`);
   }
-  
-  findById(id:number){
+
+  findById(id: number) {
     return this.httpClient.get<any>(`${environment.apiUrl}/api/etudiant/${id}`)
-               .pipe(map(userFound => {return userFound;}));
+      .pipe(map(userFound => { return userFound; }));
   }
 
-  countStudents(search:string){
+  countStudents(search: string) {
     return this.httpClient.get<any>(`${environment.apiUrl}/api/etudiant/count/${search}`);
   }
 
-  delete(id:number){
+  delete(id: number) {
     return this.httpClient.delete<void>(`${environment.apiUrl}/api/etudiant/${id}`);
   }
 
-  save(etudiant:Etudiant){
+  save(etudiant: Etudiant) {
     return this.httpClient.post<any>(`${environment.apiUrl}/api/etudiant`, etudiant, this.httpHeaders)
-              .pipe(map(savedUser => {return savedUser}));
+      .pipe(map(savedUser => { return savedUser }));
   }
 
-  update(etudiant:Etudiant){
+  update(etudiant: Etudiant) {
     return this.httpClient.put<any>(`${environment.apiUrl}/api/etudiant`, etudiant, this.httpHeaders)
-              .pipe(map(savedUser => {return savedUser}));
+      .pipe(map(savedUser => { return savedUser }));
   }
 
+  getEtudiantByEpreuveId(epreuveId: number) {
+    return this.httpClient.get<any>(`${environment.apiUrl}/api/etudiant/EprId/${epreuveId}`);
+  }
 }

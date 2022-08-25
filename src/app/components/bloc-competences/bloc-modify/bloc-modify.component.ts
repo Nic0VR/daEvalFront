@@ -13,29 +13,29 @@ import { TitreProfessionnelService } from 'src/app/_services/titre-professionnel
 })
 export class BlocModifyComponent implements OnInit {
 
-  titrePros?:TitreProfessionnel[];
+  titrePros?: TitreProfessionnel[];
   itemsPerPage: number;
   currentPage: number;
   totalItems: number;
   searchExpression: string;
   searchForm: FormGroup;
-  currentBloc?:BlocCompetence;
-  @Output() 
-  annulerCreationEvent=new EventEmitter();
+  currentBloc?: BlocCompetence;
+  @Output()
+  annulerCreationEvent = new EventEmitter();
 
-  modifierBlocCompetenceFormulaire:FormGroup = new FormGroup({
-    titre:new FormControl("",Validators.required),
-    description:new FormControl("",Validators.required),
-    titreProId:new FormControl("",Validators.required),
-})
+  modifierBlocCompetenceFormulaire: FormGroup = new FormGroup({
+    titre: new FormControl("", Validators.required),
+    description: new FormControl("", Validators.required),
+    titreProId: new FormControl("", Validators.required),
+  })
 
   constructor(
-    private titreProService:TitreProfessionnelService,
-    private blocCompService:BlocCompetenceService,
-    private formBuilder:FormBuilder,
-    private route:ActivatedRoute,
-    private router:Router
-    ) { 
+    private titreProService: TitreProfessionnelService,
+    private blocCompService: BlocCompetenceService,
+    private formBuilder: FormBuilder,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {
     this.searchForm = this.formBuilder.group({
       searchExpression: ['']
     });
@@ -44,47 +44,49 @@ export class BlocModifyComponent implements OnInit {
     this.itemsPerPage = 10;
     this.currentPage = 1;
     this.totalItems = 0;
-   }
+  }
 
 
   ngOnInit(): void {
-    this.route.params.subscribe(params=>{
+    this.route.params.subscribe(params => {
       const id = params['id'];
       this.chargerTitrePro()
       this.chargerBloc(id);
     })
   }
 
-  submit(){
+  submit() {
     let blocToSubmit = this.currentBloc!;
     blocToSubmit.titre = this.modifierBlocCompetenceFormulaire.value['titre'];
     blocToSubmit.description = this.modifierBlocCompetenceFormulaire.value['description'];
     blocToSubmit.titreProfessionnelId = this.modifierBlocCompetenceFormulaire.value['titreProId'];
 
     this.blocCompService.save(blocToSubmit).subscribe({
-      next:(v)=>{this.router.navigateByUrl('/main/blocComp')},
-      error:(e)=>{console.log(e);
+      next: (v) => { this.router.navigateByUrl('/main/blocComp') },
+      error: (e) => {
+        console.log(e);
       }
     })
   }
 
-  chargerBloc(id:number){
+  chargerBloc(id: number) {
     this.blocCompService.findById(id).subscribe({
-      next:(v)=>{this.currentBloc=v;
-      this.modifierBlocCompetenceFormulaire.get('titre')?.setValue(this.currentBloc?.titre);
-      this.modifierBlocCompetenceFormulaire.get('description')?.setValue(this.currentBloc?.description);
-      this.modifierBlocCompetenceFormulaire.get('titreProId')?.setValue(this.currentBloc?.titreProfessionnelId);
+      next: (v) => {
+        this.currentBloc = v;
+        this.modifierBlocCompetenceFormulaire.get('titre')?.setValue(this.currentBloc?.titre);
+        this.modifierBlocCompetenceFormulaire.get('description')?.setValue(this.currentBloc?.description);
+        this.modifierBlocCompetenceFormulaire.get('titreProId')?.setValue(this.currentBloc?.titreProfessionnelId);
 
       },
-      error:(e)=>{console.log(e);}
+      error: (e) => { console.log(e); }
     })
   }
 
 
-  chargerTitrePro(){
+  chargerTitrePro() {
     this.titreProService.getAllPage(this.currentPage, this.itemsPerPage, this.searchExpression).subscribe({
-      next:(v)=>{this.titrePros=v},
-      error:(e)=>{console.log(e);}
+      next: (v) => { this.titrePros = v },
+      error: (e) => { console.log(e); }
 
     })
   }

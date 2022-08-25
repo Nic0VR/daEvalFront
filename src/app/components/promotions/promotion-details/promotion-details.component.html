@@ -50,7 +50,7 @@
         <td>{{u.role}}</td>
         <td>{{u.active?"Oui":"Non"}}</td>
         <td>
-          <a><span class="material-icons">visibility</span></a>
+          <a [routerLink]="'/main/etudiant/details/'+ u.id"><span class="material-icons">visibility</span></a>
           <a href="javascript:" (click)="removeEtudiant(u)"><span class="material-icons">delete</span></a>
           <!-- <a *ngIf="u.role!='ETUDIANT'" [routerLink]="'/main/users/modify/'+u.id"><span class="material-icons">edit</span></a> -->
           <!-- <a *ngIf="u.role=='ETUDIANT'" [routerLink]="'/main/etudiant/modify/'+u.id"><span class="material-icons">edit</span></a> -->

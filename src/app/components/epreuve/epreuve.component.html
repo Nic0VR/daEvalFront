@@ -1,7 +1,37 @@
-<h2>Épreuves</h2>
-<div *ngIf="currentEpreuve">
-    <h4>{{currentEpreuve.titre}}</h4>
-    <table class="table table-striped">
+
+<div *ngIf="currentEpreuve && loadComplete">
+    <h2>Evaluations de l'épreuve {{currentEpreuve.titre}}</h2>
+    <button (click)="afficherFormAjout()">Ajouter une évaluation</button>
+    <ng-container *ngIf="formAjoutVisible">
+        <form (ngSubmit)="addEval()" class="formulaire" [formGroup]="ajouterEvalFormulaire">
+            <table>
+                <tbody>
+                    <tr>
+                        <th><label for="recherche etudiant">Recherche (3 carac.)</label></th>
+                        <td>
+                            <input type="text" name="recherche etudiant" [(ngModel)]="search" [ngModelOptions]="{standalone: true}">
+                            <button type="button" (click)="rechercherEtudiants()">Rechercher</button>
+                            
+                            </td>
+                    </tr>
+                    <tr>
+                        <th>Etudiant</th>
+                        <select name="etudiant" formControlName="etudiantId">
+                            <option *ngFor="let etu of etudiantsForm" [value]="etu.id">{{etu.nom}},{{etu.prenom}}</option>
+                        </select>
+                    </tr>
+                    <tr>
+                        <th><label for="note">Note</label></th>
+                        <td><input type="text" formControlName="note" name="note" pattern="[0-9]{2}"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <button type="submit" [disabled]="!ajouterEvalFormulaire.valid">Enregistrer</button>
+            <button type="button" (click)="cacherFormAjout()">Annuler</button>
+        </form>
+    </ng-container>
+
+    <table class="table table-striped" *ngIf="evaluations && evaluations.length else no_evals">
         <thead>
             <tr>
                 <th>Etudiant</th>
@@ -10,17 +40,21 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td></td>
-
+            <tr *ngFor="let evalu of evaluations">
+                <td>{{evalu.etudiantNom}} {{evalu.etudiantPrenom}}</td>
+                <td>{{evalu.note}}</td>
                 <td>
-                    <a><span class="material-icons">visibility</span></a>
+                    <a [routerLink]="'/main/etudiant/details/'+evalu.etudiantId"><span class="material-icons">visibility</span></a>
 
-                    <a><span class="material-icons">edit</span></a>
+                    <a href="javascript:void(0);" (click)="modifierEval(evalu)"><span class="material-icons">edit</span></a>
 
-                    <a><span class="material-icons">delete</span></a>
+                    <a href="javascript:void(0);"><span class="material-icons">delete</span></a>
                 </td>
             </tr>
         </tbody>
     </table>
 </div>
+<ng-template #no_evals>
+    <br>
+    <span class="text-danger">Aucune évaluation pour cette epreuve</span>
+</ng-template>

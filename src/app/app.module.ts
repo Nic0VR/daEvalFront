@@ -51,6 +51,10 @@ import { ModifierCompetenceDialogComponent } from './components/dialogs/modifier
 import { FormationComponent } from './components/formation/formation.component';
 import { FormationDetailsComponent } from './components/formation/formation-details/formation-details.component';
 import { EpreuveComponent } from './components/epreuve/epreuve.component';
+import { AjouterEvalDialogComponent } from './components/dialogs/ajouter-eval-dialog/ajouter-eval-dialog.component';
+import { ModifEpreuveDialogComponent } from './components/dialogs/modif-epreuve-dialog/modif-epreuve-dialog.component';
+import { ModifEvalDialogComponent } from './components/dialogs/modif-eval-dialog/modif-eval-dialog.component';
+import { ModifOuAjoutTitreProDialogComponent } from './components/dialogs/modif-ou-ajout-titre-pro-dialog/modif-ou-ajout-titre-pro-dialog.component';
 
 
 
@@ -92,6 +96,11 @@ import { EpreuveComponent } from './components/epreuve/epreuve.component';
     FormationComponent,
     FormationDetailsComponent,
     EpreuveComponent,
+    AjouterEvalDialogComponent,
+    ModifEpreuveDialogComponent,
+    ModifEvalDialogComponent,
+
+    ModifOuAjoutTitreProDialogComponent,
  
 
 

@@ -1,5 +1,5 @@
 <ng-container *ngIf="currentBloc && competences && epreuves">
-    <h3>Détails du bloc de compétences {{currentBloc?.titre}}</h3>
+    <h3>Détails du bloc de compétences {{currentBloc.titre}}</h3>
 
 
 
@@ -48,7 +48,7 @@
                 <th>Actions</th>
             </thead>
             <tbody>
-                <tr *ngFor="let comp of competences">
+                <tr *ngFor="let comp of competences ">
                     <td>{{comp.titre}}</td>
                     <td>{{comp.description}}</td>
 
@@ -121,9 +121,9 @@
                     <td>{{ep.type}}</td>
                     <td>{{ep.description}}</td>
                     <td>
-                        <a href="javascript:;"  ><span class="material-icons">visibility</span></a>
+                        <a [routerLink]="'/main/epreuve/details/'+ep.id" ><span class="material-icons">visibility</span></a>
 
-                        <a href="javascript:;"  ><span class="material-icons">edit</span></a>
+                        <a href="javascript:;" (click)="editEpreuve(ep)" ><span class="material-icons">edit</span></a>
               
                         <a href="javascript:;" (click)="removeEpreuve(ep)" ><span class="material-icons">delete</span></a>
                     </td>

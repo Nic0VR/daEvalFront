@@ -20,9 +20,16 @@ export class BlocCompetencesComponent implements OnInit {
   searchForm: FormGroup;
   titrePros?: TitreProfessionnel[];
   dialogRef?: MatDialogRef<SupprimerElementDialogComponent>;
+
+  // variables pagination pour les titres pro dans le select
   searchExpression: string = "";
   itemsPerPage: number = 10;
   currentPage: number = 1;
+  // pour la table des blocs
+  searchExpressionB: string = "";
+  itemsPerPageB: number = 5;
+  currentPageB: number = 1;
+  totalItems:number=0;
 
   ajouterBlocCompetenceFormulaire: FormGroup = new FormGroup({
     titre: new FormControl("", Validators.required),
@@ -62,7 +69,13 @@ export class BlocCompetencesComponent implements OnInit {
 
   chargerBlocComp() {
 
-    this.blocCompetenceService.getAll().subscribe({
+
+    this.blocCompetenceService.count(this.searchExpressionB).subscribe({
+      next:(v)=>{this.totalItems=v.nb},
+      error:(e)=>{console.log(e);}
+    })
+
+    this.blocCompetenceService.getAllPage(this.currentPageB, this.itemsPerPageB, this.searchExpressionB).subscribe({
       next: (v) => {
         this.blocCompetences = v;
         this.blocCompetences.forEach((bloc, index: number) => {
@@ -131,6 +144,20 @@ export class BlocCompetencesComponent implements OnInit {
     this.chargerTitrePros();
   }
 
+  rechercherB(){
+    this.chargerBlocComp();
+  }
 
+  annulerRechercherB(){
+    this.searchExpressionB = "";
+    this.chargerBlocComp();
+
+  }
+
+  pageChanged(page: number) {
+    this.currentPageB = page;
+    // this.getStudentList();
+    this.chargerBlocComp()
+  }
 
 }

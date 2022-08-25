@@ -45,6 +45,15 @@
                         </select>
                     </td>
                 </tr>
+                <tr>
+                    <th>Actif</th>
+                    <td>
+                        <select formControlName="actif">
+                            <option value="true">Oui</option>
+                            <option value="false">Non</option>
+                        </select>
+                    </td>
+                </tr>
             </tbody>
         </table>
         <button [disabled]="!modifierUtilisateurFormulaire.valid">Sauvegarder</button>

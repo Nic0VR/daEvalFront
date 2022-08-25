@@ -5,7 +5,7 @@
   <input id="search" type="text" formControlName="searchExpression" />
   <button>Rechercher</button>
 </form>
-
+<button (click)="ajouterTitrePro()">Ajouter Titre Pro</button>
 
 <table class="table table-striped">
   <thead>
@@ -22,7 +22,7 @@
       <td>{{t.slug}}</td>
       <td>
         <a [routerLink]="['/main/titrePro/details',t.id ]"> <span class="material-icons">visibility</span></a>
-        <a [routerLink]="['/main/titrePro/modify',t.id]"> <span class="material-icons">edit</span></a>
+        <a href="javascript:void(0);" (click)="modifierTitrePro(t)"> <span class="material-icons">edit</span></a>
         <a routerLink=""></a>
       </td>
     </tr>

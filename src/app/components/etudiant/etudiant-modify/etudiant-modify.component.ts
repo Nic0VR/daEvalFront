@@ -29,6 +29,7 @@ export class EtudiantModifyComponent implements OnInit {
     prenom:new FormControl("",Validators.required),
     email:new FormControl("",Validators.required),
     password:new FormControl("",Validators.required),
+    actif:new FormControl("",Validators.required),
     // role:new FormControl("",Validators.required),
     
   })
@@ -43,6 +44,7 @@ export class EtudiantModifyComponent implements OnInit {
         this.modifierEtudiantFormulaire.get('nom')?.setValue(v.nom);
         this.modifierEtudiantFormulaire.get('prenom')?.setValue(v.prenom);
         this.modifierEtudiantFormulaire.get('email')?.setValue(v.email);
+        this.modifierEtudiantFormulaire.get('actif')?.setValue(v.active)
       }})
 
       this.getPromoList();
@@ -53,7 +55,7 @@ export class EtudiantModifyComponent implements OnInit {
 
   modifyUser(){
     let e:Etudiant = this.etudiantToModify!;
-    e.active=true;
+    e.active=this.modifierEtudiantFormulaire.value['actif'];
     e.email=this.modifierEtudiantFormulaire.value["email"];
     e.motDePasse=this.modifierEtudiantFormulaire.value["password"];
     e.nom=this.modifierEtudiantFormulaire.value["nom"];

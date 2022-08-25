@@ -8,3 +8,8 @@
 .test{
     width: 100%;
 }
+
+.nav button{
+    border-radius: 3px;
+    
+}

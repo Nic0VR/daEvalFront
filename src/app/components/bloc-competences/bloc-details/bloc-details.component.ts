@@ -10,6 +10,7 @@ import { BlocCompetenceService } from 'src/app/_services/bloc-competence.service
 import { CompetenceService } from 'src/app/_services/competence.service';
 import { EpreuveService } from 'src/app/_services/epreuve.service';
 import { TitreProfessionnelService } from 'src/app/_services/titre-professionnel.service';
+import { ModifEpreuveDialogComponent } from '../../dialogs/modif-epreuve-dialog/modif-epreuve-dialog.component';
 import { ModifierCompetenceDialogComponent } from '../../dialogs/modifier-competence-dialog/modifier-competence-dialog.component';
 import { SupprimerElementDialogComponent } from '../../dialogs/supprimer-element-dialog/supprimer-element-dialog.component';
 
@@ -26,12 +27,10 @@ export class BlocDetailsComponent implements OnInit {
   formulaireAjoutEpreuveVisible: boolean = false;
   dialogRefSup?: MatDialogRef<SupprimerElementDialogComponent>;
   dialogRefModif?:MatDialogRef<ModifierCompetenceDialogComponent>;
+  dialogRefModifEpr?:MatDialogRef<ModifEpreuveDialogComponent>;
   titrePro?: TitreProfessionnel[];
 
   epreuves?:Epreuve[];
-
-  @Output()
-  annulerCreationEvent = new EventEmitter();
 
   ajouterCompetenceFormulaire: FormGroup = new FormGroup({
     titre: new FormControl("", Validators.required),
@@ -147,7 +146,7 @@ export class BlocDetailsComponent implements OnInit {
         if (result) {
          
         }
-        this.dialogRefSup = undefined;
+        this.dialogRefModif = undefined;
       }
     ) 
   }
@@ -171,6 +170,21 @@ export class BlocDetailsComponent implements OnInit {
       }
     ) 
   }
+
+  editEpreuve(ep:Epreuve){
+    this.dialogRefModifEpr = this.dialog.open(ModifEpreuveDialogComponent, { disableClose: false });
+    // this.dialogRefModifEpr.componentInstance.elementName = ` l'épreuve ${ep.titre}`;
+    this.dialogRefModifEpr.componentInstance.currentEpr=ep;
+    this.dialogRefModifEpr.afterClosed().subscribe(
+      result => {
+        if (result) {
+         window.location.reload();
+        }
+        this.dialogRefSup = undefined;
+      }
+    ) 
+  }
+
 
   annulerAjoutEpreuve(){
     this.formulaireAjoutEpreuveVisible=false;

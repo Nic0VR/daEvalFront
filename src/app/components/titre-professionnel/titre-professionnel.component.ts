@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { first } from 'rxjs';
 import { TitreProfessionnel } from 'src/app/_models/titre-professionnel';
 import { TitreProfessionnelService } from 'src/app/_services/titre-professionnel.service';
+import { ModifOuAjoutTitreProDialogComponent } from '../dialogs/modif-ou-ajout-titre-pro-dialog/modif-ou-ajout-titre-pro-dialog.component';
 
 @Component({
   selector: 'app-titre-professionnel',
@@ -18,8 +20,12 @@ export class TitreProfessionnelComponent implements OnInit {
   totalItems:number;
   searchExpression:string;
   searchForm: FormGroup;
+  dialogRef?:MatDialogRef<ModifOuAjoutTitreProDialogComponent>;
 
-  constructor(private formBuilder:FormBuilder, private titreProService:TitreProfessionnelService ) {
+  constructor(private formBuilder:FormBuilder,
+     private titreProService:TitreProfessionnelService,
+    private dialog:MatDialog,
+    ) {
     this.searchForm = this.formBuilder.group({
       searchExpression:['']
     });
@@ -28,20 +34,19 @@ export class TitreProfessionnelComponent implements OnInit {
     this.itemsPerPage = 10;
     this.currentPage = 1;
     this.totalItems = 0;
+    
+  }
+
+  ngOnInit(): void {
     this.getTitreProList();
   }
 
   getTitreProList(){
     this.titreProService.countTitreProfessionnels(this.searchExpression).pipe(first()).subscribe(countDto => {
-      console.log("count dto :" + countDto.nb);
-      
-      //this.totalItems = parseInt( countDto.Nb);
-      console.log(this.totalItems);
-      
+      this.totalItems = countDto.nb;
     })
 
     this.titreProService.getAllPage(this.currentPage, this.itemsPerPage, this.searchExpression).pipe(first()).subscribe(tp=> {
-      console.log(tp);
       this.titresPro = tp;
     })
   }
@@ -56,9 +61,41 @@ export class TitreProfessionnelComponent implements OnInit {
   }
 
 
+  modifierTitrePro(tp:TitreProfessionnel){
+    this.dialogRef = this.dialog.open(ModifOuAjoutTitreProDialogComponent, {disableClose: false});
+    this.dialogRef.componentInstance.editMode=true;
+    this.dialogRef.componentInstance.currentTitre=tp;
+    this.dialogRef.afterClosed().subscribe(
+      result => {
+        if (result) {
+         this.titreProService.update(result).subscribe({
+          next:(v)=>{},
+          error:(e)=>{console.error(e);},
+          complete:()=>{window.location.reload()}
+         })
+        }
+        this.dialogRef = undefined;
+      }
+    ) 
+  }
 
-
-  ngOnInit(): void {
+  ajouterTitrePro(){
+    this.dialogRef = this.dialog.open(ModifOuAjoutTitreProDialogComponent, {disableClose: false});
+ 
+    this.dialogRef.afterClosed().subscribe(
+      result => {
+        if (result) {
+         this.titreProService.save(result).subscribe({
+          next:(v)=>{},
+          error:(e)=>{console.error(e);},
+          complete:()=>{
+            window.location.reload()
+          }
+         })
+        }
+        this.dialogRef = undefined;
+      }
+    ) 
   }
 
 }

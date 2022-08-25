@@ -1,0 +1,83 @@
+<div class="my-ctn">
+
+    <h5 mat-dialog-title>Modifier une évaluation</h5>
+    <div mat-dialog-content>
+        <form (ngSubmit)="onYesClick()" class="formulaire" [formGroup]="modifierEvalFormulaire"
+            *ngIf="!openFromEpreuvePage">
+            <table>
+                <tbody>
+                    <tr>
+                        <th>
+                            Epreuve
+                        </th>
+                        <td>
+                            <select name="epreuve" formControlName="epreuveId">
+                                <option *ngFor="let epreuve of epreuves" [value]="epreuve.id">{{epreuve.titre}}</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Note
+                        </th>
+                        <td>
+                            <input type="text" name="note" formControlName="note">
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <!-- <button >Sauvegarder</button> -->
+            <!-- <button type="button" (click)="annulerAjout()">Annuler</button> -->
+            <mat-dialog-actions>
+                <button type="button" class="btn" (click)="onNoClick()">Annuler</button>
+                <button type="button" class="btn" [disabled]="!modifierEvalFormulaire.valid"
+                    (click)="onYesClick()">Confirmer</button>
+            </mat-dialog-actions>
+        </form>
+
+
+        <form (ngSubmit)="onYesClick()" class="formulaire" [formGroup]="modifierEvalFormulaire2"
+            *ngIf="openFromEpreuvePage">
+            <table>
+                <tbody>
+                    <tr>
+                        <th>Recherche etudiant ( 3 carac min)</th>
+                        <td><input type="text" name="search" [(ngModel)]="search" [ngModelOptions]="{standalone: true}">
+                            <button type="button" (click)="rechercherEtudiants()">Rechercher</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Etudiant
+                        </th>
+                        <td>
+                            <select name="etudiant" formControlName="etudiantId">
+                                <option *ngFor="let etudiant of etudiants" [value]="etudiant.id">{{etudiant.prenom}}
+                                    {{etudiant.nom}}</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Note
+                        </th>
+                        <td>
+                            <input type="text" name="note" formControlName="note">
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <!-- <button >Sauvegarder</button> -->
+            <!-- <button type="button" (click)="annulerAjout()">Annuler</button> -->
+            <mat-dialog-actions>
+                <button type="button" class="btn" (click)="onNoClick()">Annuler</button>
+                <button type="button" class="btn" [disabled]="!modifierEvalFormulaire2.valid"
+                    (click)="onYesClick()">Confirmer</button>
+            </mat-dialog-actions>
+        </form>
+    </div>
+
+
+</div>

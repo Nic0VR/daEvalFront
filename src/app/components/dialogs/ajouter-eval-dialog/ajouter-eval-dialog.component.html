@@ -1,0 +1,38 @@
+<div class="my-ctn">
+
+    <h5 mat-dialog-title>Ajouter une évaluation</h5>
+<div mat-dialog-content *ngIf="epreuves">
+    <form (ngSubmit)="onYesClick()" class="formulaire" [formGroup]="ajoutEvalFormulaire">
+        <table>
+            <tbody>
+                <tr>
+                    <th>
+                        Epreuve:
+                    </th>
+                    <td>
+                        <select name="epreuve" formControlName="epreuveId">
+                            <option *ngFor="let epr of epreuves" [value]="epr.id">{{epr.titre}}</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Note:
+                    </th>
+                    <td>
+                        <input type="text" pattern="[0-9]{2}" name="note" formControlName="note">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- <button >Sauvegarder</button> -->
+        <!-- <button type="button" (click)="annulerAjout()">Annuler</button> -->
+        <mat-dialog-actions>
+            <button type="button" class="btn" (click)="onNoClick()">Annuler</button>
+            <button type="button" class="btn" [disabled]="!ajoutEvalFormulaire.valid" (click)="onYesClick()">Confirmer</button>
+        </mat-dialog-actions>
+    </form>
+</div>
+    
+
+</div>

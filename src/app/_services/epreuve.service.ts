@@ -42,5 +42,8 @@ export class EpreuveService {
     return this.httpClient.get<any>(`${this.baseUrl}/blocCompId=${id}`);
   }
 
+  findAll(){
+    return this.httpClient.get<any>(`${this.baseUrl}`);
+  }
 
 }

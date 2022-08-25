@@ -1,8 +1,8 @@
 <div class="my-ctn">
 
-    <h5 mat-dialog-title>Modifier une compétence</h5>
+    <h5 mat-dialog-title>Modifier une épreuve</h5>
 <div mat-dialog-content>
-    <form (ngSubmit)="onYesClick()" class="formulaire" [formGroup]="modifierCompetenceFormulaire">
+    <form (ngSubmit)="onYesClick()" class="formulaire" [formGroup]="modifierEpreuveFormulaire">
         <table>
             <tbody>
                 <tr>
@@ -21,13 +21,22 @@
                         <textarea type="text" name="description" formControlName="description"></textarea>
                     </td>
                 </tr>
+                <tr>
+                    <th>Type</th>
+                    <td>
+                        <select formControlName="type">
+                            <option value="MES">Mise en situation</option>
+                            <option value="QCM">Questionnaire à choix multiples</option>
+                        </select>
+                    </td>
+                </tr>
             </tbody>
         </table>
         <!-- <button >Sauvegarder</button> -->
         <!-- <button type="button" (click)="annulerAjout()">Annuler</button> -->
         <mat-dialog-actions>
             <button type="button" class="btn" (click)="onNoClick()">Annuler</button>
-            <button type="button" class="btn" [disabled]="!modifierCompetenceFormulaire.valid" (click)="onYesClick()">Confirmer</button>
+            <button type="button" class="btn" [disabled]="!modifierEpreuveFormulaire.valid" (click)="onYesClick()">Confirmer</button>
         </mat-dialog-actions>
     </form>
 </div>

@@ -24,6 +24,12 @@ export class BlocCompetenceService {
 
     return this.httpClient.get<BlocCompetence[]>(`${this.baseUrl}/page/${page}/${size}/${search}`);
   }
+
+  getPageByTitreProIdAndSearch(tpId:number,page:number,size:number,search:string){
+
+    return this.httpClient.get<BlocCompetence[]>(`${this.baseUrl}/page/tpId=${tpId}/${page}/${size}/${search}`);
+  }
+
   getAll() {
     return this.httpClient.get<BlocCompetence[]>(`${this.baseUrl}`);
   }

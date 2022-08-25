@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { BlocCompetencesComponent } from './components/bloc-competences/bloc-competences.component';
 import { BlocDetailsComponent } from './components/bloc-competences/bloc-details/bloc-details.component';
 import { BlocModifyComponent } from './components/bloc-competences/bloc-modify/bloc-modify.component';
+import { EpreuveComponent } from './components/epreuve/epreuve.component';
 import { EtudiantDetailsComponent } from './components/etudiant/etudiant-details/etudiant-details.component';
 import { EtudiantModifyComponent } from './components/etudiant/etudiant-modify/etudiant-modify.component';
 import { EtudiantComponent } from './components/etudiant/etudiant.component';
@@ -49,6 +50,7 @@ const routes: Routes = [
         { path: 'blocComp',component:BlocCompetencesComponent},
         { path: 'blocComp/details/:id',component:BlocDetailsComponent},
         { path: 'blocComp/modify/:id',component:BlocModifyComponent},
+        { path: 'epreuve/details/:id',component:EpreuveComponent},
         { path:'forbidden', component:ForbiddenComponent},
       ]
       , canActivate: [AuthGuard] 

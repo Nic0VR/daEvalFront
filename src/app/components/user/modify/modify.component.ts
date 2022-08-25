@@ -23,7 +23,7 @@ export class UserModifyComponent implements OnInit {
     email:new FormControl("",Validators.required),
     password:new FormControl("",Validators.required),
     role:new FormControl("",Validators.required),
-    
+    actif:new FormControl("",Validators.required)
   })
 
   ngOnInit(): void {
@@ -36,8 +36,10 @@ export class UserModifyComponent implements OnInit {
         this.modifierUtilisateurFormulaire.get('nom')?.setValue(v.nom);
         this.modifierUtilisateurFormulaire.get('prenom')?.setValue(v.prenom);
         this.modifierUtilisateurFormulaire.get('email')?.setValue(v.email);
+        this.modifierUtilisateurFormulaire.get('actif')?.setValue(v.active);
         // this.modifierUtilisateurFormulaire.get('password')?.setValue(v.motDePasse);
         this.modifierUtilisateurFormulaire.get('role')?.setValue(v.role);
+        
       }})
     })
 
@@ -52,6 +54,7 @@ export class UserModifyComponent implements OnInit {
     u.nom=this.modifierUtilisateurFormulaire.value["nom"];
     u.prenom=this.modifierUtilisateurFormulaire.value["prenom"];
     u.role=this.modifierUtilisateurFormulaire.value["role"];
+    u.active=this.modifierUtilisateurFormulaire.value['actif'];
     this.userService.update(u).subscribe({
       next:(v)=>{
         console.log(v);

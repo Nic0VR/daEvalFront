@@ -1,4 +1,4 @@
-<h2>Gestion des blocs de compétence</h2>
+<h1>Gestion des blocs de compétence</h1>
 
 <button (click)="afficherFormulaireAjout()">Créer un bloc de compétence</button>
 <div *ngIf="formulaireAjoutVisible && titrePros">
@@ -26,7 +26,7 @@
             </th>
             <td>
               <textarea type="text" name="description" formControlName="description"></textarea>
-            
+
             </td>
           </tr>
           <tr>
@@ -35,9 +35,6 @@
               <select formControlName="titreProId">
                 <option *ngFor="let tp of titrePros" [value]="tp.id">{{tp.titre | formatTitrePro}}</option>
               </select>
-
-
-
             </td>
           </tr>
         </tbody>
@@ -49,6 +46,10 @@
   </div>
 </div>
 <div>
+  <label for="search">Recherche : </label>
+  <input id="search" type="text" [(ngModel)]="searchExpressionB" />
+  <button (click)="rechercherB()">Rechercher</button>
+  <button (click)="annulerRechercherB()">Annuler</button>
   <table class="table table-striped" *ngIf="blocCompetences">
     <thead>
       <tr>
@@ -60,7 +61,8 @@
       </tr>
     </thead>
     <tbody *ngIf="blocCompetences; else noData">
-      <tr *ngFor="let bloc of blocCompetences ">
+      <tr
+        *ngFor="let bloc of blocCompetences  | paginate: {itemsPerPage:itemsPerPageB, currentPage: currentPageB, totalItems:totalItems} ">
         <td>{{bloc.titre}}</td>
         <td>{{bloc.description}}</td>
         <td>{{bloc.titreProfessionnelId | titrePro}}</td>
@@ -74,14 +76,17 @@
         <td>
           <a [routerLink]="'/main/blocComp/details/'+bloc.id"><span class="material-icons">visibility</span></a>
           <!-- <a *ngIf="u.role!='ETUDIANT'" [routerLink]="'/main/users/modify/'+u.id"><span class="material-icons">edit</span></a> -->
-          <a [routerLink]="'/main/blocComp/modify/'+bloc.id" ><span class="material-icons">edit</span></a>
+          <a [routerLink]="'/main/blocComp/modify/'+bloc.id"><span class="material-icons">edit</span></a>
 
           <a href="javascript:;" (click)="removeBlocComp(bloc)"><span class="material-icons">delete</span></a>
+
         </td>
       </tr>
     </tbody>
   </table>
-
+  <pagination-controls *ngIf="blocCompetences" (pageChange)="pageChanged($event)" previousLabel="Précédent"
+    nextLabel="Suivant">
+  </pagination-controls>
 </div>
 
 
