@@ -55,6 +55,12 @@ import { AjouterEvalDialogComponent } from './components/dialogs/ajouter-eval-di
 import { ModifEpreuveDialogComponent } from './components/dialogs/modif-epreuve-dialog/modif-epreuve-dialog.component';
 import { ModifEvalDialogComponent } from './components/dialogs/modif-eval-dialog/modif-eval-dialog.component';
 import { ModifOuAjoutTitreProDialogComponent } from './components/dialogs/modif-ou-ajout-titre-pro-dialog/modif-ou-ajout-titre-pro-dialog.component';
+import { EpreuveListeComponent } from './components/epreuve-liste/epreuve-liste.component';
+import { InterventionComponent } from './components/intervention/intervention.component';
+import { FormationPipe } from './_pipes/formation.pipe';
+import { PromotionPipe } from './_pipes/promotion.pipe';
+import { FormateurPipe } from './_pipes/formateur.pipe';
+import { DetailsComponent } from './components/intervention/details/details.component';
 
 
 
@@ -101,6 +107,12 @@ import { ModifOuAjoutTitreProDialogComponent } from './components/dialogs/modif-
     ModifEvalDialogComponent,
 
     ModifOuAjoutTitreProDialogComponent,
+     EpreuveListeComponent,
+     InterventionComponent,
+     FormationPipe,
+     PromotionPipe,
+     FormateurPipe,
+     DetailsComponent,
  
 
 
@@ -127,10 +139,7 @@ import { ModifOuAjoutTitreProDialogComponent } from './components/dialogs/modif-
 })
 export class AppModule {
 
-  constructor(
-    villeService:VilleService,
-    titreProService:TitreProfessionnelService
-  ){
+  constructor(){
   }
 
   

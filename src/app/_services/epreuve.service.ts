@@ -46,4 +46,12 @@ export class EpreuveService {
     return this.httpClient.get<any>(`${this.baseUrl}`);
   }
 
+  findAllPage(page: number, size: number, search: string){
+    return this.httpClient.get<any>(`${this.baseUrl}/page/${page}/${size}/${search}`)
+  }
+
+  count(search: string) {
+    return this.httpClient.get<any>(`${this.baseUrl}/count/${search}`);
+  }
+
 }

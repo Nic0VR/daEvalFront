@@ -30,12 +30,12 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const isLogged : boolean= this.authenticationService.currentUserValue.id != 0;
+    const isLogged = this.authenticationService.currentUserValue;
     console.log("is logged : ");
     console.log(isLogged);
     
     
-    if(isLogged){
+    if(isLogged && isLogged.id!=0){
       this.router.navigateByUrl("/main")
     }
   }
@@ -45,9 +45,9 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
-    this.authenticationService.isLogged();
-    console.log(this.f['email'].value);
-    console.log(this.f['password'].value);
+    // this.authenticationService.isLogged();
+    // console.log(this.f['email'].value);
+    // console.log(this.f['password'].value);
 
     this.authenticationService.login(this.f['email'].value, this.f['password'].value)
       .pipe(first())
@@ -62,7 +62,7 @@ export class LoginComponent implements OnInit {
         }
       });
 
-      this.authenticationService.isLogged();
+      // this.authenticationService.isLogged();
 
 
   }

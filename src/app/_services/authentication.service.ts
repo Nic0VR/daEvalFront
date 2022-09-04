@@ -44,8 +44,5 @@ export class AuthenticationService {
 
   }
 
-  isLogged() {
-    // console.log(localStorage.getItem('currentUser'));
 
-  }
 }

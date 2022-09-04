@@ -5,6 +5,7 @@ import { first } from 'rxjs';
 import { TitreProfessionnel } from 'src/app/_models/titre-professionnel';
 import { TitreProfessionnelService } from 'src/app/_services/titre-professionnel.service';
 import { ModifOuAjoutTitreProDialogComponent } from '../dialogs/modif-ou-ajout-titre-pro-dialog/modif-ou-ajout-titre-pro-dialog.component';
+import { SupprimerElementDialogComponent } from '../dialogs/supprimer-element-dialog/supprimer-element-dialog.component';
 
 @Component({
   selector: 'app-titre-professionnel',
@@ -21,7 +22,7 @@ export class TitreProfessionnelComponent implements OnInit {
   searchExpression:string;
   searchForm: FormGroup;
   dialogRef?:MatDialogRef<ModifOuAjoutTitreProDialogComponent>;
-
+  dialogRefSupp?:MatDialogRef<SupprimerElementDialogComponent>;
   constructor(private formBuilder:FormBuilder,
      private titreProService:TitreProfessionnelService,
     private dialog:MatDialog,
@@ -96,6 +97,25 @@ export class TitreProfessionnelComponent implements OnInit {
         this.dialogRef = undefined;
       }
     ) 
+  }
+
+  supprimerTitrePro(tp:TitreProfessionnel){
+    this.dialogRefSupp = this.dialog.open(SupprimerElementDialogComponent, {disableClose: false});
+    this.dialogRefSupp.componentInstance.elementName = " le titre professionnel "+tp.titre;
+    this.dialogRefSupp.afterClosed().subscribe(
+      result =>{
+        if(result){
+          this.titreProService.delete(tp.id).subscribe({
+            next:()=>{},
+            error:(e)=>{console.error(e);},
+            complete:()=>{
+              window.location.reload()
+            }
+          })
+          this.dialogRef = undefined;
+        }
+      }
+    )
   }
 
 }

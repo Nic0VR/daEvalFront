@@ -1,0 +1,19 @@
+
+<h1>Gestion des positionnements</h1>
+
+<table class="table table-striped" *ngIf="isLoaded">
+    <thead>
+        <th>id</th>
+        <th>etudiant</th>
+        <th>niveau Debut</th>
+        <th>niveau Fin</th>
+    </thead>
+    <tbody>
+    <tr *ngFor="let p of positionnements">
+        <td>{{p.id}}</td>
+        <td>{{p.etudiantId}}</td>
+        <td>{{p.codeHexNiveauDebut}}</td>
+        <td>{{p.codeHexNiveauFin}}</td>
+    </tr>
+    </tbody>
+</table>

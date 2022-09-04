@@ -1,0 +1,86 @@
+
+    <h1>Gestion des Épreuves:</h1>
+    <label for="search">Recherche : </label>
+  <input id="search" type="text" [(ngModel)]="search" />
+  <button (click)="rechercher()">Rechercher</button>
+  <button (click)="annulerRechercher()">Annuler</button>
+
+    
+    <button (click)="afficherFormEpreuve()">Ajouter une épreuve</button>
+    <div class="my-ctn" *ngIf="formulaireAjoutEpreuveVisible && blocComps">
+
+        <h5>Ajouter une Épreuve</h5>
+        <label for="search">Recherche (bloc compétence) : </label>
+        <input id="search" type="text" [(ngModel)]="searchExpressionB" />
+        <button type="button" (click)="rechercherB()">Rechercher</button>
+        <button type="button" (click)="annulerRechercherB()">Annuler</button>
+        <form (ngSubmit)="addEpreuve()" class="formulaire" [formGroup]="ajouterEpreuveFormulaire">
+            <table>
+                <tbody>
+                    <tr>
+                        <th>Bloc de Compétence</th>
+                    </tr>
+                    <td>
+                        <select formControlName="blocCompetencesId">
+                            <option *ngFor="let bloc of blocComps" [value]="bloc.id">{{bloc.titre}}</option>
+                        </select>
+                    </td>
+                    <tr>
+                        <th>
+                            Titre
+                        </th>
+                        <td>
+                            <input type="text" name="titre" formControlName="titre">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Description
+                        </th>
+                        <td>
+                            <textarea type="text" name="description" formControlName="description"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Type
+                        </th>
+                        <td>
+
+                            <select name="type" formControlName="type">
+                                <option value="MES">Mise en situation</option>
+                                <option value="QCM">Questionnaire à choix multiples</option>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <button [disabled]="!ajouterEpreuveFormulaire.valid">Sauvegarder</button>
+            <button type="button" (click)="annulerAjoutEpreuve()">Annuler</button>
+        </form>
+
+    </div>
+    <table class="table table-striped" *ngIf="epreuves">
+        <thead>
+            <th>Titre</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Actions</th>
+        </thead>
+        <tbody>
+            <tr *ngFor="let ep of epreuves | paginate: {itemsPerPage:itemsPerPage, currentPage: currentPage, totalItems:totalItems}">
+                <td>{{ep.titre}}</td>
+                <td>{{ep.type}}</td>
+                <td>{{ep.description}}</td>
+                <td>
+                    <a [routerLink]="'/main/epreuve/details/'+ep.id"><span class="material-icons">visibility</span></a>
+
+                    <a href="javascript:;" (click)="editEpreuve(ep)"><span class="material-icons">edit</span></a>
+
+                    <a href="javascript:;" (click)="removeEpreuve(ep)"><span class="material-icons">delete</span></a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <pagination-controls *ngIf="epreuves" (pageChange)="pageChanged($event)" previousLabel="Précédent" nextLabel="Suivant">
+    </pagination-controls>

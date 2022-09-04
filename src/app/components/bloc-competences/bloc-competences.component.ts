@@ -69,7 +69,6 @@ export class BlocCompetencesComponent implements OnInit {
 
   chargerBlocComp() {
 
-
     this.blocCompetenceService.count(this.searchExpressionB).subscribe({
       next:(v)=>{this.totalItems=v.nb},
       error:(e)=>{console.log(e);}

@@ -1,0 +1,93 @@
+<h1>Gestion des Interventions:</h1>
+
+<button (click)="afficherForm()">Ajouter une intervention</button>
+<div class="my-ctn" *ngIf="formulaireAjoutVisible && formateurs ">
+
+    <h5>Ajouter une Intervention</h5>
+
+    <form (ngSubmit)="addInterv()" class="formulaire" [formGroup]="ajoutFormulaire">
+        <table>
+            <tbody>
+
+
+                <tr>
+                    <th>
+                        Formation
+                    </th>
+                    <td>
+                        <select formControlName="formation">
+                            <option *ngFor="let formation of formations" [value]="formation.id">{{formation.titre}}
+                            </option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Promotion</th>
+                    <td>
+                        <select formControlName="promotion">
+                            <option *ngFor="let promo of promotions" [value]="promo.id">{{promo.id}}</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Formateur
+                    </th>
+                    <td>
+                        <select formControlName="formateur">
+                            <option *ngFor="let formateur of formateurs" [value]="formateur.id">
+                                {{formateur.nom}}{{formateur.prenom}}
+                            </option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Date de début
+                    </th>
+                    <td>
+                        <input type="date" name="datedebut" formControlName="dateDebut">
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Date de fin
+                    </th>
+                    <td>
+                        <input type="date" name="duree" formControlName="dateFin">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <button [disabled]="!ajoutFormulaire.valid">Sauvegarder</button>
+        <button type="button" (click)="annulerAjout()">Annuler</button>
+    </form>
+</div>
+
+<table class="table table-striped" *ngIf="interventions">
+    <thead>
+        <th>Formation</th>
+        <th>Formateur</th>
+        <th>Promotion Id</th>
+        <th>Date Debut</th>
+        <th>Date Fin</th>
+        <th>Actions</th>
+    </thead>
+    <tbody>
+        <tr
+            *ngFor="let interv of interventions | paginate: {itemsPerPage:itemsPerPage, currentPage: currentPage, totalItems:totalItems}">
+            <td>{{interv.formationId | formation }}</td>
+            <td>{{interv.formateurId | formateur}}</td>
+            <td>{{interv.promotionId}}</td>
+            <td>{{interv.dateDebut}}</td>
+            <td>{{interv.dateFin}}</td>
+            <td>
+                <a [routerLink]="'/main/interventions/details/'+interv.id"><span class="material-icons">visibility</span></a>
+
+                <a href="javascript:;" (click)="deleteInterv(interv.id)"><span class="material-icons">delete</span></a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<pagination-controls (pageChange)="pageChanged($event)" previousLabel="Précédent" nextLabel="Suivant">
+</pagination-controls>

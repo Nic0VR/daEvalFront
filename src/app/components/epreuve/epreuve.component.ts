@@ -149,9 +149,9 @@ export class EpreuveComponent implements OnInit {
     })
   }
 
-  supprimerEval(evalu:Evaluation,etudiant:Etudiant){
+  supprimerEval(evalu:Evaluation){
     this.dialogRefSupp = this.dialog.open(SupprimerElementDialogComponent, { disableClose: false });
-    this.dialogRefSupp.componentInstance.elementName = " l'évaluation de " +etudiant.nom+" "+etudiant.prenom;
+    this.dialogRefSupp.componentInstance.elementName = " cette évaluation ";
     this.dialogRefSupp.afterClosed().subscribe(
       result => {
         if (result) {

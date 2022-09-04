@@ -3,10 +3,14 @@ import { RouterModule, Routes } from '@angular/router';
 import { BlocCompetencesComponent } from './components/bloc-competences/bloc-competences.component';
 import { BlocDetailsComponent } from './components/bloc-competences/bloc-details/bloc-details.component';
 import { BlocModifyComponent } from './components/bloc-competences/bloc-modify/bloc-modify.component';
+import { EpreuveListeComponent } from './components/epreuve-liste/epreuve-liste.component';
 import { EpreuveComponent } from './components/epreuve/epreuve.component';
 import { EtudiantDetailsComponent } from './components/etudiant/etudiant-details/etudiant-details.component';
 import { EtudiantModifyComponent } from './components/etudiant/etudiant-modify/etudiant-modify.component';
 import { EtudiantComponent } from './components/etudiant/etudiant.component';
+import { FormationComponent } from './components/formation/formation.component';
+import { DetailsComponent } from './components/intervention/details/details.component';
+import { InterventionComponent } from './components/intervention/intervention.component';
 import { LoginComponent } from './components/login/login.component';
 import { PromotionDetailsComponent } from './components/promotions/promotion-details/promotion-details.component';
 import { PromotionModifyComponent } from './components/promotions/promotion-modify/promotion-modify.component';
@@ -50,7 +54,11 @@ const routes: Routes = [
         { path: 'blocComp',component:BlocCompetencesComponent},
         { path: 'blocComp/details/:id',component:BlocDetailsComponent},
         { path: 'blocComp/modify/:id',component:BlocModifyComponent},
+        { path: 'epreuve', component:EpreuveListeComponent},
         { path: 'epreuve/details/:id',component:EpreuveComponent},
+        { path: 'formations',component:FormationComponent},
+        { path: 'interventions',component:InterventionComponent},
+        { path: 'interventions/details/:id',component:DetailsComponent},
         { path:'forbidden', component:ForbiddenComponent},
       ]
       , canActivate: [AuthGuard] 

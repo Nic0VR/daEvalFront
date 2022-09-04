@@ -1,1 +1,79 @@
-<p>formation works!</p>
+<h1>Gestion des Formations:</h1>
+<label for="search">Recherche : </label>
+<input id="search" type="text" [(ngModel)]="search" />
+<button (click)="rechercherFormations()">Rechercher</button>
+<button (click)="annulerRechercher()">Annuler</button>
+
+
+<button (click)="afficherForm()">Ajouter une formation</button>
+<div class="my-ctn" *ngIf="formulaireAjoutVisible ">
+
+    <h5>Ajouter une Formation</h5>
+
+    <form (ngSubmit)="addFormation()" class="formulaire" [formGroup]="ajoutFormulaire">
+        <table>
+            <tbody>
+
+
+                <tr>
+                    <th>
+                        Titre
+                    </th>
+                    <td>
+                        <input type="text" name="titre" formControlName="titre">
+                    </td>
+                </tr>
+                <tr>
+                    <th>Slug</th>
+                    <td>
+                        <input type="text" name="slug" formControlName="slug">
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Objectifs pédagogiques
+                    </th>
+                    <td>
+                        <textarea type="text" name="description" formControlName="objectifsPedagogiques"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Durée
+                    </th>
+                    <td>
+                        <input type="text" name="duree" formControlName="duree" pattern="^[0-9]+$">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <button [disabled]="!ajoutFormulaire.valid">Sauvegarder</button>
+        <button type="button" (click)="annulerAjout()">Annuler</button>
+    </form>
+</div>
+
+<table class="table table-striped" *ngIf="formations">
+    <thead>
+        <th>Titre</th>
+        <th>Slug</th>
+        <th>Objectifs pédagogiques</th>
+        <th>Actions</th>
+    </thead>
+    <tbody>
+        <tr
+            *ngFor="let f of formations | paginate: {itemsPerPage:itemsPerPage, currentPage: currentPage, totalItems:totalItems}">
+            <td>{{f.titre}}</td>
+            <td>{{f.slug}}</td>
+            <td>{{f.objectifsPedagogiques}}</td>
+            <td>
+                <a><span class="material-icons">visibility</span></a>
+
+                <a href="javascript:;"><span class="material-icons">edit</span></a>
+
+                <a href="javascript:;"><span class="material-icons">delete</span></a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<pagination-controls (pageChange)="pageChanged($event)" previousLabel="Précédent" nextLabel="Suivant">
+</pagination-controls>
