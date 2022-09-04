@@ -49,14 +49,16 @@ export class DetailsComponent implements OnInit {
           console.log("positionnement :");
           console.log(p);
           
+          console.log("niveaux");
+          console.log(this.niveaux);
           
-          let codeHexDebut = this.niveaux?.find((n) => { n.id == p.niveauDebutId })?.codeCouleurHexa;
+          let codeHexDebut = this.niveaux?.find((n) =>  n.id === p.niveauDebutId )?.codeCouleurHexa;
           console.log("code hex deb");
           console.log(codeHexDebut);
           
           p.codeHexNiveauDebut = codeHexDebut;
 
-          let codeHexFin = this.niveaux?.find((n) => { n.id == p.niveauFinId })?.codeCouleurHexa;
+          let codeHexFin = this.niveaux?.find((n) =>  n.id == p.niveauFinId )?.codeCouleurHexa;
           p.codeHexNiveauFin = codeHexFin;
           console.log(p);
           

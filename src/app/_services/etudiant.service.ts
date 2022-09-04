@@ -1,6 +1,6 @@
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map } from 'rxjs';
+import { BehaviorSubject, map } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Etudiant } from '../_models/etudiant';
 import { User } from '../_models/user';
@@ -10,6 +10,7 @@ import { User } from '../_models/user';
 })
 export class EtudiantService {
 
+  private ListeEtudiantSubject: BehaviorSubject<Etudiant[]>;
 
   private httpHeaders = {
     headers: new HttpHeaders({
@@ -17,10 +18,19 @@ export class EtudiantService {
     })
   }
   constructor(private httpClient: HttpClient) {
-
+    this.ListeEtudiantSubject = new BehaviorSubject<Etudiant[]>([]);
+    let etudiants: Etudiant[];
+    this.getAll().subscribe({
+      next: (v) => {
+        etudiants = v; this.ListeEtudiantSubject.next(etudiants); console.log("etudiant SERVICE INITIALISE");
+      }
+    });
   }
 
-
+  public get Etudiants():Etudiant[]{
+    return this.ListeEtudiantSubject.value;
+  }
+  
   getAllPage(page: number, size: number, search: string) {
 
     return this.httpClient.get<Etudiant[]>(`${environment.apiUrl}/api/etudiant/page/${page}/${size}/${search}`);

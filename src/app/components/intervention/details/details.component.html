@@ -12,8 +12,9 @@
     <tr *ngFor="let p of positionnements">
         <td>{{p.id}}</td>
         <td>{{p.etudiantId}}</td>
-        <td>{{p.codeHexNiveauDebut}}</td>
-        <td>{{p.codeHexNiveauFin}}</td>
+        <!-- <td [style]="'background-color:'+p.codeHexNiveauDebut"><div ></div></td> -->
+        <td><app-niveau-cell [niveauId]="p.niveauDebutId"></app-niveau-cell></td>
+        <td><app-niveau-cell [niveauId]="p.niveauFinId"></app-niveau-cell></td>
     </tr>
     </tbody>
 </table>

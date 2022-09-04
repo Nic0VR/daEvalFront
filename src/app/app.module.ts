@@ -15,9 +15,9 @@ import { CreateComponent } from './components/titre-professionnel/create/create.
 import { TitreProDetailsComponent } from './components/titre-professionnel/details/details.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import {MatSidenavModule} from '@angular/material/sidenav';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { NavigationComponent } from './components/navigation/navigation.component';
-import { MainComponent } from './pages/main/main.component'; 
+import { MainComponent } from './pages/main/main.component';
 import { JwtInterceptor } from './_helpers/jwt.interceptor';
 import { TitreProModifyComponent } from './components/titre-professionnel/titre-pro-modify/titre-pro-modify.component';
 import { ForbiddenComponent } from './pages/forbidden/forbidden.component';
@@ -28,7 +28,7 @@ import { EtudiantComponent } from './components/etudiant/etudiant.component';
 import { EtudiantCreateComponent } from './components/etudiant/etudiant-create/etudiant-create.component';
 import { EtudiantModifyComponent } from './components/etudiant/etudiant-modify/etudiant-modify.component';
 import { EtudiantDetailsComponent } from './components/etudiant/etudiant-details/etudiant-details.component';
-import { MatDialogModule} from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { SupprimerElementDialogComponent } from './components/dialogs/supprimer-element-dialog/supprimer-element-dialog.component';
 import { BlocCompetencesComponent } from './components/bloc-competences/bloc-competences.component';
 import { PromotionsComponent } from './components/promotions/promotions.component';
@@ -61,6 +61,7 @@ import { FormationPipe } from './_pipes/formation.pipe';
 import { PromotionPipe } from './_pipes/promotion.pipe';
 import { FormateurPipe } from './_pipes/formateur.pipe';
 import { DetailsComponent } from './components/intervention/details/details.component';
+import { NiveauCellComponent } from './components/niveau-cell/niveau-cell.component';
 
 
 
@@ -107,17 +108,13 @@ import { DetailsComponent } from './components/intervention/details/details.comp
     ModifEvalDialogComponent,
 
     ModifOuAjoutTitreProDialogComponent,
-     EpreuveListeComponent,
-     InterventionComponent,
-     FormationPipe,
-     PromotionPipe,
-     FormateurPipe,
-     DetailsComponent,
- 
-
-
- 
-
+    EpreuveListeComponent,
+    InterventionComponent,
+    FormationPipe,
+    PromotionPipe,
+    FormateurPipe,
+    DetailsComponent,
+    NiveauCellComponent,
 
   ],
   imports: [
@@ -134,13 +131,13 @@ import { DetailsComponent } from './components/intervention/details/details.comp
 
   ],
   // on fournit l'intercepteur Jwt pour qu'il ajoute le token a nos requetes
-  providers: [{provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },],
   bootstrap: [AppComponent],
 })
 export class AppModule {
 
-  constructor(){
+  constructor() {
   }
 
-  
- }
+
+}

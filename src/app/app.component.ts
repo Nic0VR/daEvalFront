@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { Niveau } from './_models/niveau';
 import { TitreProfessionnel } from './_models/titre-professionnel';
 import { Ville } from './_models/ville';
+import { EtudiantService } from './_services/etudiant.service';
 import { FormationService } from './_services/formation.service';
+import { NiveauService } from './_services/niveau.service';
 import { TitreProfessionnelService } from './_services/titre-professionnel.service';
 import { UserService } from './_services/user.service';
 import { VilleService } from './_services/ville.service';
@@ -18,11 +21,16 @@ export class AppComponent implements OnInit {
   titreProsCount?: number;
   formationsCount?: number;
   userCount?:number;
+  niveaux?:Niveau[];
+  etudiantCount?:number;
+
   constructor(
     private villeService: VilleService,
     private titreProService: TitreProfessionnelService,
     private formationService: FormationService,
     private userService:UserService,
+    private niveauService:NiveauService,
+    private etudiantService:EtudiantService
   ) {
 
   }
@@ -32,6 +40,8 @@ export class AppComponent implements OnInit {
     this.loadtitrePro();
     this.loadFormations();
     this.loadUser();
+    this.loadNiveaux();
+    this.loadEtudiant();
   }
 
   loadVille() {
@@ -66,6 +76,20 @@ export class AppComponent implements OnInit {
     })
   }
 
-  
+  loadNiveaux(){
+    this.niveauService.findAll().subscribe({
+      next:(v)=>{
+        this.niveaux=v;
+      },
+      error:(e)=>{}
+    })
+  }
+
+  loadEtudiant(){
+    this.etudiantService.countStudents("").subscribe({
+      next:(v)=>{this.etudiantCount=v.nb; },
+      error:(e)=>{console.log(e);}
+    })
+  }
 
 }
