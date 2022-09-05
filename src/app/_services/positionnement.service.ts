@@ -1,6 +1,6 @@
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Positionnement } from '../_models/positionnement';
 
@@ -25,6 +25,14 @@ export class PositionnementService {
 
   delete(id: number) {
     return this.httpClient.delete<void>(`${this.baseUrl}/${id}`);
+  }
+
+
+  generateGrilleEtudiant(etudiantId:number) :Observable<Blob>{
+    return this.httpClient.get(`${this.baseUrl}/${etudiantId}/grille`,{responseType:'blob'})
+  }
+  generateGrillePromo(promotionId:number) :Observable<Blob>{
+    return this.httpClient.get(`${this.baseUrl}/promo/${promotionId}/grille`,{responseType:'blob'})
   }
 
   save(positionnement: Positionnement) {

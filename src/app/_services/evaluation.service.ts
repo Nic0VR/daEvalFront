@@ -50,11 +50,9 @@ export class EvaluationService {
     return this.httpClient.get<any>(`${this.baseUrl}/epreuveId=${epreuveId}`)
   }
 
-  generateBulletinByPromo(promoId:number) {
-    const httpOptions = {
-      responseType: 'blob' as 'json'
-    };
-    return this.httpClient.get(`${this.baseUrl}/bulletin-promotion/${promoId}`,httpOptions)
+  generateBulletinByPromo(promoId:number):Observable<Blob> {
+ 
+    return this.httpClient.get(`${this.baseUrl}/bulletin-promotion/${promoId}`,{responseType:'blob'})
 
   }
   generateBulletinByStudentAndPromo(etudiantId:number,promoId:number) :Observable<Blob>{

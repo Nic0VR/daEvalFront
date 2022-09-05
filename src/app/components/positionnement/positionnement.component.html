@@ -7,7 +7,7 @@
     <thead>
         <th>id</th>
         <th>etudiant</th>
-        <th>intervention id</th>
+        <th>intervention</th>
         <th>niveau Debut</th>
         <th>niveau Fin</th>
         <th>Actions</th>
@@ -16,7 +16,7 @@
     <tr *ngFor="let p of positionnements  | paginate: {itemsPerPage:itemsPerPage, currentPage: currentPage, totalItems:totalItems} ">
         <td>{{p.id}}</td>
         <td>{{p.etudiantId | etudiant}}</td>
-        <td>{{p.interventionId}}</td>
+        <td>{{p.interventionId | intervention}}</td>
         <!-- <td [style]="'background-color:'+p.codeHexNiveauDebut"><div ></div></td> -->
         <td><app-niveau-cell [niveauId]="p.niveauDebutId"></app-niveau-cell></td>
         <td><app-niveau-cell [niveauId]="p.niveauFinId"></app-niveau-cell></td>

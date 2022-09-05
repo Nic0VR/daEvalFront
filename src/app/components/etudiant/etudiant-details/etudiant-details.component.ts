@@ -231,5 +231,21 @@ export class EtudiantDetailsComponent implements OnInit {
     })
   }
 
-  getGrillePos(){}
+  getGrillePos(){
+
+    this.positionnementService.generateGrilleEtudiant(this.currentEtudiant!.id).subscribe({
+      next:(data) => {
+
+        let blob = new Blob([data], {type: 'application/pdf'});
+      
+        var downloadURL2 = window.URL.createObjectURL(data);
+        var link2 = document.createElement('a');
+        link2.href = downloadURL2;
+        link2.download = "GrillePositionnementIndividuelle.pdf";
+        link2.click();
+      },
+      error:(e)=>{},
+      complete:()=>{}
+    })
+  }
 }
