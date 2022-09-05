@@ -1,9 +1,15 @@
 <div class="my-card" *ngIf="currentEtudiant ">
     <h2> {{currentEtudiant.nom}} {{currentEtudiant.prenom}}</h2>
-    <span>Nom: {{currentEtudiant.nom}}</span><br>
-    <span>Prénom: {{currentEtudiant.prenom}}</span><br>
-    <span>Email: {{currentEtudiant.email}}</span><br>
-    <button (click)="debug()">debug</button>
+    <div class="flex-row">
+        <div>
+            <span>Nom: {{currentEtudiant.nom}}</span><br>
+            <span>Prénom: {{currentEtudiant.prenom}}</span><br>
+            <span>Email: {{currentEtudiant.email}}</span><br>
+
+        </div>
+        <button  type="button" (click)="getGrillePos()">Grille de positionnement</button>
+  
+    </div>
 
     <table class="table table-striped" *ngIf="promos && promos.length; else no_promos">
         <thead>
@@ -24,13 +30,14 @@
                 <td>{{promo.dateDebut}}</td>
                 <td>{{promo.dateFin}}</td>
                 <td>
-                    <a [routerLink]="'/main/promotions/details/'+promo.id"><span class="material-icons">visibility</span></a>
+                    <a [routerLink]="'/main/promotions/details/'+promo.id"><span
+                            class="material-icons">visibility</span></a>
                     <!-- <a *ngIf="u.role!='ETUDIANT'" [routerLink]="'/main/users/modify/'+u.id"><span class="material-icons">edit</span></a> -->
                     <!-- <a><span class="material-icons">edit</span></a> -->
 
-                    <!-- <a><span class="material-icons">delete</span></a> -->
+                    <a>      <button type="button" (click)="GetBulletin(promo.id)">Bulletin </button></a>
                 </td>
-                
+
             </tr>
         </tbody>
     </table>
@@ -47,27 +54,113 @@
                 </tr>
             </thead>
             <tbody>
-    
+
                 <tr *ngFor="let evaluation of evaluations">
                     <td>{{evaluation.epreuveTitre}}</td>
                     <td>{{evaluation.note}}</td>
                     <!-- <td></td> -->
                     <td>
-                        <a [routerLink]="'/main/epreuve/details/'+evaluation.epreuveId"><span class="material-icons">visibility</span></a>
+                        <a [routerLink]="'/main/epreuve/details/'+evaluation.epreuveId"><span
+                                class="material-icons">visibility</span></a>
                         <!-- <a *ngIf="u.role!='ETUDIANT'" [routerLink]="'/main/users/modify/'+u.id"><span class="material-icons">edit</span></a> -->
-                        <a href="javascript:void(0)" (click)="modifierEval(evaluation)"><span class="material-icons">edit</span></a>
-    
-                        <a href="javascript:void(0)" (click)="supprimerEval(evaluation,currentEtudiant)"><span class="material-icons">delete</span></a>
+                        <a href="javascript:void(0)" (click)="modifierEval(evaluation)"><span
+                                class="material-icons">edit</span></a>
+
+                        <a href="javascript:void(0)" (click)="supprimerEval(evaluation,currentEtudiant)"><span
+                                class="material-icons">delete</span></a>
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
+</div>
+
+<div>
+    <h4>Positionnements</h4>
+
+    <button (click)="afficherForm()">Ajouter un positionnement</button>
+    <div class="my-ctn" *ngIf="formulaireAjoutVisible  ">
+
+        <h5>Ajouter un positionnement</h5>
+
+        <form (ngSubmit)="addPositionnement()" class="formulaire" [formGroup]="ajoutFormulaire"
+            *ngIf="niveaux && interventions">
+            <table>
+                <tbody>
+                    <tr>
+                        <th>
+                            Intervention
+                        </th>
+                        <td>
+                            <select formControlName="intervention">
+                                <option *ngFor="let interv of interventions" [value]="interv.id">{{interv.id}}</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>niveau Debut</th>
+                        <td>
+                            <select formControlName="niveauDebut">
+                                <option *ngFor="let ni of niveaux" [value]="ni.id">{{ni.description}}</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            niveau Fin
+                        </th>
+                        <td>
+                            <select formControlName="niveauFin">
+                                <option *ngFor="let ni of niveaux" [value]="ni.id">{{ni.description}}</option>
+                            </select>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <button [disabled]="!ajoutFormulaire.valid">Sauvegarder</button>
+            <button type="button" (click)="annulerAjout()">Annuler</button>
+        </form>
     </div>
-    
-    <ng-template #no_promos>
-        <div class="text-danger">Cet étudiant n'est dans aucune promotion<b></b></div>
-    </ng-template>
-    <ng-template #no_evals>
-        <div class="text-danger">Cet étudiant n'a aucune evaluation<b></b></div>
-    </ng-template>
+
+
+    <table class="table table-striped" *ngIf="positionnements && positionnements.length else no_pos">
+        <thead>
+            <tr>
+                <th>Intervention:</th>
+                <th>Niveau Debut</th>
+                <th>Niveau Fin</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr *ngFor="let posi of positionnements">
+                <td>{{posi.interventionId | intervention}}</td>
+                <td>
+                    <app-niveau-cell [niveauId]="posi.niveauDebutId"></app-niveau-cell>
+                </td>
+                <td>
+                    <app-niveau-cell [niveauId]="posi.niveauFinId"></app-niveau-cell>
+                </td>
+                <td>
+                    <!-- <a ><span class="material-icons">visibility</span></a> -->
+
+                    <a href="javascript:void(0)" (click)="supprimerPos(posi.id)"><span
+                            class="material-icons">delete</span></a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<ng-template #no_promos>
+    <div class="text-danger">Cet étudiant n'est dans aucune promotion<b></b></div>
+</ng-template>
+<ng-template #no_evals>
+    <div class="text-danger">Cet étudiant n'a aucune evaluation<b></b></div>
+</ng-template>
+
+<ng-template #no_pos>
+    <div class="text-danger">Cet étudiant n'a aucun positionnement<b></b></div>
+</ng-template>

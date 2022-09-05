@@ -57,4 +57,8 @@ export class PositionnementService {
   findAllByInterventionId(id:number){
     return this.httpClient.get<any>(`${this.baseUrl}/ByInterv=${id}`);
   }
+
+  findAllByEtudiantId(id:number){
+    return this.httpClient.get<any>(`${this.baseUrl}/ByEtudiant=${id}`);
+  }
 }

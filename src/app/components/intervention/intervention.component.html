@@ -66,6 +66,7 @@
 
 <table class="table table-striped" *ngIf="interventions">
     <thead>
+        <th>Id</th>
         <th>Formation</th>
         <th>Formateur</th>
         <th>Promotion Id</th>
@@ -76,9 +77,10 @@
     <tbody>
         <tr
             *ngFor="let interv of interventions | paginate: {itemsPerPage:itemsPerPage, currentPage: currentPage, totalItems:totalItems}">
+            <td>{{interv.id}}</td>
             <td>{{interv.formationId | formation }}</td>
             <td>{{interv.formateurId | formateur}}</td>
-            <td>{{interv.promotionId}}</td>
+            <td>{{interv.promotionId | promotion}}</td>
             <td>{{interv.dateDebut}}</td>
             <td>{{interv.dateFin}}</td>
             <td>

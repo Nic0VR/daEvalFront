@@ -1,0 +1,49 @@
+<div class="my-ctn">
+
+    <h5 mat-dialog-title>Modifier un niveau</h5>
+    <div mat-dialog-content>
+        <form (ngSubmit)="onYesClick()" class="formulaire" [formGroup]="modifierNiveauFormulaire">
+            <table>
+                <tbody>
+                    <tr>
+                        <th>
+                            Valeur
+                        </th>
+                        <td>
+                            <input type="text" pattern="^[0-9]+$" formControlName="valeur">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Description
+                        </th>
+                        <td>
+                            <input type="text" name="note" formControlName="description">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Couleur
+                        </th>
+                        <td>
+                            <input type="color" name="color" formControlName="codeCouleur">
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <!-- <button >Sauvegarder</button> -->
+            <!-- <button type="button" (click)="annulerAjout()">Annuler</button> -->
+            <mat-dialog-actions>
+                <button type="button" class="btn" (click)="onNoClick()">Annuler</button>
+                <button type="button" class="btn" [disabled]="!modifierNiveauFormulaire.valid"
+                    (click)="onYesClick()">Confirmer</button>
+            </mat-dialog-actions>
+        </form>
+
+
+       
+    </div>
+
+
+</div>

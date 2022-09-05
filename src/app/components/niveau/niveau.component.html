@@ -1,0 +1,61 @@
+<h1>Gestion des Niveaux</h1>
+<button (click)="afficherForm()">Ajouter un niveau</button>
+<div class="my-ctn" *ngIf="formulaireAjoutVisible">
+
+    <h5>Ajouter un Niveau</h5>
+
+    <form (ngSubmit)="addNiveau()" class="formulaire" [formGroup]="ajoutFormulaire">
+        <table>
+            <tbody>
+
+
+                <tr>
+                    <th>
+                        Valeur
+                    </th>
+                    <td>
+                        <input type="text" name="valeur" formControlName="valeur" pattern="^[0-9]+$">
+                    </td>
+                </tr>
+                <tr>
+                    <th>Description</th>
+                    <td>
+                        <input type="text" name="description" formControlName="description">
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Couleur
+                    </th>
+                    <td>
+                        <input type="color" name="color" formControlName="codeCouleur">
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <button [disabled]="!ajoutFormulaire.valid">Sauvegarder</button>
+        <button type="button" (click)="annulerAjout()">Annuler</button>
+    </form>
+</div>
+<table class="table table-striped" *ngIf="niveaux">
+    <thead>
+        <th>Valeur</th>
+        <th>Description</th>
+        <th>Couleur</th>
+        <th>Actions</th>
+    </thead>
+    <tbody>
+        <tr *ngFor=" let ni of niveaux">
+            <td>{{ni.valeur}}</td>
+            <td>{{ni.description}}</td>
+            <td [style]="'background-color:'+ni.codeCouleurHexa"></td>
+            <td>
+                <a  href="javascript:;" (click)="editNiveau(ni)" ><span class="material-icons">edit</span></a>
+
+                <a href="javascript:;" (click)="deleteNiveau(ni.id,ni.description)"><span class="material-icons">delete</span></a>
+            </td>
+        </tr>
+    </tbody>
+
+</table>

@@ -1,1 +1,88 @@
-<p>details works!</p>
+<div *ngIf="currentUser && currentUser.role=='FORMATEUR'">
+
+
+<h1>Détails du formateur</h1>
+
+<h3 >{{currentUser.nom}} {{currentUser.prenom}}</h3>
+<span>Nom:{{currentUser.nom}}</span><br>
+<span>Prenom:{{currentUser.prenom}}</span><br>
+<span>Email:{{currentUser.email}}</span><br>
+
+<button (click)="afficherForm()">Ajouter une intervention</button>
+<div class="my-ctn" *ngIf="formulaireAjoutVisible ">
+
+    <h5>Ajouter une Intervention</h5>
+
+    <form (ngSubmit)="addInterv()" class="formulaire" [formGroup]="ajoutFormulaire">
+        <table>
+            <tbody>
+
+
+                <tr>
+                    <th>
+                        Formation
+                    </th>
+                    <td>
+                        <select formControlName="formation">
+                            <option *ngFor="let formation of formations" [value]="formation.id">{{formation.titre}}
+                            </option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Promotion</th>
+                    <td>
+                        <select formControlName="promotion">
+                            <option *ngFor="let promo of promotions" [value]="promo.id">{{promo.id}}</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Date de début
+                    </th>
+                    <td>
+                        <input type="date" name="datedebut" formControlName="dateDebut">
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Date de fin
+                    </th>
+                    <td>
+                        <input type="date" name="duree" formControlName="dateFin">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <button [disabled]="!ajoutFormulaire.valid">Sauvegarder</button>
+        <button type="button" (click)="annulerAjout()">Annuler</button>
+    </form>
+</div>
+<h3>Interventions de {{currentUser.nom}} {{currentUser.prenom}}</h3>
+<table class="table table-striped" *ngIf="interventions">
+    <thead>
+        <th>Id</th>
+        <th>Formation</th>
+        <th>Promotion Id</th>
+        <th>Date Debut</th>
+        <th>Date Fin</th>
+        <th>Actions</th>
+    </thead>
+    <tbody>
+        <tr
+            *ngFor="let interv of interventions ">
+            <td>{{interv.id}}</td>
+            <td>{{interv.formationId | formation }}</td>
+            <td>{{interv.promotionId}}</td>
+            <td>{{interv.dateDebut}}</td>
+            <td>{{interv.dateFin}}</td>
+            <td>
+                <a [routerLink]="'/main/interventions/details/'+interv.id"><span class="material-icons">visibility</span></a>
+
+                <a href="javascript:;" (click)="deleteInterv(interv.id)"><span class="material-icons">delete</span></a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>

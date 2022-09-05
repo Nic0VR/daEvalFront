@@ -15,9 +15,6 @@ export class VillePipe implements PipeTransform {
 
   transform(value: number): string | undefined {
     let ret = this.villes.find((v)=>v.id==value)?.nom;
-    console.log("dans pipe ret=");
-    console.log(ret);
-    
     return ret
   }
 

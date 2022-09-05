@@ -62,6 +62,11 @@ import { PromotionPipe } from './_pipes/promotion.pipe';
 import { FormateurPipe } from './_pipes/formateur.pipe';
 import { DetailsComponent } from './components/intervention/details/details.component';
 import { NiveauCellComponent } from './components/niveau-cell/niveau-cell.component';
+import { EtudiantPipe } from './_pipes/etudiant.pipe';
+import { PositionnementComponent } from './components/positionnement/positionnement.component';
+import { NiveauComponent } from './components/niveau/niveau.component';
+import { ModifNiveauDialogComponent } from './components/dialogs/modif-niveau-dialog/modif-niveau-dialog.component';
+import { InterventionPipe } from './_pipes/intervention.pipe';
 
 
 
@@ -115,6 +120,11 @@ import { NiveauCellComponent } from './components/niveau-cell/niveau-cell.compon
     FormateurPipe,
     DetailsComponent,
     NiveauCellComponent,
+    EtudiantPipe,
+    PositionnementComponent,
+    NiveauComponent,
+    ModifNiveauDialogComponent,
+    InterventionPipe,
 
   ],
   imports: [

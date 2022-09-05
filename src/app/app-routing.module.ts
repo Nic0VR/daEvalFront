@@ -12,6 +12,8 @@ import { FormationComponent } from './components/formation/formation.component';
 import { DetailsComponent } from './components/intervention/details/details.component';
 import { InterventionComponent } from './components/intervention/intervention.component';
 import { LoginComponent } from './components/login/login.component';
+import { NiveauComponent } from './components/niveau/niveau.component';
+import { PositionnementComponent } from './components/positionnement/positionnement.component';
 import { PromotionDetailsComponent } from './components/promotions/promotion-details/promotion-details.component';
 import { PromotionModifyComponent } from './components/promotions/promotion-modify/promotion-modify.component';
 import { PromotionsComponent } from './components/promotions/promotions.component';
@@ -20,6 +22,7 @@ import { TitreProDetailsComponent } from './components/titre-professionnel/detai
 import { TitreProModifyComponent } from './components/titre-professionnel/titre-pro-modify/titre-pro-modify.component';
 
 import { TitreProfessionnelComponent } from './components/titre-professionnel/titre-professionnel.component';
+import { UserDetailsComponent } from './components/user/details/details.component';
 import { UserModifyComponent } from './components/user/modify/modify.component';
 import { UserComponent } from './components/user/user.component';
 import { ForbiddenComponent } from './pages/forbidden/forbidden.component';
@@ -42,6 +45,7 @@ const routes: Routes = [
       [
         { path: 'users', component: UserComponent,  canActivate:[FormateurGuard] },
         { path: 'users/modify/:id', component: UserModifyComponent, canActivate:[AdminGuard]},
+        { path: 'users/details/:id',component:UserDetailsComponent},
         { path: 'etudiant', component:EtudiantComponent},
         { path: 'etudiant/modify/:id', component:EtudiantModifyComponent},
         { path: 'etudiant/details/:id', component:EtudiantDetailsComponent},
@@ -59,6 +63,8 @@ const routes: Routes = [
         { path: 'formations',component:FormationComponent},
         { path: 'interventions',component:InterventionComponent},
         { path: 'interventions/details/:id',component:DetailsComponent},
+        { path: 'positionnements',component:PositionnementComponent},
+        { path: 'niveaux',component:NiveauComponent},
         { path:'forbidden', component:ForbiddenComponent},
       ]
       , canActivate: [AuthGuard] 

@@ -1,20 +1,77 @@
+<div *ngIf="currentInterv">
 
-<h1>Gestion des positionnements</h1>
+    <h3>Gestion des positionnements de l'intervention de {{currentInterv!.id | intervention}}</h3>
 
-<table class="table table-striped" *ngIf="isLoaded">
-    <thead>
-        <th>id</th>
-        <th>etudiant</th>
-        <th>niveau Debut</th>
-        <th>niveau Fin</th>
-    </thead>
-    <tbody>
-    <tr *ngFor="let p of positionnements">
-        <td>{{p.id}}</td>
-        <td>{{p.etudiantId}}</td>
-        <!-- <td [style]="'background-color:'+p.codeHexNiveauDebut"><div ></div></td> -->
-        <td><app-niveau-cell [niveauId]="p.niveauDebutId"></app-niveau-cell></td>
-        <td><app-niveau-cell [niveauId]="p.niveauFinId"></app-niveau-cell></td>
-    </tr>
-    </tbody>
-</table>
+    <button (click)="afficherForm()">Ajouter un positionnement</button>
+    <div class="my-ctn" *ngIf="formulaireAjoutVisible  ">
+
+        <h5>Ajouter un positionnement</h5>
+
+        <form (ngSubmit)="addPositionnement()" class="formulaire" [formGroup]="ajoutFormulaire"
+            *ngIf="niveaux && etudiants">
+            <table>
+                <tbody>
+                    <tr>
+                        <th>
+                            Etudiant
+                        </th>
+                        <td>
+                            <select formControlName="etudiant">
+                                <option *ngFor="let et of etudiants" [value]="et.id">{{et.nom}} {{et.prenom}}</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>niveau Debut</th>
+                        <td>
+                            <select formControlName="niveauDebut">
+                                <option *ngFor="let ni of niveaux" [value]="ni.id">{{ni.description}}</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            niveau Fin
+                        </th>
+                        <td>
+                            <select formControlName="niveauFin">
+                                <option *ngFor="let ni of niveaux" [value]="ni.id">{{ni.description}}</option>
+                            </select>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <button [disabled]="!ajoutFormulaire.valid">Sauvegarder</button>
+            <button type="button" (click)="annulerAjout()">Annuler</button>
+        </form>
+    </div>
+
+    <table class="table table-striped" *ngIf="isLoaded">
+        <thead>
+            <th>id</th>
+            <th>etudiant</th>
+            <th>niveau Debut</th>
+            <th>niveau Fin</th>
+            <th>Actions</th>
+        </thead>
+        <tbody>
+            <tr *ngFor="let p of positionnements">
+                <td>{{p.id}}</td>
+                <td>{{p.etudiantId | etudiant}}</td>
+                <!-- <td [style]="'background-color:'+p.codeHexNiveauDebut"><div ></div></td> -->
+                <td>
+                    <app-niveau-cell [niveauId]="p.niveauDebutId"></app-niveau-cell>
+                </td>
+                <td>
+                    <app-niveau-cell [niveauId]="p.niveauFinId"></app-niveau-cell>
+                </td>
+                <td>
+                    <!-- <a ><span class="material-icons">visibility</span></a> -->
+
+                    <a href="javascript:;" (click)="deletePos(p.id)"><span class="material-icons">delete</span></a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

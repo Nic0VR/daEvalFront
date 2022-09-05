@@ -2,19 +2,38 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Promotion } from '../_models/promotion';
-import { map } from 'rxjs';
+import { BehaviorSubject, map } from 'rxjs';
 import { Etudiant } from '../_models/etudiant';
 @Injectable({
   providedIn: 'root'
 })
 export class PromotionService {
   
+
+  promotions?:Promotion[];
+  private ListePromoSubject: BehaviorSubject<Promotion[]>;
+
+
   private httpHeaders = {
     headers : new HttpHeaders({
          'Access-Control-Allow-Origin':'*'
     })
   }
-  constructor(private httpClient:HttpClient) { }
+  constructor(private httpClient:HttpClient) { 
+    this.ListePromoSubject = new BehaviorSubject<Promotion[]>([]);
+    let i: Promotion[];
+
+    this.getAll().subscribe({
+      next: (v) => {
+        i = v; this.ListePromoSubject.next(i); console.log("promo SERVICE INITIALISE");
+      }
+    });
+  }
+
+
+  public get Promotions(){
+    return this.ListePromoSubject.value;
+  }
 
   getAllPage(page:number, size:number, search:string){
 

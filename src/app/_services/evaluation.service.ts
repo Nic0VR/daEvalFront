@@ -1,6 +1,6 @@
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Evaluation } from '../_models/evaluation';
 
@@ -51,10 +51,14 @@ export class EvaluationService {
   }
 
   generateBulletinByPromo(promoId:number) {
+    const httpOptions = {
+      responseType: 'blob' as 'json'
+    };
+    return this.httpClient.get(`${this.baseUrl}/bulletin-promotion/${promoId}`,httpOptions)
 
   }
-  generateBulletinByStudentAndPromo(etudiantId:number,promoId:number) {
-
+  generateBulletinByStudentAndPromo(etudiantId:number,promoId:number) :Observable<Blob>{
+    return this.httpClient.get(`${this.baseUrl}/bulletin-etudiant/${etudiantId}/${promoId}`,{responseType:'blob'})
   }
 
   getMoyenneEtudiantInBlocComp(etudiantId:number,blocCompId:number){
@@ -70,4 +74,6 @@ export class EvaluationService {
     return this.httpClient.get<any>(`/avg/promoId=${promoId}/etudiantId=${etudiantId}`)
 
   }
+
+
 }

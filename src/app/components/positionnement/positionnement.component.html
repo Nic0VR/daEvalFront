@@ -1,0 +1,33 @@
+
+<h1>Gestion des positionnements</h1>
+
+
+
+<table class="table table-striped" *ngIf="isLoaded && positionnements">
+    <thead>
+        <th>id</th>
+        <th>etudiant</th>
+        <th>intervention id</th>
+        <th>niveau Debut</th>
+        <th>niveau Fin</th>
+        <th>Actions</th>
+    </thead>
+    <tbody>
+    <tr *ngFor="let p of positionnements  | paginate: {itemsPerPage:itemsPerPage, currentPage: currentPage, totalItems:totalItems} ">
+        <td>{{p.id}}</td>
+        <td>{{p.etudiantId | etudiant}}</td>
+        <td>{{p.interventionId}}</td>
+        <!-- <td [style]="'background-color:'+p.codeHexNiveauDebut"><div ></div></td> -->
+        <td><app-niveau-cell [niveauId]="p.niveauDebutId"></app-niveau-cell></td>
+        <td><app-niveau-cell [niveauId]="p.niveauFinId"></app-niveau-cell></td>
+        <td>
+            <a [routerLink]="'/main/interventions/details/'+p.interventionId"><span class="material-icons">visibility</span></a>
+
+            <a href="javascript:;" (click)="deletePos(p.id)"><span class="material-icons">delete</span></a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<pagination-controls *ngIf="positionnements" (pageChange)="pageChanged($event)" previousLabel="Précédent"
+nextLabel="Suivant">
+</pagination-controls>

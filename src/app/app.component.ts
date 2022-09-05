@@ -4,7 +4,9 @@ import { TitreProfessionnel } from './_models/titre-professionnel';
 import { Ville } from './_models/ville';
 import { EtudiantService } from './_services/etudiant.service';
 import { FormationService } from './_services/formation.service';
+import { InterventionService } from './_services/intervention.service';
 import { NiveauService } from './_services/niveau.service';
+import { PromotionService } from './_services/promotion.service';
 import { TitreProfessionnelService } from './_services/titre-professionnel.service';
 import { UserService } from './_services/user.service';
 import { VilleService } from './_services/ville.service';
@@ -23,14 +25,17 @@ export class AppComponent implements OnInit {
   userCount?:number;
   niveaux?:Niveau[];
   etudiantCount?:number;
-
+  interventionCount?:number;
+  promoCount?:number;
   constructor(
     private villeService: VilleService,
     private titreProService: TitreProfessionnelService,
     private formationService: FormationService,
     private userService:UserService,
     private niveauService:NiveauService,
-    private etudiantService:EtudiantService
+    private etudiantService:EtudiantService,
+    private interventionService:InterventionService,
+    private promoService:PromotionService,
   ) {
 
   }
@@ -42,6 +47,8 @@ export class AppComponent implements OnInit {
     this.loadUser();
     this.loadNiveaux();
     this.loadEtudiant();
+    this.loadInter();
+    this.loadPromo();
   }
 
   loadVille() {
@@ -92,4 +99,17 @@ export class AppComponent implements OnInit {
     })
   }
 
+  loadInter(){
+    this.interventionService.count("").subscribe({
+      next:(v)=>{this.interventionCount=v.nb},
+      error:(e)=>{console.log(e);}
+    })
+  }
+
+  loadPromo(){
+    this.promoService.countPromotion("").subscribe({
+      next:(v)=>{this.promoCount=v.nb},
+      error:(e)=>{console.log(e);}
+    })
+  }
 }
