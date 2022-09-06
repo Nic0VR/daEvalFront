@@ -49,24 +49,6 @@
             </table>
             <button [disabled]="!modifierEtudiantFormulaire.valid">Sauvegarder</button>
         </form>
-        <!-- <div class="promos" *ngIf="etudiantToModify && etudiantToModify.promotionsId ">
-            <span>Cet étudiant est dans les promotions:</span>
-            <div class="promo" *ngFor=" let id of etudiantToModify.promotionsId">
-                {{id}}
-            </div>     
-        </div>
-        <div *ngIf="tp">
-            <h4>Ajouter cet étudiant dans une promotion:</h4>
-            <select>
-                <option *ngFor="let promo of promos" [value]="promo.id">
-                    <div>
-                        <span>Titre pro: {{promo.titreProfessionnelId | titrePro }}</span>
-                         <span>Date début:{{promo.dateDebut}}</span>
-                    </div>
-                   
-                </option>
-            </select>
-        </div> -->
     </div>
     
     <button type="button" class="my-btn" routerLink="/main/etudiant">Retour à la liste des étudiants</button>

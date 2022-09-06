@@ -42,8 +42,7 @@ export class EtudiantComponent implements OnInit {
     this.itemsPerPage = 10;
     this.currentPage = 1;
     this.totalItems = 0;
-    this.getStudentList();
-    this.getPromoList();
+
   }
 
   annulerCreation() {
@@ -52,13 +51,13 @@ export class EtudiantComponent implements OnInit {
 
   getStudentList() {
     this.etudiantService.countStudents(this.searchExpression).pipe(first()).subscribe(countDto => {
-      console.log("count dto :" + countDto.nb);
+     
 
       this.totalItems = countDto.nb
     })
 
     this.etudiantService.getAllPage(this.currentPage, this.itemsPerPage, this.searchExpression).pipe(first()).subscribe(users => {
-      console.log(users);
+  
 
       this.etudiants = users;
     })
@@ -80,6 +79,8 @@ export class EtudiantComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getStudentList();
+    this.getPromoList();
   }
 
   ajouterEtudiant() {
@@ -96,11 +97,11 @@ export class EtudiantComponent implements OnInit {
           this.etudiantService.delete(e.id).subscribe(
             {
               next: () => {
-                console.log("Suppression réussie");
-                window.location.reload();
+                this.toastEvokeService.success("Suppression","La suppression a été effectuée ").subscribe();
+                this.getStudentList();
               },
               error: (e) => {
-                console.log(e);
+                this.toastEvokeService.danger("Erreur","La suppression a échouée").subscribe();
               }
             })
         }

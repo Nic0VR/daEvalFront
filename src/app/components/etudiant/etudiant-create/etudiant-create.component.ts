@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ToastEvokeService } from '@costlydeveloper/ngx-awesome-popup';
 import { Etudiant } from 'src/app/_models/etudiant';
 import { EtudiantService } from 'src/app/_services/etudiant.service';
 
@@ -11,7 +12,9 @@ import { EtudiantService } from 'src/app/_services/etudiant.service';
 })
 export class EtudiantCreateComponent implements OnInit {
 
-  constructor(private etudiantService:EtudiantService) { }
+  constructor(private etudiantService:EtudiantService,
+    private toastEvokeService: ToastEvokeService
+    ) { }
   @Output() 
   annulerCreationEvent=new EventEmitter();
 

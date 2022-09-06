@@ -46,7 +46,7 @@ export class UserCreateComponent implements OnInit {
         this.toastEvokeService.success('Sauvegarde Réussie', 'La sauvegarde a été effectuée').subscribe();
       }
       ,error:(e)=>{
-        this.toastEvokeService.warning('Erreur','Une erreur est survenue'+e.error)
+        this.toastEvokeService.danger('Erreur','Une erreur est survenue: '+e.error.message)
       }
       ,complete:()=>{
         this.finishCreationEvent.emit(true);

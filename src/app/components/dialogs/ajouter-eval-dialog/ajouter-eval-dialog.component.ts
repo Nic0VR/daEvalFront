@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
+import { ToastEvokeService } from '@costlydeveloper/ngx-awesome-popup';
 import { Epreuve } from 'src/app/_models/epreuve';
 import { Evaluation } from 'src/app/_models/evaluation';
 import { BlocCompetenceService } from 'src/app/_services/bloc-competence.service';
@@ -21,7 +22,8 @@ export class AjouterEvalDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<AjouterEvalDialogComponent>,
     private evalService: EvaluationService,
     private epreuveService:EpreuveService,
-    private blocCompService: BlocCompetenceService
+    private blocCompService: BlocCompetenceService,
+    private toastEvokeService:ToastEvokeService,
   ) { }
 
   ajoutEvalFormulaire: FormGroup = new FormGroup({
@@ -53,9 +55,10 @@ export class AjouterEvalDialogComponent implements OnInit {
     evalu.note = this.ajoutEvalFormulaire.value['note'];
 
     this.evalService.save(evalu).subscribe({
-      next:(v)=>{console.log("sauvegarde reussie");
+      next:(v)=>{
       },
-      error:(e)=>{console.log(e);
+      error:(e)=>{
+
       },
       complete:()=>{this.dialogRef.close(true);}
     })

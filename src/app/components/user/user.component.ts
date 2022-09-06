@@ -92,7 +92,8 @@ export class UserComponent implements OnInit {
           this.userService.delete(u.id).subscribe(
             {
               next: () => {
-                this.toastEvokeService.success('Sauvegarde Réussie', 'La sauvegarde a été effectuée').subscribe();
+                this.toastEvokeService.success('Suppression Réussie', 'La sauvegarde a été effectuée').subscribe();
+                this.rechercher();
               },
               error: (e) => {
                 this.toastEvokeService.danger('Erreur', 'Une erreur est survenue: ' + e.error.message)
@@ -115,11 +116,11 @@ export class UserComponent implements OnInit {
           this.etudiantService.delete(e.id).subscribe(
             {
               next: () => {
-                console.log("Suppression réussie");
-                window.location.reload();
+                this.toastEvokeService.success('Suppression Réussie', 'La sauvegarde a été effectuée').subscribe();
+                this.rechercher();
               },
               error: (e) => {
-                console.log(e);
+                this.toastEvokeService.danger('Erreur', 'Une erreur est survenue: ' + e.error.message)
               }
             })
         }

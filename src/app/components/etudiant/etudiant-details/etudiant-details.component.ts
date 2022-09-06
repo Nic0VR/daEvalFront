@@ -108,7 +108,8 @@ export class EtudiantDetailsComponent implements OnInit {
     this.dialogRef.afterClosed().subscribe(
       result => {
         if (result) {
-        window.location.reload();
+          this.toastEvokeService.success('Succès', "L'opération s'est bien déroulée").subscribe()
+          this.chargerEvals(this.currentEtudiant!.id);
         }
         this.dialogRef = undefined;
       }
@@ -124,9 +125,11 @@ export class EtudiantDetailsComponent implements OnInit {
         if (result) {
           this.evalService.delete(evalu.id).subscribe(
             {
-              next: () => { console.log("Suppression réussie"); 
-              window.location.reload();},
-              error: (e) => { console.log(e);
+              next: () => {      this.toastEvokeService.success('Succès', "L'opération s'est bien déroulée").subscribe()
+              this.chargerEvals(evalu.etudiantId);},
+              error: (e) => { 
+                this.toastEvokeService.danger('Erreur', "Erreur: "+e.erreur.message).subscribe()
+                
               }
             })
         }
@@ -142,7 +145,8 @@ export class EtudiantDetailsComponent implements OnInit {
     this.dialogRefModifEval.afterClosed().subscribe(
       result => {
         if (result) {
-         window.location.reload();
+         this.toastEvokeService.success('Succès', "L'opération s'est bien déroulée").subscribe()
+         this.chargerEvals(evalu.etudiantId);
         }
         this.dialogRefModifEval = undefined;
       }
@@ -165,9 +169,9 @@ export class EtudiantDetailsComponent implements OnInit {
     posi.niveauFinId = this.ajoutFormulaire.value['niveauFin'];
 
     this.positionnementService.save(posi).subscribe({
-      next:(v)=>{},
+      next:(v)=>{ this.toastEvokeService.success('Succès', "L'opération s'est bien déroulée").subscribe()},
       error:(e)=>{
-        this.toastEvokeService.danger('Erreur', 'Une erreur est survenue: ' + e.error.message)
+        this.toastEvokeService.danger('Erreur', 'Une erreur est survenue: ' + e.error.message).subscribe()
         
       },
       complete:()=>{}
@@ -206,11 +210,11 @@ export class EtudiantDetailsComponent implements OnInit {
           this.positionnementService.delete(id).subscribe(
             {
               next: () => {
-                console.log("Suppression réussie");
-                window.location.reload();
+                this.toastEvokeService.success('Succès', "L'opération s'est bien déroulée").subscribe()
+
               },
               error: (e) => {
-                console.log(e);
+                this.toastEvokeService.danger('Erreur','Une erreur est survenue: '+e.error.message).subscribe()
               }
             })
         }

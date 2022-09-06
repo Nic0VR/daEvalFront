@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ToastEvokeService } from '@costlydeveloper/ngx-awesome-popup';
 import { Etudiant } from 'src/app/_models/etudiant';
 import { Promotion } from 'src/app/_models/promotion';
 import { TitreProfessionnel } from 'src/app/_models/titre-professionnel';
@@ -18,7 +19,9 @@ import { UserService } from 'src/app/_services/user.service';
 export class EtudiantModifyComponent implements OnInit {
 
   constructor(private route:ActivatedRoute, private etudiantService: EtudiantService,private promotionService:PromotionService,
-    private titreProService:TitreProfessionnelService) { }
+    private titreProService:TitreProfessionnelService,
+    private toastEvokeService:ToastEvokeService,
+    private router:Router ) { }
 
   public roles:string[]=["FORMATEUR","ADMINISTRATEUR"];
   etudiantToModify?:Etudiant;
@@ -28,7 +31,7 @@ export class EtudiantModifyComponent implements OnInit {
     nom:new FormControl("",Validators.required),
     prenom:new FormControl("",Validators.required),
     email:new FormControl("",Validators.required),
-    password:new FormControl("",Validators.required),
+    password:new FormControl("",),
     actif:new FormControl("",Validators.required),
     // role:new FormControl("",Validators.required),
     
@@ -57,14 +60,22 @@ export class EtudiantModifyComponent implements OnInit {
     let e:Etudiant = this.etudiantToModify!;
     e.active=this.modifierEtudiantFormulaire.value['actif'];
     e.email=this.modifierEtudiantFormulaire.value["email"];
-    e.motDePasse=this.modifierEtudiantFormulaire.value["password"];
+    if(this.modifierEtudiantFormulaire.value['password']!=""){
+      e.motDePasse=this.modifierEtudiantFormulaire.value["password"];
+    }else{
+      e.motDePasse=""
+    }
     e.nom=this.modifierEtudiantFormulaire.value["nom"];
     e.prenom=this.modifierEtudiantFormulaire.value["prenom"];
     // e.role=this.modifierEtudiantFormulaire.value["role"];
     this.etudiantService.update(e).subscribe({
       next:(v)=>{
-        console.log(v);
         
+        this.toastEvokeService.success('Succès','Modification réussie').subscribe()
+        this.router.navigateByUrl('/main/etudiant');
+      },
+      error:(e)=>{
+        this.toastEvokeService.danger('Erreur','Erreur: '+e.error.message);
       }
     })
   }
