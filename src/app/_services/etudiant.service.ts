@@ -65,4 +65,8 @@ export class EtudiantService {
   getEtudiantByEpreuveId(epreuveId: number) {
     return this.httpClient.get<any>(`${environment.apiUrl}/api/etudiant/EprId/${epreuveId}`);
   }
+
+  getEtudiantByIntervId(IntervId: number) {
+    return this.httpClient.get<any>(`${environment.apiUrl}/api/etudiant/IntervId/${IntervId}`);
+  }
 }

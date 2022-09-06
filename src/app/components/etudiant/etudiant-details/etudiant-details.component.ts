@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
+import { ToastEvokeService } from '@costlydeveloper/ngx-awesome-popup';
 import { Etudiant } from 'src/app/_models/etudiant';
 import { Evaluation } from 'src/app/_models/evaluation';
 import { Intervention } from 'src/app/_models/intervention';
@@ -53,6 +54,7 @@ export class EtudiantDetailsComponent implements OnInit {
     private interventionService:InterventionService,
     private niveauService:NiveauService,
     private dialog: MatDialog,
+    private toastEvokeService: ToastEvokeService
     ) { }
 
   ngOnInit(): void {
@@ -164,8 +166,11 @@ export class EtudiantDetailsComponent implements OnInit {
 
     this.positionnementService.save(posi).subscribe({
       next:(v)=>{},
-      error:(e)=>{console.log(e);},
-      complete:()=>{window.location.reload()}
+      error:(e)=>{
+        this.toastEvokeService.danger('Erreur', 'Une erreur est survenue: ' + e.error.message)
+        
+      },
+      complete:()=>{}
     })
   }
 
@@ -218,10 +223,10 @@ export class EtudiantDetailsComponent implements OnInit {
     this.evalService.generateBulletinByStudentAndPromo(this.currentEtudiant!.id,id).subscribe({
       next:(data) => {
 
-        let blob = new Blob([data], {type: 'application/pdf'});
+        // let blob = new Blob([data], {type: 'application/pdf'});
       
-        var downloadURL = window.URL.createObjectURL(data);
-        var link = document.createElement('a');
+        let downloadURL = window.URL.createObjectURL(data);
+        let link = document.createElement('a');
         link.href = downloadURL;
         link.download = "bulletinIndividuel.pdf";
         link.click();
@@ -235,11 +240,9 @@ export class EtudiantDetailsComponent implements OnInit {
 
     this.positionnementService.generateGrilleEtudiant(this.currentEtudiant!.id).subscribe({
       next:(data) => {
-
-        let blob = new Blob([data], {type: 'application/pdf'});
       
-        var downloadURL2 = window.URL.createObjectURL(data);
-        var link2 = document.createElement('a');
+        let downloadURL2 = window.URL.createObjectURL(data);
+        let link2 = document.createElement('a');
         link2.href = downloadURL2;
         link2.download = "GrillePositionnementIndividuelle.pdf";
         link2.click();

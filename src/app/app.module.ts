@@ -67,7 +67,12 @@ import { PositionnementComponent } from './components/positionnement/positionnem
 import { NiveauComponent } from './components/niveau/niveau.component';
 import { ModifNiveauDialogComponent } from './components/dialogs/modif-niveau-dialog/modif-niveau-dialog.component';
 import { InterventionPipe } from './_pipes/intervention.pipe';
-
+import {
+  NgxAwesomePopupModule,
+  DialogConfigModule,
+  ConfirmBoxConfigModule,
+  ToastNotificationConfigModule
+} from '@costlydeveloper/ngx-awesome-popup';
 
 
 
@@ -138,7 +143,10 @@ import { InterventionPipe } from './_pipes/intervention.pipe';
     MatSidenavModule,
     MatFormFieldModule,
     MatDialogModule,
-
+    NgxAwesomePopupModule.forRoot(), // Essential, mandatory main module.
+    DialogConfigModule.forRoot(), // Needed for instantiating dynamic components.
+    ConfirmBoxConfigModule.forRoot(), // Needed for instantiating confirm boxes.
+    ToastNotificationConfigModule.forRoot() // Needed for instantiating toast notifications.
   ],
   // on fournit l'intercepteur Jwt pour qu'il ajoute le token a nos requetes
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },],

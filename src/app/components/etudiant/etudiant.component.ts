@@ -10,6 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { User } from 'src/app/_models/user';
 import { Promotion } from 'src/app/_models/promotion';
 import { PromotionService } from 'src/app/_services/promotion.service';
+import { ToastEvokeService } from '@costlydeveloper/ngx-awesome-popup';
 
 @Component({
   selector: 'app-etudiant',
@@ -26,9 +27,13 @@ export class EtudiantComponent implements OnInit {
   searchForm: FormGroup;
   formulaireAjoutVisible: boolean = false;
   dialogRef?: MatDialogRef<SupprimerElementDialogComponent>;
-  promos?:Promotion[];
+  promos?: Promotion[];
 
-  constructor(private formBuilder: FormBuilder, private etudiantService: EtudiantService, private dialog: MatDialog,private promotionService:PromotionService) {
+  constructor(private formBuilder: FormBuilder,
+    private etudiantService: EtudiantService,
+    private dialog: MatDialog,
+    private promotionService: PromotionService,
+    private toastEvokeService: ToastEvokeService) {
     this.searchForm = this.formBuilder.group({
       searchExpression: ['']
     });
@@ -90,9 +95,12 @@ export class EtudiantComponent implements OnInit {
         if (result) {
           this.etudiantService.delete(e.id).subscribe(
             {
-              next: () => { console.log("Suppression réussie"); 
-              window.location.reload();},
-              error: (e) => { console.log(e);
+              next: () => {
+                console.log("Suppression réussie");
+                window.location.reload();
+              },
+              error: (e) => {
+                console.log(e);
               }
             })
         }
@@ -101,7 +109,7 @@ export class EtudiantComponent implements OnInit {
     )
   }
 
-  getPromoList(){
-    this.promotionService.getAll().subscribe({next:(v)=>{this.promos=v}})
+  getPromoList() {
+    this.promotionService.getAll().subscribe({ next: (v) => { this.promos = v } })
   }
 }

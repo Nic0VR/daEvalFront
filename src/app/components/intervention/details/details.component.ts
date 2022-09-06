@@ -26,7 +26,7 @@ export class DetailsComponent implements OnInit {
   currentInterv?: Intervention;
   etudiants?: Etudiant[];
   dialogRef?: MatDialogRef<SupprimerElementDialogComponent>;
-
+  idEtudiantDejaPositionne?:number[]=[];
 
   ajoutFormulaire: FormGroup = new FormGroup({
     etudiant: new FormControl("", Validators.required),
@@ -48,7 +48,7 @@ export class DetailsComponent implements OnInit {
       const id = params['id'];
       this.chargerPositionnements(id);
       this.chargerInterv(id);
-      this.chargerEtudiants();
+
     })
   }
 
@@ -72,8 +72,14 @@ export class DetailsComponent implements OnInit {
       },
       error: (e) => { console.log(e); },
       complete: () => {
+        this.positionnements?.forEach((pos)=>{
+          this.idEtudiantDejaPositionne?.push(pos.etudiantId);
+        })
+        console.log("id etudiants deja posi");
+        console.log(this.idEtudiantDejaPositionne);
+        
         this.chargerNiveaux();
-
+        this.chargerEtudiants(id);
       }
     })
   }
@@ -90,13 +96,19 @@ export class DetailsComponent implements OnInit {
   }
 
 
-  chargerEtudiants() {
-    this.etudiantService.getAll().subscribe({
+  chargerEtudiants(intervId:number) {
+    this.etudiantService.getEtudiantByIntervId(intervId).subscribe({
       next: (v) => {
         this.etudiants = v;
         ;
       },
-      error: (e) => { console.log(e); }
+      error: (e) => { console.log(e); },
+      complete:()=>{
+        //pour chaque etudiant, on regarde si il a deja un positionnement si oui on le sort de la liste
+        this.etudiants= this.etudiants?.filter((etu)=>
+          this.idEtudiantDejaPositionne?.find((id)=>etu.id==id)==undefined
+        )
+      }
     })
   }
 

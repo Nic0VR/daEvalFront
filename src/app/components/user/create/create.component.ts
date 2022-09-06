@@ -1,5 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ToastEvokeService } from '@costlydeveloper/ngx-awesome-popup';
 import { User } from 'src/app/_models/user';
 import { UserService } from 'src/app/_services/user.service';
 
@@ -10,12 +11,15 @@ import { UserService } from 'src/app/_services/user.service';
 })
 export class UserCreateComponent implements OnInit {
 
-  constructor(private userService:UserService) { }
+  constructor(private userService:UserService,
+    private toastEvokeService:ToastEvokeService) { }
 
   public roles:string[]=["FORMATEUR","ADMINISTRATEUR"];
   @Output()
   cancelCreationEvent = new EventEmitter<boolean>(); 
-  
+  @Output()
+  finishCreationEvent = new EventEmitter<boolean>();
+
   ajouterUtilisateurFormulaire:FormGroup = new FormGroup({
     nom:new FormControl("",Validators.required),
     prenom:new FormControl("",Validators.required),
@@ -38,7 +42,14 @@ export class UserCreateComponent implements OnInit {
     u.active=true;
     console.log(u);
     this.userService.save(u).subscribe({
-      next:(v)=>{console.log("nouvel user créé:");console.log(v);
+      next:(v)=>{
+        this.toastEvokeService.success('Sauvegarde Réussie', 'La sauvegarde a été effectuée').subscribe();
+      }
+      ,error:(e)=>{
+        this.toastEvokeService.warning('Erreur','Une erreur est survenue'+e.error)
+      }
+      ,complete:()=>{
+        this.finishCreationEvent.emit(true);
       }
     })
   }

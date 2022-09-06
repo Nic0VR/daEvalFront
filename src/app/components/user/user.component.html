@@ -8,7 +8,7 @@
   <button  *ngIf="!formulaireAjoutVisible" (click)="ajouterUtilisateur()">Ajouter un utilisateur</button>
 
   <div *ngIf="formulaireAjoutVisible">
-    <app-user-create (cancelCreationEvent)="annulerCreation()"></app-user-create>
+    <app-user-create (cancelCreationEvent)="annulerCreation()" (finishCreationEvent)="rechercher()"></app-user-create>
   </div>
 
 <table class="table table-striped">

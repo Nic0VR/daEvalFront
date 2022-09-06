@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { SupprimerElementDialogComponent } from '../dialogs/supprimer-element-dialog/supprimer-element-dialog.component';
 import { EtudiantService } from 'src/app/_services/etudiant.service';
+import { ToastEvokeService } from '@costlydeveloper/ngx-awesome-popup';
 
 @Component({
   selector: 'app-user',
@@ -17,21 +18,21 @@ export class UserComponent implements OnInit {
 
   users?: User[];
   itemsPerPage: number;
-  currentPage:number;
-  totalItems:number;
-  searchExpression:string;
+  currentPage: number;
+  totalItems: number;
+  searchExpression: string;
   searchForm: FormGroup;
-  formulaireAjoutVisible:boolean=false;
+  formulaireAjoutVisible: boolean = false;
   dialogRef?: MatDialogRef<SupprimerElementDialogComponent>;
-  
-  constructor(private formBuilder:FormBuilder,
-     private userService:UserService,
-     private dialog: MatDialog,
-     private etudiantService:EtudiantService,
-     ) 
-    {
+
+  constructor(private formBuilder: FormBuilder,
+    private userService: UserService,
+    private dialog: MatDialog,
+    private etudiantService: EtudiantService,
+    private toastEvokeService: ToastEvokeService
+  ) {
     this.searchForm = this.formBuilder.group({
-      searchExpression:['']
+      searchExpression: ['']
     });
 
     this.searchExpression = '';
@@ -41,58 +42,61 @@ export class UserComponent implements OnInit {
     this.getUsersList();
   }
 
-  getUsersList(){
+  getUsersList() {
     this.userService.countUsers(this.searchExpression).pipe(first()).subscribe(countDto => {
       console.log("count dto :" + countDto.nb);
-      
-      this.totalItems =  countDto.nb
+
+      this.totalItems = countDto.nb
     })
 
-    this.userService.getAll(this.currentPage, this.itemsPerPage, this.searchExpression).pipe(first()).subscribe(users=> {
+    this.userService.getAll(this.currentPage, this.itemsPerPage, this.searchExpression).pipe(first()).subscribe(users => {
       console.log(users);
-      
+
       this.users = users;
       // users[0].getRole.call() 
     })
   }
 
-  annulerCreation(){
+  annulerCreation() {
     this.formulaireAjoutVisible = false;
   }
 
-  annulerRechercher(){
-    this.searchExpression="";
+  annulerRechercher() {
+    this.searchExpression = "";
     this.getUsersList();
   }
 
-  pageChanged(page:number){
+  pageChanged(page: number) {
     this.currentPage = page;
     this.getUsersList();
   }
 
-  rechercher(){
+  rechercher() {
     this.getUsersList()
   }
 
   ngOnInit(): void {
   }
 
-  ajouterUtilisateur(){
-    this.formulaireAjoutVisible=true;
+  ajouterUtilisateur() {
+    this.formulaireAjoutVisible = true;
   }
 
   supprimerUtilisateur(u: User) {
     // const confirmBox = new ConfirmBoxInitializer();
     this.dialogRef = this.dialog.open(SupprimerElementDialogComponent, { disableClose: false });
-    this.dialogRef.componentInstance.elementName = " l'utilisateur " + u.nom + " " + u.prenom+", rôle:"+u.role;
+    this.dialogRef.componentInstance.elementName = " l'utilisateur " + u.nom + " " + u.prenom + ", rôle:" + u.role;
     this.dialogRef.afterClosed().subscribe(
       result => {
         if (result) {
           this.userService.delete(u.id).subscribe(
             {
-              next: () => { console.log("Suppression réussie"); 
-              window.location.reload();},
-              error: (e) => { console.log(e);
+              next: () => {
+                this.toastEvokeService.success('Sauvegarde Réussie', 'La sauvegarde a été effectuée').subscribe();
+              },
+              error: (e) => {
+                this.toastEvokeService.danger('Erreur', 'Une erreur est survenue: ' + e.error.message)
+
               }
             })
         }
@@ -110,9 +114,12 @@ export class UserComponent implements OnInit {
         if (result) {
           this.etudiantService.delete(e.id).subscribe(
             {
-              next: () => { console.log("Suppression réussie"); 
-              window.location.reload();},
-              error: (e) => { console.log(e);
+              next: () => {
+                console.log("Suppression réussie");
+                window.location.reload();
+              },
+              error: (e) => {
+                console.log(e);
               }
             })
         }
