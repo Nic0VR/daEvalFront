@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { ToastEvokeService } from '@costlydeveloper/ngx-awesome-popup';
 import { Formateur } from 'src/app/_models/formateur';
 import { Formation } from 'src/app/_models/formation';
 import { Intervention } from 'src/app/_models/intervention';
@@ -22,11 +23,11 @@ export class InterventionComponent implements OnInit {
   currentPage: number = 1;
   itemsPerPage: number = 5;
   totalItems: number = 0;
-  interventions?:Intervention[];
-  formulaireAjoutVisible:boolean=false;
-  promotions?:Promotion[];
-  formations?:Formation[];
-  formateurs?:Formateur[];
+  interventions?: Intervention[];
+  formulaireAjoutVisible: boolean = false;
+  promotions?: Promotion[];
+  formations?: Formation[];
+  formateurs?: Formateur[];
   dialogRef?: MatDialogRef<SupprimerElementDialogComponent>;
   ajoutFormulaire: FormGroup = new FormGroup({
     formation: new FormControl("", Validators.required),
@@ -37,11 +38,13 @@ export class InterventionComponent implements OnInit {
 
   })
 
-  constructor(private interventionService:InterventionService,
-    private userService:UserService,
-    private promotionService:PromotionService,
-    private formationService:FormationService,
-    private dialog: MatDialog) { }
+  constructor(private interventionService: InterventionService,
+    private userService: UserService,
+    private promotionService: PromotionService,
+    private formationService: FormationService,
+    private dialog: MatDialog,
+    private toastEvokeService: ToastEvokeService,
+  ) { }
 
   ngOnInit(): void {
     this.rechercherInterv();
@@ -50,22 +53,22 @@ export class InterventionComponent implements OnInit {
     this.chargerPromo();
   }
 
-  
 
-  chargerFormateurs(){
+
+  chargerFormateurs() {
     this.formateurs = this.userService.Formateurs;
   }
 
-  chargerPromo(){
+  chargerPromo() {
     this.promotionService.getAll().subscribe({
-      next:(v)=>{this.promotions=v},
-      error:(e)=>{console.log(e);},
-      complete:()=>{}
+      next: (v) => { this.promotions = v },
+      error: (e) => { console.log(e); },
+      complete: () => { }
     })
   }
 
-  chargerFormations(){
-    this.formations=this.formationService.Formations;
+  chargerFormations() {
+    this.formations = this.formationService.Formations;
   }
 
   pageChanged(page: number) {
@@ -73,63 +76,71 @@ export class InterventionComponent implements OnInit {
     this.rechercherInterv();
   }
 
-  rechercherInterv(){
-    this.interventionService.findAllPage(this.currentPage,this.itemsPerPage,"").subscribe({
-      next:(v)=>{
-        this.interventions=v;
+  rechercherInterv() {
+    this.interventionService.findAllPage(this.currentPage, this.itemsPerPage, "").subscribe({
+      next: (v) => {
+        this.interventions = v;
       },
-      error:(e)=>{
+      error: (e) => {
         console.log(e);
       },
-      complete:()=>{
+      complete: () => {
       }
     })
 
     this.interventionService.count("").subscribe({
-      next:(v)=>{this.totalItems = v.nb},
-      error:(e)=>{console.log(e);},
-      complete:()=>{}
+      next: (v) => { this.totalItems = v.nb },
+      error: (e) => { console.log(e); },
+      complete: () => { }
     })
   }
 
 
   annulerAjout() {
-    this.formulaireAjoutVisible=false;
+    this.formulaireAjoutVisible = false;
     this.ajoutFormulaire.reset();
   }
 
-  addInterv(){
-    let interv:Intervention = new Intervention();
+  addInterv() {
+    let interv: Intervention = new Intervention();
     interv.formateurId = this.ajoutFormulaire.value['formateur'];
     interv.formationId = this.ajoutFormulaire.value['formation'];
     interv.promotionId = this.ajoutFormulaire.value['promotion'];
     interv.dateDebut = this.ajoutFormulaire.value['dateDebut'];
     interv.dateFin = this.ajoutFormulaire.value['dateFin'];
     this.interventionService.save(interv).subscribe({
-      next:(v)=>{},
-      error:(e)=>{},
-      complete:()=>{window.location.reload()}
+      next: (v) => {
+        this.toastEvokeService.success('Succès', "Opération réussie").subscribe()
+      },
+      error: (e) => {
+        this.toastEvokeService.danger('Erreur', "Erreur: " + e.error.message).subscribe()
+
+      },
+      complete: () => {
+        this.rechercherInterv();
+      }
     })
   }
-  
-  afficherForm(){
-    this.formulaireAjoutVisible=true;
+
+  afficherForm() {
+    this.formulaireAjoutVisible = true;
   }
 
-  deleteInterv(id:number){
+  deleteInterv(id: number) {
     this.dialogRef = this.dialog.open(SupprimerElementDialogComponent, { disableClose: false });
-    this.dialogRef.componentInstance.elementName = " l'intervention " ;
+    this.dialogRef.componentInstance.elementName = " l'intervention ";
     this.dialogRef.afterClosed().subscribe(
       result => {
         if (result) {
           this.interventionService.delete(id).subscribe(
             {
               next: () => {
-                console.log("Suppression réussie");
-                window.location.reload();
+                this.toastEvokeService.success('Succès', "Opération réussie").subscribe()
+                this.rechercherInterv()
               },
               error: (e) => {
-                console.log(e);
+                this.toastEvokeService.danger('Erreur', "Erreur: " + e.error.message).subscribe()
+
               }
             })
         }

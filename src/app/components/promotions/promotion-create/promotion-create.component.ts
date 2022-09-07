@@ -1,5 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { ToastEvokeService } from '@costlydeveloper/ngx-awesome-popup';
 import { Promotion } from 'src/app/_models/promotion';
 import { TitreProfessionnel } from 'src/app/_models/titre-professionnel';
 import { Ville } from 'src/app/_models/ville';
@@ -31,7 +33,10 @@ export class PromotionCreateComponent implements OnInit {
   })
   constructor(private titreProService: TitreProfessionnelService,
     private villeService:VilleService,
+    private toastEvokeService:ToastEvokeService,
     private promotionService: PromotionService,
+    private router:Router,
+    
   ) { }
 
   ngOnInit(): void {
@@ -57,9 +62,17 @@ export class PromotionCreateComponent implements OnInit {
     p.villeId= this.ajouterPromoFormulaire.get('ville')?.value;
     p.titreProfessionnelId= this.ajouterPromoFormulaire.get('titrePro')?.value;
     this.promotionService.save(p).subscribe({
-      next:(v)=>{console.log("sauvegarde effectuée");},
-      error:(e)=>{console.log(e);},
-      complete:()=>{window.location.reload()}
+      next:(v)=>{
+        this.toastEvokeService.success('Succès', "Opération réussie").subscribe()
+
+      },
+      error:(e)=>{
+        this.toastEvokeService.danger('Erreur', "Erreur: " + e.error.message).subscribe()
+
+      },
+      complete:()=>{
+        this.router.navigateByUrl('/main/promotions')
+      }
     })
   }
 

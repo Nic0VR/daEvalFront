@@ -11,6 +11,9 @@ import { TitreProfessionnelService } from 'src/app/_services/titre-professionnel
 import { TitreProfessionnel } from 'src/app/_models/titre-professionnel';
 import { VilleService } from 'src/app/_services/ville.service';
 import { Ville } from 'src/app/_models/ville';
+import { PositionnementService } from 'src/app/_services/positionnement.service';
+import { ToastEvokeService } from '@costlydeveloper/ngx-awesome-popup';
+import { EvaluationService } from 'src/app/_services/evaluation.service';
 
 @Component({
   selector: 'app-promotions',
@@ -33,6 +36,9 @@ export class PromotionsComponent implements OnInit {
     private userService: UserService,
     private dialog: MatDialog,
     private promoService: PromotionService,
+    private positionnementService:PositionnementService,
+    private toastEvokeService:ToastEvokeService,
+    private evalService:EvaluationService
   ) {
     this.searchForm = this.formBuilder.group({
       searchExpression: ['']
@@ -53,24 +59,14 @@ export class PromotionsComponent implements OnInit {
 
   getPromoList() {
     this.promoService.countPromotion(this.searchExpression).pipe(first()).subscribe(countDto => {
-      console.log("count dto :" + countDto.nb);
 
       this.totalItems = countDto.nb
     })
 
     this.promoService.getAllPage(this.currentPage, this.itemsPerPage, this.searchExpression).pipe(first()).subscribe(promos => {
-      console.log(promos);
 
       this.promos = promos;
-      // Inutile maintenant que les pipes ville et titrePro fonctionnement sans bug
-      // this.promos.forEach((p)=>{
-      //   this.villeService.getById(p.villeId).subscribe({
-      //     next:(v)=>{p.villeNom=v.nom}
-      //   });
-      //   this.titreProService.findById(p.titreProfessionnelId).subscribe({
-      //     next:(v)=>{p.titreProNom=v.titre.split('(')[0].split('Titre professionnel')[1];}
-      //   })
-      // })
+
     })
   }
 
@@ -97,9 +93,13 @@ export class PromotionsComponent implements OnInit {
         if (result) {
           this.promoService.delete(p.id).subscribe(
             {
-              next: () => { console.log("Suppression réussie"); 
-              window.location.reload();},
-              error: (e) => { console.log(e);
+              next: () => {
+                this.toastEvokeService.success('Succès', "Opération réussie").subscribe()
+                this.getPromoList();
+              },
+              error: (e) => { 
+                this.toastEvokeService.danger('Erreur', "Erreur: " + e.error.message).subscribe()
+
               }
             })
         }
@@ -110,6 +110,37 @@ export class PromotionsComponent implements OnInit {
 
   cacherFormulaireAjout(){
     this.formulaireAjoutVisible=false;
+  }
+
+
+  GetPdfPos(id:number){
+    this.positionnementService.generateGrillePromo(id).subscribe({
+      next:(data) => {
+      
+        let downloadURL2 = window.URL.createObjectURL(data);
+        let link2 = document.createElement('a');
+        link2.href = downloadURL2;
+        link2.download = "GrillePositionnementPromo.pdf";
+        link2.click();
+      },
+      error:(e)=>{},
+      complete:()=>{}
+    })
+  }
+
+  GetZipEval(id:number){
+    this.evalService.generateBulletinByPromo(id).subscribe({
+      next:(data) => {
+      
+        let downloadURL2 = window.URL.createObjectURL(data);
+        let link2 = document.createElement('a');
+        link2.href = downloadURL2;
+        link2.download = "evalsPromo"+id+".zip";
+        link2.click();
+      },
+      error:(e)=>{},
+      complete:()=>{}
+    })
   }
 
 }

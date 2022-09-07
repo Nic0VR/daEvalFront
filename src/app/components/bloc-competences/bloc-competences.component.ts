@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { ToastEvokeService } from '@costlydeveloper/ngx-awesome-popup';
 import { BlocCompetence } from 'src/app/_models/bloc-competence';
 import { TitreProfessionnel } from 'src/app/_models/titre-professionnel';
 import { BlocCompetenceService } from 'src/app/_services/bloc-competence.service';
@@ -41,7 +42,9 @@ export class BlocCompetencesComponent implements OnInit {
     private formbuilder: FormBuilder,
     private titreProService: TitreProfessionnelService,
     private competenceService: CompetenceService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private toastEvokeService: ToastEvokeService,
+
   ) {
 
     this.searchForm = this.formbuilder.group({
@@ -105,9 +108,20 @@ export class BlocCompetencesComponent implements OnInit {
     bc.description = this.ajouterBlocCompetenceFormulaire.value['description'];
     bc.titreProfessionnelId = this.ajouterBlocCompetenceFormulaire.value['titreProId'];
     this.blocCompetenceService.save(bc).subscribe({
-      next: (v) => { },
-      error: (e) => { console.log(e); },
-      complete: () => { window.location.reload() }
+      next: (v) => {
+        this.toastEvokeService.success('Succès', "Opération réussie").subscribe();
+        this.formulaireAjoutVisible=false;
+        this.ajouterBlocCompetenceFormulaire.reset();
+
+       },
+      error: (e) => { 
+        this.toastEvokeService.danger('Erreur', "Erreur: " + e.error.message).subscribe()
+
+       },
+      complete: () => {
+        this.chargerBlocComp();
+
+       }
     })
   }
 
@@ -120,11 +134,13 @@ export class BlocCompetencesComponent implements OnInit {
           this.blocCompetenceService.delete(b.id).subscribe(
             {
               next: () => {
-                console.log("Suppression réussie");
-                window.location.reload();
+                this.toastEvokeService.success('Succès', "Opération réussie").subscribe()
+
+                this.chargerBlocComp();
+
               },
               error: (e) => {
-                console.log(e);
+                this.toastEvokeService.danger('Erreur', "Erreur: " + e.error.message).subscribe()
               }
             })
         }

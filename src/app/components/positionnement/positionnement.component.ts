@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { ToastEvokeService } from '@costlydeveloper/ngx-awesome-popup';
 import { Niveau } from 'src/app/_models/niveau';
 import { Positionnement } from 'src/app/_models/positionnement';
 import { NiveauService } from 'src/app/_services/niveau.service';
@@ -23,6 +24,8 @@ export class PositionnementComponent implements OnInit {
   constructor(private positionnementService:PositionnementService,
     private niveauService: NiveauService,
     private dialog: MatDialog,
+    private toastEvokeService: ToastEvokeService,
+    
     ) { }
 
   ngOnInit(): void {
@@ -40,7 +43,7 @@ export class PositionnementComponent implements OnInit {
 
     this.positionnementService.findAllPage(this.currentPage,this.itemsPerPage,this.search).subscribe({
       next: (v) => {
-        this.positionnements = v; console.log(v);
+        this.positionnements = v; 
       },
       error: (e) => { console.log(e); },
       complete: () => {
@@ -70,11 +73,13 @@ export class PositionnementComponent implements OnInit {
           this.positionnementService.delete(id).subscribe(
             {
               next: () => {
-                // console.log("Suppression réussie");
-                window.location.reload();
+                this.toastEvokeService.success('Succès', "Opération réussie").subscribe()
+
+                this.chargerPositionnements();
               },
               error: (e) => {
-                console.log(e);
+                this.toastEvokeService.danger('Erreur', "Erreur: " + e.error.message).subscribe()
+
               }
             })
         }

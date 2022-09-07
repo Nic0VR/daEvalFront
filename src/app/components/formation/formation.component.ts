@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { ToastEvokeService } from '@costlydeveloper/ngx-awesome-popup';
 import { Formation } from 'src/app/_models/formation';
 import { FormationService } from 'src/app/_services/formation.service';
+import { SupprimerElementDialogComponent } from '../dialogs/supprimer-element-dialog/supprimer-element-dialog.component';
 
 @Component({
   selector: 'app-formation',
@@ -15,9 +18,14 @@ export class FormationComponent implements OnInit {
   itemsPerPage: number = 5;
   totalItems: number = 0;
   search: string = "";
-  formulaireAjoutVisible:boolean=false;
+  formulaireAjoutVisible: boolean = false;
+  dialogRef?: MatDialogRef<SupprimerElementDialogComponent>;
+
   constructor(
     private formationService: FormationService,
+    private toastEvokeService: ToastEvokeService,
+    private dialog: MatDialog,
+
   ) { }
 
 
@@ -26,7 +34,7 @@ export class FormationComponent implements OnInit {
     slug: new FormControl("", Validators.required),
     duree: new FormControl("", Validators.required),
     objectifsPedagogiques: new FormControl("", Validators.required),
-    
+
   })
 
 
@@ -52,30 +60,63 @@ export class FormationComponent implements OnInit {
 
 
 
-  annulerRechercher(){
-    this.search="";
+  annulerRechercher() {
+    this.search = "";
     this.rechercherFormations();
   }
 
-  afficherForm(){
-    this.formulaireAjoutVisible=true;
+  afficherForm() {
+    this.formulaireAjoutVisible = true;
   }
 
-  addFormation(){
-    let formation:Formation = new Formation();
+  addFormation() {
+    let formation: Formation = new Formation();
     formation.titre = this.ajoutFormulaire.value['titre'];
     formation.slug = this.ajoutFormulaire.value['slug'];
     formation.duree = this.ajoutFormulaire.value['duree'];
     formation.objectifsPedagogiques = this.ajoutFormulaire.value['objectifsPedagogiques'];
     this.formationService.save(formation).subscribe({
-      next:(v)=>{},
-      error:(e)=>{console.log(e);},
-      complete:()=>{window.location.reload()}
+      next: (v) => {
+        this.toastEvokeService.success('Succès', "Opération réussie").subscribe()
+        this.formulaireAjoutVisible=false;
+        this.ajoutFormulaire.reset();
+      },
+      error: (e) => {
+        this.toastEvokeService.danger('Erreur', "Erreur: " + e.error.message).subscribe()
+
+      },
+      complete: () => { this.rechercherFormations() }
     })
   }
 
+  supprimerFormation(f: Formation) {
+
+    this.dialogRef = this.dialog.open(SupprimerElementDialogComponent, { disableClose: false });
+    this.dialogRef.componentInstance.elementName = " la formation " + f.titre;
+    this.dialogRef.afterClosed().subscribe(
+      result => {
+        if (result) {
+          this.formationService.delete(f.id).subscribe({
+            next: (v) => {
+              this.toastEvokeService.success('Succès', "Opération réussie").subscribe()
+
+            },
+            error: (e) => {
+              this.toastEvokeService.danger('Erreur', "Erreur: " + e.error.message).subscribe()
+
+            },
+            complete: () => {
+              this.rechercherFormations()
+            }
+          }
+
+          )
+        }
+      })
+  }
+
   annulerAjout() {
-    this.formulaireAjoutVisible=false;
+    this.formulaireAjoutVisible = false;
     this.ajoutFormulaire.reset();
   }
 

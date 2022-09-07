@@ -10,6 +10,7 @@ import { TitreProfessionnelService } from 'src/app/_services/titre-professionnel
 import { first } from 'rxjs';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { SupprimerElementDialogComponent } from '../../dialogs/supprimer-element-dialog/supprimer-element-dialog.component';
+import { ToastEvokeService } from '@costlydeveloper/ngx-awesome-popup';
 
 @Component({
   selector: 'app-promotion-details',
@@ -43,6 +44,8 @@ export class PromotionDetailsComponent implements OnInit {
     private etudiantService: EtudiantService,
     private formBuilder: FormBuilder,
     private dialog: MatDialog,
+    private toastEvokeService:ToastEvokeService,
+
   ) {
 
     this.searchForm = this.formBuilder.group({
@@ -131,12 +134,16 @@ export class PromotionDetailsComponent implements OnInit {
     this.promotionService.update(p!).subscribe(
       {
         next: (v) => {
-          console.log(v);
+          this.toastEvokeService.success('Succès', "Opération réussie").subscribe()
+          
         },
         error: (e) => {
-          console.error(e);
+          this.toastEvokeService.danger('Erreur', "Erreur: " + e.error.message).subscribe()
+
         },
-        complete:()=>{window.location.reload()}
+        complete:()=>{
+          this.getEtudiantsInPromo(this.currentPromo!.id);
+        }
       })
   }
 
@@ -168,9 +175,18 @@ export class PromotionDetailsComponent implements OnInit {
           if (result) {
           currentPromo?.etudiantsId.splice(index!,1);
           this.promotionService.update(currentPromo!).subscribe({
-            next:(v)=>{this.currentPromo=v},
-            error:(e)=>{console.log(e)},
-            complete:()=>{window.location.reload()}
+            next:(v)=>{
+          this.toastEvokeService.success('Succès', "Opération réussie").subscribe()
+              
+              this.currentPromo=v;
+            },
+            error:(e)=>{
+          this.toastEvokeService.danger('Erreur', "Erreur: " + e.error.message).subscribe()
+              
+            },
+            complete:()=>{
+              this.getEtudiantsInPromo(currentPromo!.id);
+            }
           })
           }
           this.dialogRef = undefined;

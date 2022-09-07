@@ -1,11 +1,12 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastEvokeService } from '@costlydeveloper/ngx-awesome-popup';
 import { BlocCompetence } from 'src/app/_models/bloc-competence';
 import { TitreProfessionnel } from 'src/app/_models/titre-professionnel';
 import { BlocCompetenceService } from 'src/app/_services/bloc-competence.service';
 import { TitreProfessionnelService } from 'src/app/_services/titre-professionnel.service';
-
+import { Location } from '@angular/common'
 @Component({
   selector: 'app-bloc-modify',
   templateUrl: './bloc-modify.component.html',
@@ -34,7 +35,8 @@ export class BlocModifyComponent implements OnInit {
     private blocCompService: BlocCompetenceService,
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
-    private router: Router
+    private toastEvokeService: ToastEvokeService,
+    private location: Location
   ) {
     this.searchForm = this.formBuilder.group({
       searchExpression: ['']
@@ -62,9 +64,14 @@ export class BlocModifyComponent implements OnInit {
     blocToSubmit.titreProfessionnelId = this.modifierBlocCompetenceFormulaire.value['titreProId'];
 
     this.blocCompService.save(blocToSubmit).subscribe({
-      next: (v) => { this.router.navigateByUrl('/main/blocComp') },
+      next: (v) => {
+        this.toastEvokeService.success('Succès', "Opération réussie").subscribe()
+        this.location.back();
+        //  this.router.navigateByUrl('/main/blocComp') ;
+        },
       error: (e) => {
-        console.log(e);
+        this.toastEvokeService.danger('Erreur', "Erreur: " + e.error.message).subscribe()
+
       }
     })
   }

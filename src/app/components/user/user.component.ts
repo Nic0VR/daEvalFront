@@ -44,13 +44,13 @@ export class UserComponent implements OnInit {
 
   getUsersList() {
     this.userService.countUsers(this.searchExpression).pipe(first()).subscribe(countDto => {
-      console.log("count dto :" + countDto.nb);
+    
 
       this.totalItems = countDto.nb
     })
 
     this.userService.getAll(this.currentPage, this.itemsPerPage, this.searchExpression).pipe(first()).subscribe(users => {
-      console.log(users);
+
 
       this.users = users;
       // users[0].getRole.call() 

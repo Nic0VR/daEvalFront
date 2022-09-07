@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
+import { ToastEvokeService } from '@costlydeveloper/ngx-awesome-popup';
 import { Epreuve } from 'src/app/_models/epreuve';
 import { Etudiant } from 'src/app/_models/etudiant';
 import { Evaluation } from 'src/app/_models/evaluation';
@@ -47,6 +48,7 @@ export class EpreuveComponent implements OnInit {
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
     private dialog: MatDialog,
+    private toastEvokeService: ToastEvokeService,
 
   ) {
     this.searchForm = this.formBuilder.group({
@@ -71,8 +73,7 @@ export class EpreuveComponent implements OnInit {
     this.epreuveService.getById(id).subscribe({
       next: (v) => {
         this.currentEpreuve = v;
-        console.log("epr ok");
-        console.log(v);
+       
 
       },
       error: (e) => { console.log(e); }
@@ -141,11 +142,17 @@ export class EpreuveComponent implements OnInit {
     ev.note = this.ajouterEvalFormulaire.value['note'];
     ev.etudiantId = this.ajouterEvalFormulaire.value['etudiantId'];
     this.evalService.save(ev).subscribe({
-      next: (v) => { },
+      next: (v) => {
+        this.toastEvokeService.success('Succès', "Opération réussie").subscribe()
+
+       },
       error: (e) => {
-        console.log(e);
+        this.toastEvokeService.danger('Erreur', "Erreur: " + e.error.message).subscribe()
+
       },
-      complete: () => { window.location.reload() }
+      complete: () => { 
+        this.chargerEvals(this.currentEpreuve!.id);
+      }
     })
   }
 
@@ -157,9 +164,14 @@ export class EpreuveComponent implements OnInit {
         if (result) {
           this.evalService.delete(evalu.id).subscribe(
             {
-              next: () => { console.log("Suppression réussie"); 
-              window.location.reload();},
-              error: (e) => { console.log(e);
+              next: () => {
+                this.toastEvokeService.success('Succès', "Opération réussie").subscribe()
+                this.chargerEvals(this.currentEpreuve!.id);
+
+            },
+              error: (e) => { 
+                this.toastEvokeService.danger('Erreur', "Erreur: " + e.error.message).subscribe()
+
               }
             })
         }
@@ -175,7 +187,8 @@ export class EpreuveComponent implements OnInit {
     this.dialogRefModifEval.afterClosed().subscribe(
       result => {
         if (result) {
-         window.location.reload();
+          this.toastEvokeService.success('Succès', "Opération réussie").subscribe()
+          this.chargerEvals(this.currentEpreuve!.id);
         }
         this.dialogRefModifEval = undefined;
       }

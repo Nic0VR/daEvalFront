@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Promotion } from '../_models/promotion';
-import { BehaviorSubject, map } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 import { Etudiant } from '../_models/etudiant';
 @Injectable({
   providedIn: 'root'
@@ -73,4 +73,7 @@ export class PromotionService {
   getAllPromosContainingEtudiant(id:number){
     return this.httpClient.get<Promotion[]>(`${environment.apiUrl}/api/promotion/ctn/${id}`)
   }
+
+
+
 }

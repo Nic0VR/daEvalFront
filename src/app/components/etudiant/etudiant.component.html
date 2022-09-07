@@ -33,7 +33,7 @@
         <!-- <a *ngIf="u.role!='ETUDIANT'" [routerLink]="'/main/users/modify/'+u.id"><span class="material-icons">edit</span></a> -->
         <a *ngIf="u.role=='ETUDIANT'" [routerLink]="'/main/etudiant/modify/'+u.id"><span class="material-icons">edit</span></a>
 
-        <a  href="javascript:void;" (click)="supprimerEtudiant(u)" ><span class="material-icons">delete</span></a>
+        <a  href="javascript:;" (click)="supprimerEtudiant(u)" ><span class="material-icons">delete</span></a>
       </td>
     </tr>
   </tbody>

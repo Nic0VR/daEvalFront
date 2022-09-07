@@ -5,10 +5,10 @@
             <span>Nom: {{currentEtudiant.nom}}</span><br>
             <span>Prénom: {{currentEtudiant.prenom}}</span><br>
             <span>Email: {{currentEtudiant.email}}</span><br>
-
+            
         </div>
-        <button  type="button" (click)="getGrillePos()">Grille de positionnement</button>
-  
+
+        <a href="javascript:;" (click)="getGrillePos()" >Grille de positionnement : <span class="material-icons">picture_as_pdf</span></a>
     </div>
 
     <table class="table table-striped" *ngIf="promos && promos.length; else no_promos">
@@ -34,8 +34,8 @@
                             class="material-icons">visibility</span></a>
                     <!-- <a *ngIf="u.role!='ETUDIANT'" [routerLink]="'/main/users/modify/'+u.id"><span class="material-icons">edit</span></a> -->
                     <!-- <a><span class="material-icons">edit</span></a> -->
-
-                    <a>      <button type="button" (click)="GetBulletin(promo.id)">Bulletin </button></a>
+                    <a href="javascript:;" (click)="GetBulletin(promo.id)" > <span class="material-icons">picture_as_pdf</span></a>
+                 
                 </td>
 
             </tr>

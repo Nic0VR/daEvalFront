@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
+import { ToastEvokeService } from '@costlydeveloper/ngx-awesome-popup';
 import { Formation } from 'src/app/_models/formation';
 import { Intervention } from 'src/app/_models/intervention';
 import { Promotion } from 'src/app/_models/promotion';
@@ -39,7 +40,9 @@ export class UserDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private dialog: MatDialog,
     private promotionService:PromotionService,
-    private formationService:FormationService,) { }
+    private formationService:FormationService,
+    private toastEvokeService: ToastEvokeService,
+    ) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -68,11 +71,12 @@ export class UserDetailsComponent implements OnInit {
           this.intervService.delete(id).subscribe(
             {
               next: () => {
-                // console.log("Suppression réussie");
-                window.location.reload();
+                this.toastEvokeService.success('Succès', "Opération réussie").subscribe()
+                this.chargerInterventions(this.currentUser!.id);
               },
               error: (e) => {
-                console.log(e);
+                this.toastEvokeService.danger('Erreur', "Erreur: " + e.error.message).subscribe()
+
               }
             })
         }
@@ -118,9 +122,15 @@ export class UserDetailsComponent implements OnInit {
     interv.dateDebut = this.ajoutFormulaire.value['dateDebut'];
     interv.dateFin = this.ajoutFormulaire.value['dateFin'];
     this.intervService.save(interv).subscribe({
-      next:(v)=>{},
-      error:(e)=>{},
-      complete:()=>{window.location.reload()}
+      next:(v)=>{
+        this.toastEvokeService.success('Succès', "Opération réussie").subscribe()
+
+      },
+      error:(e)=>{
+        this.toastEvokeService.danger('Erreur', "Erreur: " + e.error.message).subscribe()
+
+      },
+      complete:()=>{this.chargerInterventions(this.currentUser!.id)}
     })
   }
   

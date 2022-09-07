@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
+import { ToastEvokeService } from '@costlydeveloper/ngx-awesome-popup';
 import { BlocCompetence } from 'src/app/_models/bloc-competence';
 import { TitreProfessionnel } from 'src/app/_models/titre-professionnel';
 import { BlocCompetenceService } from 'src/app/_services/bloc-competence.service';
@@ -35,27 +36,29 @@ export class TitreProDetailsComponent implements OnInit {
     private titreProService: TitreProfessionnelService,
     private competenceService: CompetenceService,
     private dialog: MatDialog,
-    private route:ActivatedRoute) {
+    private route: ActivatedRoute,
+    private toastEvokeService: ToastEvokeService,
+  ) {
 
   }
 
   ngOnInit(): void {
-    this.route.params.subscribe(params=>{
-      const id= params['id'];
+    this.route.params.subscribe(params => {
+      const id = params['id'];
       this.chargerCurrentTitre(id);
       this.chargerBlocComp(id);
     })
   }
 
 
-  chargerCurrentTitre(id:number){
+  chargerCurrentTitre(id: number) {
     this.titreProService.findById(id).subscribe({
-      next:(v)=>{this.currentTitre=v;},
-      error:(e)=>{console.log(e);}
+      next: (v) => { this.currentTitre = v; },
+      error: (e) => { console.log(e); }
     })
   }
 
-  chargerBlocComp(id:number) {
+  chargerBlocComp(id: number) {
 
     this.blocCompetenceService.findByTitreProId(id).subscribe({
       next: (v) => {
@@ -91,9 +94,15 @@ export class TitreProDetailsComponent implements OnInit {
     // bc.titreProfessionnelId = this.ajouterBlocCompetenceFormulaire.value['titreProId'];
     bc.titreProfessionnelId = this.currentTitre?.id!;
     this.blocCompetenceService.save(bc).subscribe({
-      next: (v) => { },
-      error: (e) => { console.log(e); },
-      complete: () => { window.location.reload() }
+      next: (v) => {
+        this.toastEvokeService.success('Succès', "Opération réussie").subscribe()
+        this.ajouterBlocCompetenceFormulaire.reset();
+        this.formulaireAjoutVisible=false;
+      },
+      error: (e) => {
+        this.toastEvokeService.danger('Erreur', "Erreur: " + e.error.message).subscribe()
+      },
+      complete: () => { this.chargerBlocComp(this.currentTitre!.id) }
     })
   }
 
@@ -106,11 +115,12 @@ export class TitreProDetailsComponent implements OnInit {
           this.blocCompetenceService.delete(b.id).subscribe(
             {
               next: () => {
-                console.log("Suppression réussie");
-                window.location.reload();
+                this.toastEvokeService.success('Succès', "Opération réussie").subscribe()
+                this.chargerBlocComp(this.currentTitre!.id);
               },
               error: (e) => {
-                console.log(e);
+                this.toastEvokeService.danger('Erreur', "Erreur: " + e.error.message).subscribe()
+
               }
             })
         }

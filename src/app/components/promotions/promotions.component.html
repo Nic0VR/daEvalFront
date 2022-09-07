@@ -45,6 +45,9 @@
         <a [routerLink]="'/main/promotions/details/'+p.id" ><span class="material-icons">visibility</span></a>
         <a [routerLink]="'/main/promotions/modify/'+p.id"><span class="material-icons">edit</span></a>
         <a href="javascript:" (click)="supprimerPromotion(p)"><span class="material-icons">delete</span></a>
+        <a href="javascript:;" (click)="GetPdfPos(p.id)" ><span>Grille Positionnement </span></a>
+        <a href="javascript:;" (click)="GetZipEval(p.id)" ><span>ZIP evals</span> </a>
+
       </td>
     </tr>
   </tbody>

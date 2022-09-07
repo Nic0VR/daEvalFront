@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastEvokeService } from '@costlydeveloper/ngx-awesome-popup';
 import { Promotion } from 'src/app/_models/promotion';
 import { TitreProfessionnel } from 'src/app/_models/titre-professionnel';
 import { Ville } from 'src/app/_models/ville';
@@ -23,7 +24,9 @@ export class PromotionModifyComponent implements OnInit {
     private villeService:VilleService,
     private promoService:PromotionService,
     private router:Router,
-    private route:ActivatedRoute) { }
+    private route:ActivatedRoute,
+    private toastEvokeService:ToastEvokeService,
+    ) { }
 
   modifierPromoFormulaire: FormGroup = new FormGroup({
     dateDebut: new FormControl("", Validators.required),
@@ -48,8 +51,14 @@ export class PromotionModifyComponent implements OnInit {
     p.titreProfessionnelId= this.modifierPromoFormulaire.value['titrePro'];
     p.villeId= this.modifierPromoFormulaire.value['ville'];
     this.promoService.update(p).subscribe({
-      next:(v)=>{console.log(v);},
-      error:(e)=>{console.log(e);},
+      next:(v)=>{
+        this.toastEvokeService.success('Succès', "Opération réussie").subscribe()
+
+      },
+      error:(e)=>{
+        this.toastEvokeService.danger('Erreur', "Erreur: " + e.error.message).subscribe()
+
+      },
       complete:()=>{
         this.router.navigateByUrl('/main/promotions/details/'+this.currentPromo?.id)
       }

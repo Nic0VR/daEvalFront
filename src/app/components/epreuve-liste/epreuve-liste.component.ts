@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
+import { ToastEvokeService } from '@costlydeveloper/ngx-awesome-popup';
 import { BlocCompetence } from 'src/app/_models/bloc-competence';
 import { Competence } from 'src/app/_models/competence';
 import { Epreuve } from 'src/app/_models/epreuve';
@@ -46,7 +47,9 @@ export class EpreuveListeComponent implements OnInit {
     private route: ActivatedRoute,
     private dialog: MatDialog,
     private epreuveService: EpreuveService,
-    private blocCompetenceService : BlocCompetenceService,) { }
+    private blocCompetenceService : BlocCompetenceService,
+    private toastEvokeService: ToastEvokeService,
+    ) { }
 
   ngOnInit(): void {
 
@@ -64,11 +67,13 @@ export class EpreuveListeComponent implements OnInit {
           this.epreuveService.delete(ep.id).subscribe(
             {
               next: () => {
-                console.log("Suppression réussie");
-                window.location.reload();
+                this.toastEvokeService.success('Succès', "Opération réussie").subscribe()
+
+                this.chargerEpreuves()
               },
               error: (e) => {
-                console.log(e);
+                this.toastEvokeService.danger('Erreur', "Erreur: " + e.error.message).subscribe()
+
               }
             })
         }
@@ -97,7 +102,8 @@ export class EpreuveListeComponent implements OnInit {
     this.dialogRefModifEpr.afterClosed().subscribe(
       result => {
         if (result) {
-          window.location.reload();
+          this.toastEvokeService.success('Succès', "Opération réussie").subscribe()
+          this.chargerEpreuves();
         }
         this.dialogRefSup = undefined;
       }
@@ -120,8 +126,14 @@ export class EpreuveListeComponent implements OnInit {
       e.description = this.ajouterEpreuveFormulaire.value['description'];
       e.type = this.ajouterEpreuveFormulaire.value['type'];
       this.epreuveService.save(e).subscribe({
-        next: (v) => { window.location.reload() },
-        error: (e) => { console.log(e); }
+        next: (v) => { 
+          this.toastEvokeService.success('Succès', "Opération réussie").subscribe()
+
+         },
+        error: (e) => { 
+          this.toastEvokeService.danger('Erreur', "Erreur: " + e.error.message).subscribe()
+
+         }
       })
     }
    

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
+import { ToastEvokeService } from '@costlydeveloper/ngx-awesome-popup';
 import { Etudiant } from 'src/app/_models/etudiant';
 import { Intervention } from 'src/app/_models/intervention';
 import { Niveau } from 'src/app/_models/niveau';
@@ -41,7 +42,9 @@ export class DetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private interventionService: InterventionService,
     private dialog: MatDialog,
-    private etudiantService: EtudiantService) { }
+    private toastEvokeService: ToastEvokeService,
+    private etudiantService: EtudiantService,
+    ) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -128,9 +131,15 @@ export class DetailsComponent implements OnInit {
     p.niveauFinId = this.ajoutFormulaire.value['niveauFin'];
     p.interventionId = this.currentInterv!.id;
     this.positionnementService.save(p).subscribe({
-      next: (v) => { },
-      error: (e) => { },
-      complete: () => { window.location.reload() }
+      next: (v) => {
+        this.toastEvokeService.success('Succès', "Opération réussie").subscribe();
+        this.chargerPositionnements(p.interventionId);
+       },
+      error: (e) => {
+        this.toastEvokeService.danger('Erreur', "Erreur: " + e.error.message).subscribe()
+
+       },
+      complete: () => {  }
     })
   }
 

@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { TitreProfessionnel } from '../_models/titre-professionnel';
 import { Ville } from '../_models/ville';
@@ -22,7 +22,7 @@ export class TitreProfessionnelService {
     let tp: TitreProfessionnel[];
     this.getAll().subscribe({
       next: (v) => {
-        tp = v; this.ListeTitreProSubject.next(tp); console.log("TP SERVICE INITIALISE");
+        tp = v; this.ListeTitreProSubject.next(tp); 
       }
     });
 
@@ -62,5 +62,10 @@ export class TitreProfessionnelService {
   update(TitreProfessionnel: TitreProfessionnel) {
     return this.httpClient.put<any>(`${environment.apiUrl}/api/titrePro`, TitreProfessionnel, this.httpHeaders)
       .pipe(map(savedTitreProfessionnel => { return savedTitreProfessionnel }));
+  }
+
+
+  getPdf(titreId:number):Observable<Blob> {
+    return this.httpClient.get(`${environment.apiUrl}/api/titrePro/${titreId}/fiche`,{responseType:'blob'})
   }
 }

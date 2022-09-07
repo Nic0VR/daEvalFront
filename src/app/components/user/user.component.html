@@ -29,7 +29,9 @@
       <td>{{u.role}}</td>
       <td>{{u.active?"Oui":"Non"}}</td>
       <td>
-        <a [routerLink]="'/main/users/details/'+u.id"><span class="material-icons">visibility</span></a>
+        <a [routerLink]="'/main/users/details/'+u.id" *ngIf="u.role=='FORMATEUR'"><span class="material-icons">visibility</span></a>
+        <a [routerLink]="'/main/etudiant/details/'+u.id" *ngIf="u.role=='ETUDIANT'"><span class="material-icons">visibility</span></a>
+
         <ng-container > </ng-container>
         <a *ngIf="u.role!='ETUDIANT'" [routerLink]="'/main/users/modify/'+u.id"><span class="material-icons">edit</span></a>
         <a *ngIf="u.role=='ETUDIANT'" [routerLink]="'/main/etudiant/modify/'+u.id"><span class="material-icons">edit</span></a>
