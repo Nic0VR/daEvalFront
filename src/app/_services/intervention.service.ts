@@ -25,11 +25,11 @@ export class InterventionService {
     this.ListeIntervSubject = new BehaviorSubject<Intervention[]>([]);
     let i: Intervention[];
 
-    this.findAll().subscribe({
-      next: (v) => {
-        i = v; this.ListeIntervSubject.next(i); console.log("interv SERVICE INITIALISE");
-      }
-    });
+    // this.().subscribe({
+    //   next: (v) => {
+    //     i = v; this.ListeIntervSubject.next(i); console.log("interv SERVICE INITIALISE");
+    //   }
+    // });
   }
 
   public get Interventions() {

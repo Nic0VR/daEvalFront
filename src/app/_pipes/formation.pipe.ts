@@ -6,17 +6,21 @@ import { FormationService } from '../_services/formation.service';
   name: 'formation'
 })
 export class FormationPipe implements PipeTransform {
-
-  constructor(private formationService:FormationService){
-    this.getFormationList();
+  
+  transform(value: any, ...args: any[]) {
+    throw new Error('Method not implemented.');
   }
 
-  formations!:Formation[];
-  transform(value: number): string|undefined {
-    return this.formations.find((f)=>f.id==value)?.titre
-  }
+  // constructor(private formationService:FormationService){
+  //   this.getFormationList();
+  // }
 
-  getFormationList(){
-    this.formations = this.formationService.Formations;
-  }
+  // formations!:Formation[];
+  // transform(value: number): string|undefined {
+  //   return this.formations.find((f)=>f.id==value)?.titre
+  // }
+
+  // getFormationList(){
+  //   this.formations = this.formationService.Formations;
+  // }
 }

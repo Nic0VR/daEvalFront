@@ -36,9 +36,10 @@ export class PromotionsComponent implements OnInit {
     private userService: UserService,
     private dialog: MatDialog,
     private promoService: PromotionService,
-    private positionnementService:PositionnementService,
-    private toastEvokeService:ToastEvokeService,
-    private evalService:EvaluationService
+    private positionnementService: PositionnementService,
+    private toastEvokeService: ToastEvokeService,
+    private evalService: EvaluationService,
+    private titreProService:TitreProfessionnelService
   ) {
     this.searchForm = this.formBuilder.group({
       searchExpression: ['']
@@ -63,31 +64,43 @@ export class PromotionsComponent implements OnInit {
       this.totalItems = countDto.nb
     })
 
-    this.promoService.getAllPage(this.currentPage, this.itemsPerPage, this.searchExpression).pipe(first()).subscribe(promos => {
+    this.promoService.getAllPage(this.currentPage, this.itemsPerPage, this.searchExpression).pipe(first()).subscribe(
+      {
+        next: (v) => {
+          this.promos = v;
 
-      this.promos = promos;
+        },
+        error: (e) => { },
+        complete: () => {
+          this.promos!.forEach((p)=>{
+           this.titreProService.findById(p.titreProfessionnelId).subscribe({
+            next:(v)=>{
+              p.titreProNom = v.titre;
+            },
 
-    })
+            })
+          })
+         }
+      }
+    )
   }
 
   pageChanged(page: number) {
     this.currentPage = page;
     this.getPromoList();
   }
-  rechercher() {
-    this.getPromoList()
-  }
+
   annulerRechercher() {
     this.searchExpression = "";
     this.getPromoList();
   }
 
-  ajouterNouvellePromo(){
-    this.formulaireAjoutVisible=true;
+  ajouterNouvellePromo() {
+    this.formulaireAjoutVisible = true;
   }
-  supprimerPromotion(p:Promotion){
+  supprimerPromotion(p: Promotion) {
     this.dialogRef = this.dialog.open(SupprimerElementDialogComponent, { disableClose: false });
-    this.dialogRef.componentInstance.elementName = " la promotion id=" +p.id ;
+    this.dialogRef.componentInstance.elementName = " la promotion id=" + p.id;
     this.dialogRef.afterClosed().subscribe(
       result => {
         if (result) {
@@ -97,7 +110,7 @@ export class PromotionsComponent implements OnInit {
                 this.toastEvokeService.success('Succès', "Opération réussie").subscribe()
                 this.getPromoList();
               },
-              error: (e) => { 
+              error: (e) => {
                 this.toastEvokeService.danger('Erreur', "Erreur: " + e.error.message).subscribe()
 
               }
@@ -108,38 +121,38 @@ export class PromotionsComponent implements OnInit {
     )
   }
 
-  cacherFormulaireAjout(){
-    this.formulaireAjoutVisible=false;
+  cacherFormulaireAjout() {
+    this.formulaireAjoutVisible = false;
   }
 
 
-  GetPdfPos(id:number){
+  GetPdfPos(id: number) {
     this.positionnementService.generateGrillePromo(id).subscribe({
-      next:(data) => {
-      
+      next: (data) => {
+
         let downloadURL2 = window.URL.createObjectURL(data);
         let link2 = document.createElement('a');
         link2.href = downloadURL2;
         link2.download = "GrillePositionnementPromo.pdf";
         link2.click();
       },
-      error:(e)=>{},
-      complete:()=>{}
+      error: (e) => { },
+      complete: () => { }
     })
   }
 
-  GetZipEval(id:number){
+  GetZipEval(id: number) {
     this.evalService.generateBulletinByPromo(id).subscribe({
-      next:(data) => {
-      
+      next: (data) => {
+
         let downloadURL2 = window.URL.createObjectURL(data);
         let link2 = document.createElement('a');
         link2.href = downloadURL2;
-        link2.download = "evalsPromo"+id+".zip";
+        link2.download = "evalsPromo" + id + ".zip";
         link2.click();
       },
-      error:(e)=>{},
-      complete:()=>{}
+      error: (e) => { },
+      complete: () => { }
     })
   }
 

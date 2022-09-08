@@ -78,9 +78,11 @@
         <tr
             *ngFor="let interv of interventions | paginate: {itemsPerPage:itemsPerPage, currentPage: currentPage, totalItems:totalItems}">
             <td>{{interv.id}}</td>
-            <td>{{interv.formationId | formation }}</td>
-            <td>{{interv.formateurId | formateur}}</td>
-            <td>{{interv.promotionId | promotion}}</td>
+            <!-- <td>{{interv.formationId | formation }}</td> -->
+            <td>{{interv.formation!.titre }}</td>
+
+            <td>{{interv.formateurNomComplet}}</td>
+            <td>{{interv.promotion!.villeId | ville}} du {{interv.promotion!.dateDebut}} au {{interv.promotion!.dateFin}} </td>
             <td>{{interv.dateDebut}}</td>
             <td>{{interv.dateFin}}</td>
             <td>

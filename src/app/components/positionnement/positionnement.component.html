@@ -1,8 +1,6 @@
 
 <h1>Gestion des positionnements</h1>
 
-
-
 <table class="table table-striped" *ngIf="isLoaded && positionnements">
     <thead>
         <th>id</th>
@@ -15,8 +13,9 @@
     <tbody>
     <tr *ngFor="let p of positionnements  | paginate: {itemsPerPage:itemsPerPage, currentPage: currentPage, totalItems:totalItems} ">
         <td>{{p.id}}</td>
-        <td>{{p.etudiantId | etudiant}}</td>
-        <td>{{p.interventionId | intervention}}</td>
+        <td>{{p.etudiant!.nom }} {{p.etudiant!.prenom}}</td>
+        <td> {{ p.intervention!.formateurNomComplet }} du {{p.intervention!.dateDebut}} au  {{p.intervention!.dateFin}} </td>
+
         <!-- <td [style]="'background-color:'+p.codeHexNiveauDebut"><div ></div></td> -->
         <td><app-niveau-cell [niveauId]="p.niveauDebutId"></app-niveau-cell></td>
         <td><app-niveau-cell [niveauId]="p.niveauFinId"></app-niveau-cell></td>

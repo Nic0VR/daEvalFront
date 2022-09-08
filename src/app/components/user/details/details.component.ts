@@ -92,15 +92,21 @@ export class UserDetailsComponent implements OnInit {
     })
   }
 
+
   chargerPromo(){
+
     this.promotionService.getAll().subscribe({
-      next:(v)=>{this.promotions=v},
+      next:(v)=>{
+        this.promotions=v
+      },
       error:(e)=>{console.log(e);},
       complete:()=>{}
     })
+
   }
 
   chargerFormations(){
+    
    this.formationService.findAll().subscribe({
     next:(v)=>{this.formations=v},
     error:(e)=>{console.log(e);},

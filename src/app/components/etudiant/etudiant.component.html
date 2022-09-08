@@ -3,7 +3,7 @@
   <!-- <span>{{searchExpression}}</span> -->
   <label for="search">Recherche : </label>
   <input id="search" type="text" [(ngModel)]="searchExpression" />
-  <button (click)="rechercher()">Rechercher</button>
+  <button (click)="getStudentList()">Rechercher</button>
   <button (click)="annulerRechercher()">Annuler</button>
   <button *ngIf="!formulaireAjoutVisible" (click)="ajouterEtudiant()">Ajouter un étudiant</button>
 

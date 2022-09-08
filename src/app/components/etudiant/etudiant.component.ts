@@ -74,13 +74,11 @@ export class EtudiantComponent implements OnInit {
     this.getStudentList();
   }
 
-  rechercher() {
-    this.getStudentList()
-  }
+
 
   ngOnInit(): void {
     this.getStudentList();
-    this.getPromoList();
+ 
   }
 
   ajouterEtudiant() {
@@ -110,7 +108,5 @@ export class EtudiantComponent implements OnInit {
     )
   }
 
-  getPromoList() {
-    this.promotionService.getAll().subscribe({ next: (v) => { this.promos = v } })
-  }
+
 }

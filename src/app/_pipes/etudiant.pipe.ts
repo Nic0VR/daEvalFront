@@ -6,24 +6,27 @@ import { EtudiantService } from '../_services/etudiant.service';
   name: 'etudiant'
 })
 export class EtudiantPipe implements PipeTransform {
-
-  etudiants!:Etudiant[];
-
-  constructor(private etudiantService:EtudiantService){
-    this.getEtudiants();
+  transform(value: any, ...args: any[]) {
+    throw new Error('Method not implemented.');
   }
 
-  transform(value: number): string {
-    let etudiant:Etudiant|undefined  = this.etudiants.find((e)=> e.id==value);
-    if(etudiant){
-      let result = etudiant.nom+" "+etudiant.prenom;
-      return result;
-    }else{
-      return "no data"
-    }
-  }
+  // etudiants!:Etudiant[];
 
-  getEtudiants(){
-    this.etudiants=this.etudiantService.Etudiants;
-  }
+  // constructor(private etudiantService:EtudiantService){
+  //   this.getEtudiants();
+  // }
+
+  // transform(value: number): string {
+  //   let etudiant:Etudiant|undefined  = this.etudiants.find((e)=> e.id==value);
+  //   if(etudiant){
+  //     let result = etudiant.nom+" "+etudiant.prenom;
+  //     return result;
+  //   }else{
+  //     return "no data"
+  //   }
+  // }
+
+  // getEtudiants(){
+  //   this.etudiants=this.etudiantService.Etudiants;
+  // }
 }

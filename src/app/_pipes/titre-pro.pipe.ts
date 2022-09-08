@@ -6,17 +6,22 @@ import { TitreProfessionnelService } from '../_services/titre-professionnel.serv
   name: 'titrePro'
 })
 export class TitreProPipe implements PipeTransform {
-
-  titresPros!: TitreProfessionnel[];
-  constructor(private titreProService:TitreProfessionnelService){
-    this.getTitreProList();
+  
+  transform(value: any, ...args: any[]) {
+    throw new Error('Method not implemented.');
   }
 
-  transform(value: number) :string|undefined {
-    return this.titresPros.find((t)=>t.id==value)?.titre.split('(')[0].split('Titre professionnel')[1];
-  }
+  // titresPros!: TitreProfessionnel[];
+  // constructor(private titreProService:TitreProfessionnelService){
+  //   this.getTitreProList();
+  // }
 
-  getTitreProList(){
-    this.titresPros = this.titreProService.TitrePros;
-  }
+  // transform(value: number) :string|undefined {
+  //   return this.titresPros.find((t)=>t.id==value)?.titre.split('(')[0].split('Titre professionnel')[1];
+  // }
+
+  // getTitreProList(){
+  //   this.titresPros = this.titreProService.TitrePros;
+  // }
+
 }

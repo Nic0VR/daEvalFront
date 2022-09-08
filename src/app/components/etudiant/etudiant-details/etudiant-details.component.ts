@@ -16,6 +16,7 @@ import { InterventionService } from 'src/app/_services/intervention.service';
 import { NiveauService } from 'src/app/_services/niveau.service';
 import { PositionnementService } from 'src/app/_services/positionnement.service';
 import { PromotionService } from 'src/app/_services/promotion.service';
+import { UserService } from 'src/app/_services/user.service';
 import { AjouterEvalDialogComponent } from '../../dialogs/ajouter-eval-dialog/ajouter-eval-dialog.component';
 import { ModifEvalDialogComponent } from '../../dialogs/modif-eval-dialog/modif-eval-dialog.component';
 import { SupprimerElementDialogComponent } from '../../dialogs/supprimer-element-dialog/supprimer-element-dialog.component';
@@ -27,16 +28,16 @@ import { SupprimerElementDialogComponent } from '../../dialogs/supprimer-element
 })
 export class EtudiantDetailsComponent implements OnInit {
 
-  currentEtudiant?:Etudiant;
-  promos?:Promotion[];
-  evaluations?:Evaluation[];
+  currentEtudiant?: Etudiant;
+  promos?: Promotion[];
+  evaluations?: Evaluation[];
   dialogRef?: MatDialogRef<AjouterEvalDialogComponent>;
   dialogRefSupp?: MatDialogRef<SupprimerElementDialogComponent>;
-  dialogRefModifEval?:MatDialogRef<ModifEvalDialogComponent>;
-  positionnements?:Positionnement[];
-  formulaireAjoutVisible:boolean=false;
+  dialogRefModifEval?: MatDialogRef<ModifEvalDialogComponent>;
+  positionnements?: Positionnement[];
+  formulaireAjoutVisible: boolean = false;
   niveaux?: Niveau[];
-  interventions?:Intervention[];
+  interventions?: Intervention[];
 
   ajoutFormulaire: FormGroup = new FormGroup({
     intervention: new FormControl("", Validators.required),
@@ -44,65 +45,68 @@ export class EtudiantDetailsComponent implements OnInit {
     niveauFin: new FormControl("", Validators.required),
 
   })
-  
-  constructor(private etudiantService:EtudiantService,
-    private route:ActivatedRoute,
-    private promotionService:PromotionService,
-    private evalService:EvaluationService,
-    private epreuveService:EpreuveService,
-    private positionnementService:PositionnementService,
-    private interventionService:InterventionService,
-    private niveauService:NiveauService,
+
+  constructor(private etudiantService: EtudiantService,
+    private route: ActivatedRoute,
+    private promotionService: PromotionService,
+    private evalService: EvaluationService,
+    private epreuveService: EpreuveService,
+    private positionnementService: PositionnementService,
+    private interventionService: InterventionService,
+    private userService: UserService,
+    private niveauService: NiveauService,
     private dialog: MatDialog,
     private toastEvokeService: ToastEvokeService
-    ) { }
+  ) { }
 
   ngOnInit(): void {
-    this.route.params.subscribe( param=>{
+    this.route.params.subscribe(param => {
       const id = param['id'];
       this.chargerEtudiant(id);
       this.chargerEvals(id);
       this.chargerPositionnements(id);
       this.chargerNiveaux();
-      this.chargerInterventions();
+ 
     })
   }
 
-  chargerEtudiant(id:number){
+  chargerEtudiant(id: number) {
     this.etudiantService.findById(id).subscribe({
-      next:(v)=>{this.currentEtudiant=v;
+      next: (v) => {
+        this.currentEtudiant = v;
         this.chargerPromos();
       },
-      error:(e)=>{console.log(e);}
+      error: (e) => { console.log(e); }
     })
   }
 
-  chargerPromos(){
-   this.promotionService.getAllPromosContainingEtudiant(this.currentEtudiant!.id).subscribe({
-    next:(v)=>{this.promos=v},
-    error:(e)=>{console.log(e);}
-   })
+  chargerPromos() {
+    this.promotionService.getAllPromosContainingEtudiant(this.currentEtudiant!.id).subscribe({
+      next: (v) => { this.promos = v },
+      error: (e) => { console.log(e); }
+    })
   }
 
-  chargerEvals(id:number){
+  chargerEvals(id: number) {
     this.evalService.getAllByEtudiantId(id).subscribe({
-      next:(v)=>{this.evaluations=v;
-          this.evaluations?.forEach( (eva)=>{
-            this.epreuveService.getById(eva.epreuveId).subscribe({
-              next:(v)=>{eva.epreuveTitre=v.titre},
-              error:(e)=>{console.log(e);},
-            });
+      next: (v) => {
+        this.evaluations = v;
+        this.evaluations?.forEach((eva) => {
+          this.epreuveService.getById(eva.epreuveId).subscribe({
+            next: (v) => { eva.epreuveTitre = v.titre },
+            error: (e) => { console.log(e); },
+          });
 
-            
-          })
-      
+
+        })
+
       },
-      error:(e)=>{console.log(e);}
+      error: (e) => { console.log(e); }
     })
   }
 
 
-  ajouterEval(){
+  ajouterEval() {
     this.dialogRef = this.dialog.open(AjouterEvalDialogComponent, { disableClose: false });
     this.dialogRef.componentInstance.etudiantId = this.currentEtudiant?.id!;
     this.dialogRef.afterClosed().subscribe(
@@ -117,19 +121,21 @@ export class EtudiantDetailsComponent implements OnInit {
 
   }
 
-  supprimerEval(evalu:Evaluation,etudiant:Etudiant){
+  supprimerEval(evalu: Evaluation, etudiant: Etudiant) {
     this.dialogRefSupp = this.dialog.open(SupprimerElementDialogComponent, { disableClose: false });
-    this.dialogRefSupp.componentInstance.elementName = " l'évaluation de " +etudiant.nom+" "+etudiant.prenom;
+    this.dialogRefSupp.componentInstance.elementName = " l'évaluation de " + etudiant.nom + " " + etudiant.prenom;
     this.dialogRefSupp.afterClosed().subscribe(
       result => {
         if (result) {
           this.evalService.delete(evalu.id).subscribe(
             {
-              next: () => {      this.toastEvokeService.success('Succès', "L'opération s'est bien déroulée").subscribe()
-              this.chargerEvals(evalu.etudiantId);},
-              error: (e) => { 
-                this.toastEvokeService.danger('Erreur', "Erreur: "+e.erreur.message).subscribe()
-                
+              next: () => {
+                this.toastEvokeService.success('Succès', "L'opération s'est bien déroulée").subscribe()
+                this.chargerEvals(evalu.etudiantId);
+              },
+              error: (e) => {
+                this.toastEvokeService.danger('Erreur', "Erreur: " + e.erreur.message).subscribe()
+
               }
             })
         }
@@ -138,15 +144,15 @@ export class EtudiantDetailsComponent implements OnInit {
     )
   }
 
-  modifierEval(evalu:Evaluation){
-    this.dialogRefModifEval= this.dialog.open(ModifEvalDialogComponent,{disableClose:false});
-    this.dialogRefModifEval.componentInstance.currentEval=evalu;
+  modifierEval(evalu: Evaluation) {
+    this.dialogRefModifEval = this.dialog.open(ModifEvalDialogComponent, { disableClose: false });
+    this.dialogRefModifEval.componentInstance.currentEval = evalu;
 
     this.dialogRefModifEval.afterClosed().subscribe(
       result => {
         if (result) {
-         this.toastEvokeService.success('Succès', "L'opération s'est bien déroulée").subscribe()
-         this.chargerEvals(evalu.etudiantId);
+          this.toastEvokeService.success('Succès', "L'opération s'est bien déroulée").subscribe()
+          this.chargerEvals(evalu.etudiantId);
         }
         this.dialogRefModifEval = undefined;
       }
@@ -154,56 +160,65 @@ export class EtudiantDetailsComponent implements OnInit {
   }
 
 
-  chargerPositionnements(etudiantId:number){
+  chargerPositionnements(etudiantId: number) {
     this.positionnementService.findAllByEtudiantId(etudiantId).subscribe({
-      next:(v)=>{this.positionnements=v},
-      error:(e)=>{console.log(e);}
+      next: (v) => { this.positionnements = v },
+      error: (e) => { console.log(e); },
+      complete: () => {
+        this.positionnements?.forEach((pos) => {
+          this.interventionService.getById(pos.interventionId).subscribe({
+            next: (interv) => {
+              pos.intervention = interv;
+              this.userService.findById(interv.formateurId).subscribe({
+                next:(user)=>{
+                  pos.intervention!.formateurNomComplet = user.nom+" "+user.prenom;
+                }
+              })
+            }
+          })
+        })
+      }
     })
   }
 
-  addPositionnement(){
-    let posi:Positionnement=new Positionnement();
+  addPositionnement() {
+    let posi: Positionnement = new Positionnement();
     posi.etudiantId = this.currentEtudiant!.id;
     posi.interventionId = this.ajoutFormulaire.value['intervention'];
     posi.niveauDebutId = this.ajoutFormulaire.value['niveauDebut'];
     posi.niveauFinId = this.ajoutFormulaire.value['niveauFin'];
 
     this.positionnementService.save(posi).subscribe({
-      next:(v)=>{ this.toastEvokeService.success('Succès', "L'opération s'est bien déroulée").subscribe()},
-      error:(e)=>{
+      next: (v) => { this.toastEvokeService.success('Succès', "L'opération s'est bien déroulée").subscribe() },
+      error: (e) => {
         this.toastEvokeService.danger('Erreur', 'Une erreur est survenue: ' + e.error.message).subscribe()
-        
+
       },
-      complete:()=>{}
+      complete: () => { }
     })
   }
 
-  afficherForm(){
+  afficherForm() {
     this.formulaireAjoutVisible = true;
   }
   annulerAjout() {
     this.formulaireAjoutVisible = false;
     this.ajoutFormulaire.reset();
   }
-  chargerInterventions(){
-    this.interventionService.findAll().subscribe({
-      next:(v)=>{this.interventions=v},
-      error:(e)=>{console.log(e);}
-    })
-  }
+  
 
   chargerNiveaux() {
     this.niveauService.findAll().subscribe({
       next: (v) => { this.niveaux = v },
       error: (e) => { console.log(e); },
-      complete: () => {        
+      complete: () => {
       },
     })
   }
 
-  supprimerPos(id:number){
+  supprimerPos(id: number) {
     this.dialogRefSupp = this.dialog.open(SupprimerElementDialogComponent, { disableClose: false });
-    this.dialogRefSupp.componentInstance.elementName = " le positionnement " ;
+    this.dialogRefSupp.componentInstance.elementName = " le positionnement ";
     this.dialogRefSupp.afterClosed().subscribe(
       result => {
         if (result) {
@@ -214,7 +229,7 @@ export class EtudiantDetailsComponent implements OnInit {
 
               },
               error: (e) => {
-                this.toastEvokeService.danger('Erreur','Une erreur est survenue: '+e.error.message).subscribe()
+                this.toastEvokeService.danger('Erreur', 'Une erreur est survenue: ' + e.error.message).subscribe()
               }
             })
         }
@@ -223,36 +238,36 @@ export class EtudiantDetailsComponent implements OnInit {
     )
   }
 
-  GetBulletin(id:number){
-    this.evalService.generateBulletinByStudentAndPromo(this.currentEtudiant!.id,id).subscribe({
-      next:(data) => {
+  GetBulletin(id: number) {
+    this.evalService.generateBulletinByStudentAndPromo(this.currentEtudiant!.id, id).subscribe({
+      next: (data) => {
 
         // let blob = new Blob([data], {type: 'application/pdf'});
-      
+
         let downloadURL = window.URL.createObjectURL(data);
         let link = document.createElement('a');
         link.href = downloadURL;
         link.download = "bulletinIndividuel.pdf";
         link.click();
       },
-      error:(e)=>{},
-      complete:()=>{}
+      error: (e) => { },
+      complete: () => { }
     })
   }
 
-  getGrillePos(){
+  getGrillePos() {
 
     this.positionnementService.generateGrilleEtudiant(this.currentEtudiant!.id).subscribe({
-      next:(data) => {
-      
+      next: (data) => {
+
         let downloadURL2 = window.URL.createObjectURL(data);
         let link2 = document.createElement('a');
         link2.href = downloadURL2;
         link2.download = "GrillePositionnementIndividuelle.pdf";
         link2.click();
       },
-      error:(e)=>{},
-      complete:()=>{}
+      error: (e) => { },
+      complete: () => { }
     })
   }
 }

@@ -3,8 +3,11 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ToastEvokeService } from '@costlydeveloper/ngx-awesome-popup';
 import { Niveau } from 'src/app/_models/niveau';
 import { Positionnement } from 'src/app/_models/positionnement';
+import { EtudiantService } from 'src/app/_services/etudiant.service';
+import { InterventionService } from 'src/app/_services/intervention.service';
 import { NiveauService } from 'src/app/_services/niveau.service';
 import { PositionnementService } from 'src/app/_services/positionnement.service';
+import { UserService } from 'src/app/_services/user.service';
 import { SupprimerElementDialogComponent } from '../dialogs/supprimer-element-dialog/supprimer-element-dialog.component';
 
 @Component({
@@ -25,7 +28,9 @@ export class PositionnementComponent implements OnInit {
     private niveauService: NiveauService,
     private dialog: MatDialog,
     private toastEvokeService: ToastEvokeService,
-    
+    private interventionService:InterventionService,
+    private userService:UserService,
+    private etudiantService:EtudiantService
     ) { }
 
   ngOnInit(): void {
@@ -49,6 +54,22 @@ export class PositionnementComponent implements OnInit {
       complete: () => {
         this.chargerNiveaux();
 
+        this.positionnements?.forEach((pos) => {
+          this.interventionService.getById(pos.interventionId).subscribe({
+            next: (interv) => {
+              pos.intervention = interv;
+              this.userService.findById(interv.formateurId).subscribe({
+                next:(user)=>{
+                  pos.intervention!.formateurNomComplet = user.nom+" "+user.prenom;
+                }
+              })
+            }
+          });
+          this.etudiantService.findById(pos.etudiantId).subscribe({
+            next:(v)=>{pos.etudiant=v},
+
+          })
+        })
       }
     })
   }

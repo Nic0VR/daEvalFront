@@ -48,28 +48,14 @@ export class InterventionComponent implements OnInit {
 
   ngOnInit(): void {
     this.rechercherInterv();
-    this.chargerFormateurs();
-    this.chargerFormations();
-    this.chargerPromo();
+
   }
 
 
 
-  chargerFormateurs() {
-    this.formateurs = this.userService.Formateurs;
-  }
 
-  chargerPromo() {
-    this.promotionService.getAll().subscribe({
-      next: (v) => { this.promotions = v },
-      error: (e) => { console.log(e); },
-      complete: () => { }
-    })
-  }
 
-  chargerFormations() {
-    this.formations = this.formationService.Formations;
-  }
+
 
   pageChanged(page: number) {
     this.currentPage = page;
@@ -85,9 +71,32 @@ export class InterventionComponent implements OnInit {
         console.log(e);
       },
       complete: () => {
+        this.interventions!.forEach((inter) => {
+          this.formationService.getById(inter.formationId).subscribe({
+            next:(v)=>{
+              this.formations?.push(v);
+              inter.formation=v;
+            },
+            error:(e)=>{}
+          })
+          this.userService.findById(inter.formateurId).subscribe({
+            next:(v)=>{
+              inter.formateurNomComplet=v.nom+" "+v.prenom;
+              this.formateurs?.push(v);
+            },
+            error:(e)=>{
+
+            }
+          }),
+          this.promotionService.findById(inter.promotionId).subscribe({
+            next:(v)=>{
+              inter.promotion=v;
+
+            }
+          })
+        });
       }
     })
-
     this.interventionService.count("").subscribe({
       next: (v) => { this.totalItems = v.nb },
       error: (e) => { console.log(e); },

@@ -20,11 +20,8 @@ export class EtudiantService {
   constructor(private httpClient: HttpClient) {
     this.ListeEtudiantSubject = new BehaviorSubject<Etudiant[]>([]);
     let etudiants: Etudiant[];
-    this.getAll().subscribe({
-      next: (v) => {
-        etudiants = v; this.ListeEtudiantSubject.next(etudiants); console.log("etudiant SERVICE INITIALISE");
-      }
-    });
+
+   
   }
 
   public get Etudiants():Etudiant[]{

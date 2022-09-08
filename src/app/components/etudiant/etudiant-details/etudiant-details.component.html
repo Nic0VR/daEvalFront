@@ -135,7 +135,8 @@
         <tbody>
 
             <tr *ngFor="let posi of positionnements">
-                <td>{{posi.interventionId | intervention}}</td>
+                <!-- <td>{{posi.interventionId | intervention}}</td> -->
+                <td> {{ posi.intervention!.formateurNomComplet }} du {{posi.intervention!.dateDebut}} au  {{posi.intervention!.dateFin}} </td>
                 <td>
                     <app-niveau-cell [niveauId]="posi.niveauDebutId"></app-niveau-cell>
                 </td>

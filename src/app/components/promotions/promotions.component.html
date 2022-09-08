@@ -3,7 +3,7 @@
   <!-- <span>{{searchExpression}}</span> -->
   <label for="search">Recherche : </label>
   <input id="search" type="text" [(ngModel)]="searchExpression" />
-  <button (click)="rechercher()">Rechercher</button>
+  <button (click)="getPromoList()">Rechercher</button>
   <button (click)="annulerRechercher()">Annuler</button>
   <button *ngIf="!formulaireAjoutVisible" (click)="ajouterNouvellePromo()">Créer une nouvelle promotion:</button>
   <!-- <button  *ngIf="!formulaireAjoutVisible" (click)="ajouterUtilisateur()">Ajouter un utilisateur</button> -->
@@ -34,7 +34,7 @@
       *ngFor="let p of promos | paginate: {itemsPerPage:itemsPerPage, currentPage: currentPage, totalItems:totalItems}">
       <td>{{p.id}}</td>
       <!-- <td>{{p.titreProfessionnelId | titrePro }}</td> -->
-      <td>{{p.titreProfessionnelId | titrePro}}</td>
+      <td>{{p.titreProNom }}</td>
 
       <!-- <td>{{p.villeId | ville | titlecase}}</td> -->
       <td>{{p.villeId | ville}}</td>
