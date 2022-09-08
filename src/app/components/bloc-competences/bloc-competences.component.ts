@@ -81,6 +81,14 @@ export class BlocCompetencesComponent implements OnInit {
       next: (v) => {
         this.blocCompetences = v;
         this.blocCompetences.forEach((bloc, index: number) => {
+          
+          this.titreProService.findById(bloc.titreProfessionnelId).subscribe({
+            next:(v)=>{
+              bloc.titreProfessionnelTitre=v.titre;
+            },
+            error:(e)=>{},
+          })
+
           this.competenceService.findByBlocCompId(bloc.id).subscribe({
             next: (v) => { bloc.competences = v },
             error: (e) => {

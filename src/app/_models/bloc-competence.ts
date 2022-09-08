@@ -8,6 +8,7 @@ export class BlocCompetence {
     titreProfessionnelId:number;
     version:number;
     competences?:Competence[];
+    titreProfessionnelTitre?:string;
     constructor(){
         this.id=0;
         this.titre="";

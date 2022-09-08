@@ -57,8 +57,10 @@ export class DetailsComponent implements OnInit {
 
   chargerInterv(id: number) {
     this.interventionService.getById(id).subscribe({
-      next: (v) => { this.currentInterv = v ;console.log("current interv");
-      console.log(this.currentInterv);
+      next: (v) => { 
+        this.currentInterv = v ;
+
+     
       
       },
       error: (e) => {
@@ -71,16 +73,21 @@ export class DetailsComponent implements OnInit {
 
     this.positionnementService.findAllByInterventionId(id).subscribe({
       next: (v) => {
-        this.positionnements = v; console.log(v);
+        this.positionnements = v;
       },
       error: (e) => { console.log(e); },
       complete: () => {
+
         this.positionnements?.forEach((pos)=>{
+          this.etudiantService.findById(pos.etudiantId).subscribe({
+            next:(v)=>{
+              pos.etudiant=v;
+            },
+            error:(e)=>{console.log(e);}
+          })
           this.idEtudiantDejaPositionne?.push(pos.etudiantId);
         })
-        console.log("id etudiants deja posi");
-        console.log(this.idEtudiantDejaPositionne);
-        
+
         this.chargerNiveaux();
         this.chargerEtudiants(id);
       }

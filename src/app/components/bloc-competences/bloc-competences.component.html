@@ -65,7 +65,7 @@
         *ngFor="let bloc of blocCompetences  | paginate: {itemsPerPage:itemsPerPageB, currentPage: currentPageB, totalItems:totalItems} ">
         <td>{{bloc.titre}}</td>
         <td>{{bloc.description}}</td>
-        <td>{{bloc.titreProfessionnelId | titrePro}}</td>
+        <td>{{bloc.titreProfessionnelTitre}}</td>
         <td>
           <ul *ngIf="bloc.competences && bloc.competences.length; else noComp">
             <li *ngFor="let comp of bloc.competences">

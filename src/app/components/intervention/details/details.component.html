@@ -1,6 +1,6 @@
 <div *ngIf="currentInterv">
 
-    <h3>Gestion des positionnements de l'intervention de {{currentInterv!.id | intervention}}</h3>
+    <h3>Gestion des positionnements de l'intervention de {{currentInterv.formateurNomComplet}}</h3>
 
     <button (click)="afficherForm()">Ajouter un positionnement</button>
     <div class="my-ctn" *ngIf="formulaireAjoutVisible  ">
@@ -58,7 +58,7 @@
         <tbody>
             <tr *ngFor="let p of positionnements">
                 <td>{{p.id}}</td>
-                <td>{{p.etudiantId | etudiant}}</td>
+                <td>{{p.etudiant!.nom}} {{p.etudiant!.prenom}} </td>
                 <!-- <td [style]="'background-color:'+p.codeHexNiveauDebut"><div ></div></td> -->
                 <td>
                     <app-niveau-cell [niveauId]="p.niveauDebutId"></app-niveau-cell>
